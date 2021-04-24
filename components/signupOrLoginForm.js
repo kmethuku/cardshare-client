@@ -1,52 +1,69 @@
 import { useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useAuth } from '../contexts/AuthContext';
 
 function SignupOrLoginForm() {
   const [label, setLabel] = useState('Sign Up');
-  const [userInfo, setUserInfo] = useState({email: '', username: '', password: ''});
+  const [userInfo, setUserInfo] = useState({email: '', password: ''});
+  const { signUp, logIn, currentUser } = useAuth();
+  const [error, setError] = useState('');
+  const router = useRouter();
 
-  function handleSubmit(e) {
+  async function handleSignUp(e) {
     e.preventDefault();
     // TODO: add user info to database
-    setUserInfo({email: '', username: '', password: ''});
+    try {
+      setError('');
+      await signUp(userInfo.email, userInfo.password);
+      router.push('/discover');
+    } catch (err) {
+      setError('Failed to create an account.');
+    }
+  }
+
+  async function handleLogIn(e) {
+    e.preventDefault();
+    // TODO: grab user info from database
+    try {
+      setError('');
+      await logIn(userInfo.email, userInfo.password);
+      router.push('/discover');
+    } catch (err) {
+      setError('Incorrect username or password.');
+    }
   }
 
   function handleChange(e) {
-    // TODO: update value depending on field changed ex. setUserInfo({...userInfo, email: e.target.value});
+    e.target.type === 'email' ? setUserInfo({...userInfo, email: e.target.value})
+      : setUserInfo({...userInfo, password: e.target.value})
   }
 
   return (
     <div className="SignupOrLoginForm">
       <h3>{label}</h3>
-      <form onSubmit={handleSubmit}>
-        {label === 'Sign Up' &&
+      <form>
+        {error && <p>{error}</p>}
         <div>
           <label htmlFor="email">Email</label><br/>
-          <input type="email" value={userInfo.email} onChange={handleChange} placeholder="jack@example.com"/>
-        </div>}
-        <div>
-          <label htmlFor="username">Username</label><br/>
-          <input type="text" value={userInfo.username} onChange={handleChange} placeholder="jackLikesToLearn123"/>
+          <input type="email" value={userInfo.email} onChange={handleChange} placeholder="jack@example.com" required/>
         </div>
         <div>
           <label htmlFor="password">Password</label><br/>
-          <input type="text" value={userInfo.password} onChange={handleChange} placeholder="********"/>
+          <input type="text" value={userInfo.password} onChange={handleChange} placeholder="********" required/>
         </div>
         <div>
-          <Link href="/dashboard">
-            <input className="button" type="submit" value={label}/>
-          </Link>
+          <input className="button" type="submit" onClick={label === 'Sign Up' ? handleSignUp : handleLogIn} value={label}/>
         </div>
       </form>
       {label === 'Sign Up' ?
       <div>
         <p>Already have an account?</p>
-        <button onClick={() => setLabel('Log In')}>Log In</button>
+        <a onClick={() => setLabel('Log In')}>Log In</a>
       </div>
       :
       <div>
         <p>Don't have an account?</p>
-        <button onClick={() => setLabel('Sign Up')}>Sign Up</button>
+        <a onClick={() => setLabel('Sign Up')}>Sign Up</a>
       </div>}
     </div>
   )
