@@ -9,6 +9,8 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
 
   async function signUp (email, password) {
     return await auth.createUserWithEmailAndPassword(email, password);
@@ -32,7 +34,8 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
-      setCurrentUser(user);
+      if (user === null) setCurrentUser({uid: 'waiting...', username: 'waiting...', email: 'waiting...'})
+      else setCurrentUser(user);
     })
     return unsubscribe;
   }, [])
@@ -40,6 +43,11 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    setCurrentUser,
+    username,
+    setUsername,
+    email,
+    setEmail,
     signUp,
     logIn,
     signOut

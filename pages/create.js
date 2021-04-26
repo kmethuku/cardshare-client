@@ -10,15 +10,14 @@ function Create() {
   const [clickedItem, setClickedItem] = useState('');
   const [selectedDeck, setSelectedDeck] = useState('');
   const URL = 'http://localhost:3001/myDecks';
-  const { currentUser } = useAuth();
+  const { currentUser, email } = useAuth();
 
   useEffect(() => {
-    fetch(URL).then(data => data.json()).then(res => setDeckList(res[0].myDecks));
+    fetch(`${URL}/${email}`).then(data => data.json()).then(res => res[0] ? setDeckList(res[0].myDecks) : setDeckList(deckList)); // add setDeckList(res[0].myDecks
   }, [deleteCount, clickedItem]);
 
   function handleDeleteClick(e) {
-    console.log(e.target.id)
-    fetch(`${URL}/${e.target.id}`, {
+    fetch(`${URL}/${email}-${e.target.id}`, {
       method: 'DELETE'
     }).then(data => data.json()).then(res => console.log(res));
     setDeleteCount(deleteCount + 1);
@@ -27,7 +26,7 @@ function Create() {
   if (currentUser) {
     if (clickedItem === 'viewDeck') {
       return (
-        <ViewDeck selectedDeck={selectedDeck}></ViewDeck>
+        <ViewDeck selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} from={'myDeck'}></ViewDeck>
       )
     }
     else if (clickedItem === 'createDeck') {
@@ -39,7 +38,7 @@ function Create() {
       <div>
         <HeaderButtons></HeaderButtons>
         <h1>My Decks</h1>
-        {deckList.map(deck => deck.src ?
+        {deckList && deckList.map(deck => deck.src ?
           <div key={deck._id}>
             <img src={deck.src} onClick={() => { setClickedItem('viewDeck'); setSelectedDeck(deck) }}/>
             <button type="button" id={deck._id} onClick={handleDeleteClick}>❌</button>

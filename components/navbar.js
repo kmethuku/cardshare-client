@@ -12,18 +12,21 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
   }
 
   function handleClick(e) {
+    let shortOLID = e.target.id.substring(7);
     if (setNewDeck) {
       setNewDeck({
         ...newDeck,
         title: e.target.title,
-        src: e.target.src
+        src: e.target.src,
+        OLID: shortOLID
       });
       setInput(e.target.title);
     }
     else {
       setSelectedBook({
         title: e.target.title,
-        src: e.target.src
+        src: e.target.src,
+        OLID: shortOLID
       });
       setInput('');
     }
@@ -37,9 +40,9 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
         return (
           (result.cover_i ?
             <div key={result.key}>
-              <img src={`https://covers.openlibrary.org/b/id/${result.cover_i}-S.jpg`} title={result.title} onClick={handleClick}/>
+              <img src={`https://covers.openlibrary.org/b/id/${result.cover_i}-S.jpg`} title={result.title} id={result.key} onClick={handleClick}/>
             </div>:
-            <div height="58px" width="32px" title={result.title} key={result.key} onClick={handleClick}>{result.title.length > 50 ? result.title.substring(0, 50) + '...' : result.title}</div>)
+            <div height="58px" width="32px" title={result.title} id={result.key} key={result.key} onClick={handleClick}>{result.title.length > 50 ? result.title.substring(0, 50) + '...' : result.title}</div>)
           )
       })}
     </div>

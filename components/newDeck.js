@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import Navbar from './navbar';
 import HeaderButtons from './headerButtons';
+import { useAuth } from '../contexts/AuthContext';
 
 function NewDeck({ setClickedItem }) {
-  const [newDeck, setNewDeck] = useState({ title: '', description: '', src: '' });
+  const [newDeck, setNewDeck] = useState({ title: '', description: '', src: '', genre: '', OLID: '' });
   const [cardList, setCardList] = useState([{ question: '', answer: ''}]); // add highlight back
   const URL = 'http://localhost:3001/myDecks';
+  const { currentUser, username, email } = useAuth();
 
   function handleChange(e, index) {
     const { name, value } = e.target;
     if (name === 'description') setNewDeck({...newDeck, description: value});
+    else if (name === 'genre') setNewDeck({...newDeck, genre: value});
     else {
       const tempList = [...cardList];
       tempList[index][name] = name === 'highlight' ? e.target.files[0] : value;
@@ -31,10 +34,13 @@ function NewDeck({ setClickedItem }) {
     e.preventDefault();
     let tempNewDeck = newDeck;
     tempNewDeck.cards = cardList;
-    fetch(URL, {
+    tempNewDeck.creator = username;
+    console.log('email',email)
+    fetch(URL + '/' + email, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Origin': 'http://localhost:3000'
       },
       body: JSON.stringify(tempNewDeck)
     }).then(res => console.log(res));
@@ -49,6 +55,10 @@ function NewDeck({ setClickedItem }) {
         <div>
           <label htmlFor="title">Title</label><br/>
           <Navbar setNewDeck={setNewDeck} newDeck={newDeck}></Navbar>
+        </div>
+        <div>
+          <label htmlFor="genre">Genre</label><br/>
+          <input type="text" name="genre" value={newDeck.genre} onChange={handleChange} placeholder="Enter the genre of the book"/>
         </div>
         <div>
           <label htmlFor="description">Description</label><br/>
