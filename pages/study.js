@@ -2,6 +2,7 @@ import HeaderButtons from '../components/headerButtons';
 import { useAuth } from '../contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import Flashcards from '../components/flashcards';
+import { Button } from 'react-bootstrap';
 
 function Study() {
   const { currentUser, email } = useAuth();
@@ -11,38 +12,48 @@ function Study() {
   const [numDeleted, setNumDeleted] = useState(0);
 
   useEffect(() => {
-    fetch(URL + `/${email}`).then(data => data.json()).then(res => res[0] ? setSavedDecks(res[0].savedDecks) : setSavedDecks(savedDecks));
+    fetch(URL + `/${email || currentUser.email}`).then(data => data.json()).then(res => res[0] ? setSavedDecks(res[0].savedDecks) : setSavedDecks(savedDecks));
   }, [numDeleted]);
 
   function handleDeleteClick(e) {
-    fetch(`${URL}/${email}-${e.target.id}`, {
+    fetch(`${URL}/${email || currentUser.email}-${e.target.id}`, {
       method: 'DELETE'
-    }).then(data => data.json()).then(res => console.log(res));
+    }).then(data => data.json()).then(data => data.json());
     setNumDeleted(numDeleted + 1);
   }
 
-  if (currentUser) {
-    if (flashcards) {
-      return (
-        <Flashcards flashcards={flashcards} setFlashcards={setFlashcards}></Flashcards>
-      )
-    } else return (
+  if (flashcards) {
+    return (
       <div>
-        <HeaderButtons></HeaderButtons>
-        <h1>My Saved Decks</h1>
-          {savedDecks.map(deck => deck.src ?
-            <div key={deck._id}>
-              <img src={deck.src} onClick={() => setFlashcards(deck)}/>
-              <button type="button" id={deck._id} onClick={handleDeleteClick}>❌</button>
-            </div> :
-            <div key={deck._id}>
-              <div onClick={() => setFlashcards(deck)}>{deck.title.length > 50 ? deck.title.substring(0, 50) + '...' : deck.title}</div>
-              <button type="button" id={deck._id} onClick={handleDeleteClick}>❌</button>
-            </div>)}
+      {currentUser ?
+        <Flashcards flashcards={flashcards} setFlashcards={setFlashcards}></Flashcards>
+        : <h1>Access Unauthorized</h1>}
       </div>
     )
-  }
-  else return <h1>Access Unauthorized</h1>
+  } else return (
+    <div>
+      {currentUser ?
+      <div>
+        <HeaderButtons></HeaderButtons>
+        <h1 className="mx-2 my-4">My Saved Decks</h1>
+        <div className="d-flex flex-row align-items-center
+          justify-content-start mx-2 mt-2">
+          {savedDecks.map(deck => deck.src ?
+            <div style={{ display:"inline-block" }} className="mx-2 my-2" key={deck._id}>
+              <img className="mx-2 my-2" src={deck.src} width="150px" height="auto" onClick={() => setFlashcards(deck)}/>
+              <Button className="mx-2 my-2" type="button" id={deck._id} onClick={handleDeleteClick}>❌</Button>
+            </div> :
+            <div style={{ display:"inline-block" }} className="mx-2 my-2 d-flex flex-row align-items-center
+              justify-content-center" key={deck._id}>
+              <div className="my-2 mx-2 text-center" style={{ height:"220px", width:"150px", fontSize:"20px",
+              border: "1px solid rgba(0,0,0,.125)", borderRadius: ".25rem", padding: "2px" }} width="150px" height="auto" onClick={() => setFlashcards(deck)}>{deck.title.length > 50 ? deck.title.substring(0, 50) + '...' : deck.title}</div>
+              <Button className="mx-2 my-2" type="button" id={deck._id} onClick={handleDeleteClick}>❌</Button>
+            </div>)}
+        </div>
+      </div>
+      : <h1>Access Unauthorized</h1>}
+    </div>
+  )
 }
 
 export default Study;

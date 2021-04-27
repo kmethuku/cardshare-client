@@ -24,14 +24,6 @@ export function AuthProvider({ children }) {
     return await auth.signOut();
   }
 
-  // function logIn (email, password) {
-  //   // function to authenticate user signInWithEmailandPassword(email, password)
-  //   // generate an ID token
-  //   // use to identify user in database
-
-  //   //signOut
-  // }
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user === null) setCurrentUser({uid: 'waiting...', username: 'waiting...', email: 'waiting...'})

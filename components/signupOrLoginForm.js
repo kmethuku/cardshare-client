@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../contexts/AuthContext';
+import { Form, Button, Card } from 'react-bootstrap';
 
 function SignupOrLoginForm() {
   const [label, setLabel] = useState('Sign Up');
@@ -15,20 +16,18 @@ function SignupOrLoginForm() {
     try {
       setError('');
       await signUp(userInfo.email, userInfo.password);
-      console.log('currentUser', currentUser)
       fetch(userURL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({username: userInfo.username, email: userInfo.email})
-      }).then(res => console.log(res));
+      }).then(data => data.json());
       setUsername(userInfo.username);
       setEmail(userInfo.email);
       router.push('/discover');
     } catch (err) {
       setError('Failed to create an account.');
-      console.log('err', err)
     }
   }
 
@@ -52,30 +51,31 @@ function SignupOrLoginForm() {
   }
 
   return (
-    <div className="SignupOrLoginForm">
-      <h3>{label}</h3>
-      <form>
+    <Card style={{ position:"relative", maxWidth:"400px", top:"-50px" }}>
+      <Card.Body>
+      <h2 className="text-center mb-4">{label}</h2>
+      <Form>
         {error && <p>{error}</p>}
-        <div>
-          <label htmlFor="username">Username</label><br/>
-          <input type="text" id="username" value={userInfo.username} onChange={handleChange} placeholder="jack1234" required/>
-        </div>
-        <div>
-          <label htmlFor="email">Email</label><br/>
-          <input type="email" id="email" value={userInfo.email} onChange={handleChange} placeholder="jack@example.com" required/>
-        </div>
-        <div>
-          <label htmlFor="password">Password</label><br/>
-          <input type="text" id="password" value={userInfo.password} onChange={handleChange} placeholder="********" required/>
-        </div>
-        <div>
-          <input className="button" type="submit" onClick={label === 'Sign Up' ? handleSignUp : handleLogIn} value={label}/>
-        </div>
-      </form>
+        {label === 'Sign Up' &&
+        <Form.Group>
+          <Form.Label htmlFor="username">Username</Form.Label><br/>
+          <Form.Control type="text" id="username" value={userInfo.username} onChange={handleChange} placeholder="jack1234" required/>
+        </Form.Group>}
+        <Form.Group>
+          <Form.Label htmlFor="email">Email</Form.Label><br/>
+          <Form.Control type="email" id="email" value={userInfo.email} onChange={handleChange} placeholder="jack@example.com" required/>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="password">Password</Form.Label><br/>
+          <Form.Control type="text" id="password" value={userInfo.password} onChange={handleChange} placeholder="********" required/>
+        </Form.Group>
+          <Button className="w-100" type="submit" onClick={label === 'Sign Up' ? handleSignUp : handleLogIn}>{label}</Button>
+      </Form>
       {label === 'Sign Up' ?
-        <button type="button" onClick={() => setLabel('Log In')}>Already have an account? Log In</button>
-        : <button type="button" onClick={() => setLabel('Sign Up')}>Don't have an account? Sign Up</button>}
-    </div>
+        <div className="w-100 text-center mt-2" type="button" onClick={() => setLabel('Log In')}>Already have an account? Log In</div>
+        : <div className="w-100 text-center mt-2" type="button" onClick={() => setLabel('Sign Up')}>Don't have an account? Sign Up</div>}
+      </Card.Body>
+    </Card>
   )
 }
 

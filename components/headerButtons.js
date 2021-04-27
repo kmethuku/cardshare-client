@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { Button } from 'react-bootstrap';
 
 function HeaderButtons() {
   const { signOut } = useAuth();
@@ -21,17 +22,27 @@ function HeaderButtons() {
 
   return (
     <div>
-      <Link href="/discover">
-        <button type="button">Discover</button>
-      </Link>
-      <Link href="/create">
-        <button type="button">Create</button>
-      </Link>
-      <Link href="/study">
-        <button type="button">Study</button>
-      </Link>
-      <button type="button" onClick={handleSignOut}>Sign Out</button>
-      {error && <p>{error}</p>}
+      <div className="d-flex justify-content-between mx-2 my-2">
+        <h3>Cardshare</h3>
+        <Button type="button" onClick={handleSignOut}>Sign Out</Button>
+      </div>
+      <ul className="nav nav-tabs d-flex justify-content-between text-center">
+        <li className="nav-item w-25">
+          <Link href="/discover">
+          <a className="nav-link">Discover</a>
+          </Link>
+        </li>
+        <li className="nav-item w-25">
+          <Link href="/create">
+          <a className="nav-link">Create</a>
+          </Link>
+        </li>
+        <li className="nav-item w-25">
+          <Link href="/study">
+          <a className="nav-link">Study</a>
+          </Link>
+        </li>
+      </ul>
     </div>
   )
 }
