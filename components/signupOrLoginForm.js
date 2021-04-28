@@ -67,7 +67,7 @@ function SignupOrLoginForm() {
         </Form.Group>
         <Form.Group>
           <Form.Label htmlFor="password">Password</Form.Label><br/>
-          <Form.Control type="text" id="password" value={userInfo.password} onChange={handleChange} placeholder="********" required/>
+          <Form.Control type="password" id="password" value={userInfo.password} onChange={handleChange} placeholder="********" required/>
         </Form.Group>
           <Button className="w-100" type="submit" onClick={label === 'Sign Up' ? handleSignUp : handleLogIn}>{label}</Button>
       </Form>

@@ -37,6 +37,10 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
     setResults('');
   }
 
+  //This navbar is the main reason why the css is not responsive
+  //I had to change the components underneath it on the screen to position absolute
+  //in order to prevent them from shifting down when the results dropped down
+  //under the navbar
   return (
     <div>
       <Form.Control style={{ maxWidth:"400px" }} className="mt-2 position-relative" type="text" value={input} onChange={handleChange} placeholder="What book are you looking for?"/>

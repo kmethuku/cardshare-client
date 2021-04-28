@@ -26,6 +26,11 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
+      //User randomly will become null at some point while using the app,
+      //so they won't be able to access the page. If you go to /discover, it will work again,
+      //but if you create a new deck, the username will not be recognized so the deck will have a
+      //creator field as ''. This is why I wrote the if..else statement below, so the user can still
+      //view the pages
       if (user === null) setCurrentUser({uid: 'waiting...', username: 'waiting...', email: 'waiting...'})
       else setCurrentUser(user);
     })

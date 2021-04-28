@@ -25,7 +25,7 @@ function Book({ selectedBook, setSelectedBook, setVoted, voted }) {
       <Button className="mx-2 my-4 align-center" style={{position:"absolute", zIndex:"2"}} onClick={() => setSelectedBook('')}>Back</Button>
       <div className="d-flex flex-column align-items-center
         justify-content-center" style={{width:"99vw", position:"absolute", top:"0vh"}}>
-      <h2 className="mx-2 my-4">{selectedBook.title}</h2>
+      <h2 className="mx-2 my-4 text-center">{selectedBook.title}</h2>
       {selectedBook.src ?
         <img className="mx-2 my-2" src={selectedBook.src} key={selectedBook._id}/> :
         <div className="my-2 mx-2 text-center" style={{ display:"inline-block", padding: "2px", height:"270px", width:"180px", fontSize:"20px",

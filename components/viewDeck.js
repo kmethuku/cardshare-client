@@ -46,10 +46,21 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
           <img className="mx-2 my-2" src={selectedDeck.src} key={selectedDeck._id}/> :
           <div className="my-2 mx-2 text-center" style={{ height:"270px", width:"180px", fontSize:"20px",
           border: "1px solid rgba(0,0,0,.125)", borderRadius: ".25rem", padding: "2px" }} key={selectedDeck._id}>{selectedDeck.title.length > 50 ? selectedDeck.title.substring(0, 50) + '...' : selectedDeck.title}</div>}
-          <h4 className="mx-2 my-4">Description: {selectedDeck.description}</h4>
+          <h4 className="mx-2 mt-3">Description: {selectedDeck.description}</h4>
         </div>
         <div className="d-flex flex-row align-items-center
-          justify-content-center flex-wrap" style={{width:"99vw", position:"absolute", top:"52vh"}}>
+          justify-content-center" style={{width:"99vw", position:"absolute", top:"48vh"}}>
+          {from !== 'myDeck' ? <Button type="button" onClick={() => handleVote('down')}>👎</Button> : <Button type="button" disabled onClick={() => handleVote('down')}>👎</Button>}
+          <p className="mx-2 my-2">{selectedDeck.votes}</p>
+          {from !== 'myDeck' ? <Button type="button" onClick={() => handleVote('up')}>👍</Button> : <Button type="button" disabled onClick={() => handleVote('up')}>👍</Button>}
+        </div>
+        <div className="d-flex flex-row align-items-center
+          justify-content-center" style={{width:"99vw", position:"absolute", top:"52vh"}}>
+          <p className="mx-2 my-3">Creator: {selectedDeck.creator}</p>
+          <Button type="button" onClick={handleClick}>Save Deck</Button>
+        </div>
+        <div className="d-flex flex-row align-items-center
+          justify-content-center flex-wrap" style={{width:"99vw", position:"absolute", top:"57vh"}}>
           {selectedDeck.cards.map(card =>
           <Card style={{ maxWidth:"200px" }} className="mx-2 my-2">
             <Card.Body className="text-center">
@@ -59,17 +70,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
           {/* <div>{card.highlight}</div> */}
           </Card>)}
         </div>
-        <div className="d-flex flex-row align-items-center
-          justify-content-center" style={{width:"99vw", position:"absolute", top:"67vh"}}>
-          {from !== 'myDeck' ? <Button type="button" onClick={() => handleVote('down')}>👎</Button> : <Button type="button" disabled onClick={() => handleVote('down')}>👎</Button>}
-          <p className="mx-2 my-2">{selectedDeck.votes}</p>
-          {from !== 'myDeck' ? <Button type="button" onClick={() => handleVote('up')}>👍</Button> : <Button type="button" disabled onClick={() => handleVote('up')}>👍</Button>}
-        </div>
-        <div className="d-flex flex-column align-items-center
-          justify-content-center" style={{width:"99vw", position:"absolute", top:"70vh"}}>
-          <p className="mx-2 my-3">Creator: {selectedDeck.creator}</p>
-          <Button type="button" onClick={handleClick}>Save Deck</Button>
-        </div>
+
       </div>
     </div>
   )
