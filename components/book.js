@@ -2,22 +2,25 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ViewDeck from './viewDeck';
 import { Button, Card } from 'react-bootstrap';
+import { discoverBookService } from '../services/internalApi'
 
 function Book({ selectedBook, setSelectedBook, setVoted, voted }) {
   const [decks, setDecks] = useState('');
   const [selectedDeck, setSelectedDeck] = useState('');
-  const discoverURL = 'http://localhost:3001/discover/OLID';
+  // const discoverURL = 'http://localhost:3001/discover/OLID';
 
   useEffect (() => {
-    fetch(discoverURL + `/${selectedBook.OLID}`).then(data => data.json()).then(res => {
+    discoverBookService(selectedBook)
+      .then(res => setDecks(res));
+    // fetch(discoverURL + `/${selectedBook.OLID}`).then(data => data.json()).then(res => {
 
-      let allDecks = [];
-      res.forEach(match => match.myDecks.forEach(deck => {
-        deck.creator = match.username;
-        allDecks.push(deck);
-      }));
-      setDecks(allDecks);
-    })
+    //   let allDecks = [];
+    //   res.forEach(match => match.myDecks.forEach(deck => {
+    //     deck.creator = match.username;
+    //     allDecks.push(deck);
+    //   }));
+    //   setDecks(allDecks);
+    // })
   }, [selectedBook])
 
   if (selectedDeck.title) return <ViewDeck setVoted={setVoted} voted={voted} selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} from={'book'}></ViewDeck>

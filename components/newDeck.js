@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import Navbar from './navbar';
 import HeaderButtons from './headerButtons';
 import { useAuth } from '../contexts/AuthContext';
+import { newDeckService } from '../services/internalApi';
 import { Form, Button, Card, Container } from 'react-bootstrap';
 
 const NewDeck = ({ setClickedItem }) => {
   const [newDeck, setNewDeck] = useState({ title: '', description: '', src: '', genre: '', OLID: '' });
   const [cardList, setCardList] = useState([{ question: '', answer: ''}]); // add highlight back
-  const URL = 'http://localhost:3001/myDecks';
+  // const URL = 'http://localhost:3001/myDecks';
   const { currentUser, username, email } = useAuth();
 
   function handleChange(e, index) {
@@ -37,14 +38,15 @@ const NewDeck = ({ setClickedItem }) => {
     tempNewDeck.genre = tempNewDeck.genre.toLowerCase();
     tempNewDeck.cards = cardList;
     tempNewDeck.creator = username;
-    fetch(URL + '/' + email, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Origin': 'http://localhost:3000'
-      },
-      body: JSON.stringify(tempNewDeck)
-    }).then(data => data.json());
+    newDeckService(email, tempNewDeck)
+    // fetch(URL + '/' + email, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Origin': 'http://localhost:3000'
+    //   },
+    //   body: JSON.stringify(tempNewDeck)
+    // }).then(data => data.json());
     setClickedItem('');
   }
 

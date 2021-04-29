@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
+import { searchService } from '../services/externalApi'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
   const [results, setResults] = useState('');
   const [input, setInput] = useState('');
-  const searchURL = 'http://openlibrary.org/search.json?title=';
+  // const searchURL = 'http://openlibrary.org/search.json?title=';
 
   function handleChange(e) {
     setInput(e.target.value);
     if (input === '') setResults('');
     else {
       let query = input.split(' ').join('+');
-      fetch(searchURL + query).then(data => data.json()).then(res => setResults(res.docs));
+      let result = await searchService(query);
+      setResults(result);
+      // fetch(searchURL + query).then(data => data.json()).then(res => setResults(res.docs));
     }
   }
 
