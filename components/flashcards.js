@@ -1,5 +1,6 @@
 import HeaderButtons from './headerButtons';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Button, Card } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
@@ -65,6 +66,11 @@ function Flashcards({ flashcards, setFlashcards }) {
       </div>
     </div>
   )
+}
+
+Flashcards.propTypes = {
+  flashcards: PropTypes.any,
+  setFlashcards: PropTypes.any,
 }
 
 export default Flashcards;

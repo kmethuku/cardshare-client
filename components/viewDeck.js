@@ -1,4 +1,6 @@
+import React from 'react';
 import HeaderButtons from './headerButtons';
+import PropTypes from 'prop-types'
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
@@ -35,45 +37,119 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
 
   return (
     <div>
-      {from !== 'book' && <HeaderButtons></HeaderButtons>}
-      <div style={{position:"absolute", top:"130px", zIndex:"1"}}>
-        {from === 'myDeck' ? <Button style={{position:"absolute", zIndex:"2"}} className="mx-2 my-4" onClick={() => setClickedItem('')}>Back</Button> :
-          <Button style={{position:"absolute", zIndex:"2"}} className="mx-2 my-4" onClick={() => setSelectedDeck('')}>Back</Button>}
-        <div className="d-flex flex-column align-items-center
-          justify-content-between" style={{width:"99vw", position:"absolute", top:"0vh"}}>
+      {from !== "book" && <HeaderButtons></HeaderButtons>}
+      <div style={{ position: "absolute", top: "130px", zIndex: "1" }}>
+        {from === "myDeck" ? (
+          <Button
+            style={{ position: "absolute", zIndex: "2" }}
+            className="mx-2 my-4"
+            onClick={() => setClickedItem("")}
+          >
+            Back
+          </Button>
+        ) : (
+          <Button
+            style={{ position: "absolute", zIndex: "2" }}
+            className="mx-2 my-4"
+            onClick={() => setSelectedDeck("")}
+          >
+            Back
+          </Button>
+        )}
+        <div
+          className="d-flex flex-column align-items-center
+          justify-content-between"
+          style={{ width: "99vw", position: "absolute", top: "0vh" }}
+        >
           <h2 className="mx-2 my-4 text-center">{selectedDeck.title}</h2>
-          {selectedDeck.src ?
-          <img className="mx-2 my-2" src={selectedDeck.src} key={selectedDeck._id}/> :
-          <div className="my-2 mx-2 text-center" style={{ height:"270px", width:"180px", fontSize:"20px",
-          border: "1px solid rgba(0,0,0,.125)", borderRadius: ".25rem", padding: "2px" }} key={selectedDeck._id}>{selectedDeck.title.length > 50 ? selectedDeck.title.substring(0, 50) + '...' : selectedDeck.title}</div>}
+          {selectedDeck.src ? (
+            <img
+              className="mx-2 my-2"
+              src={selectedDeck.src}
+              key={selectedDeck._id}
+            />
+          ) : (
+            <div
+              className="my-2 mx-2 text-center"
+              style={{
+                height: "270px",
+                width: "180px",
+                fontSize: "20px",
+                border: "1px solid rgba(0,0,0,.125)",
+                borderRadius: ".25rem",
+                padding: "2px",
+              }}
+              key={selectedDeck._id}
+            >
+              {selectedDeck.title.length > 50
+                ? selectedDeck.title.substring(0, 50) + "..."
+                : selectedDeck.title}
+            </div>
+          )}
           <h4 className="mx-2 mt-3">Description: {selectedDeck.description}</h4>
         </div>
-        <div className="d-flex flex-row align-items-center
-          justify-content-center" style={{width:"99vw", position:"absolute", top:"48vh"}}>
-          {from !== 'myDeck' ? <Button type="button" onClick={() => handleVote('down')}>👎</Button> : <Button type="button" disabled onClick={() => handleVote('down')}>👎</Button>}
+        <div
+          className="d-flex flex-row align-items-center
+          justify-content-center"
+          style={{ width: "99vw", position: "absolute", top: "48vh" }}
+        >
+          {from !== "myDeck" ? (
+            <Button type="button" onClick={() => handleVote("down")}>
+              👎
+            </Button>
+          ) : (
+            <Button type="button" disabled onClick={() => handleVote("down")}>
+              👎
+            </Button>
+          )}
           <p className="mx-2 my-2">{selectedDeck.votes}</p>
-          {from !== 'myDeck' ? <Button type="button" onClick={() => handleVote('up')}>👍</Button> : <Button type="button" disabled onClick={() => handleVote('up')}>👍</Button>}
+          {from !== "myDeck" ? (
+            <Button type="button" onClick={() => handleVote("up")}>
+              👍
+            </Button>
+          ) : (
+            <Button type="button" disabled onClick={() => handleVote("up")}>
+              👍
+            </Button>
+          )}
         </div>
-        <div className="d-flex flex-row align-items-center
-          justify-content-center" style={{width:"99vw", position:"absolute", top:"52vh"}}>
+        <div
+          className="d-flex flex-row align-items-center
+          justify-content-center"
+          style={{ width: "99vw", position: "absolute", top: "52vh" }}
+        >
           <p className="mx-2 my-3">Creator: {selectedDeck.creator}</p>
-          <Button type="button" onClick={handleClick}>Save Deck</Button>
+          <Button type="button" onClick={handleClick}>
+            Save Deck
+          </Button>
         </div>
-        <div className="d-flex flex-row align-items-center
-          justify-content-center flex-wrap" style={{width:"99vw", position:"absolute", top:"57vh"}}>
-          {selectedDeck.cards.map(card =>
-          <Card style={{ maxWidth:"200px" }} className="mx-2 my-2">
-            <Card.Body className="text-center">
-              <div className="mx-2 my-2">Question: {card.question}</div>
-              <div className="mx-2 my-2">Answer: {card.answer}</div>
-            </Card.Body>
-          {/* <div>{card.highlight}</div> */}
-          </Card>)}
+        <div
+          className="d-flex flex-row align-items-center
+          justify-content-center flex-wrap"
+          style={{ width: "99vw", position: "absolute", top: "57vh" }}
+        >
+          {selectedDeck.cards.map((card) => (
+            <Card key={card.id} style={{ maxWidth: "200px" }} className="mx-2 my-2">
+              <Card.Body className="text-center">
+                <div className="mx-2 my-2">Question: {card.question}</div>
+                <div className="mx-2 my-2">Answer: {card.answer}</div>
+              </Card.Body>
+              {/* <div>{card.highlight}</div> */}
+            </Card>
+          ))}
         </div>
-
       </div>
     </div>
-  )
+  );
+}
+
+ViewDeck.propTypes = {
+  selectedDeck: PropTypes.any,
+  setSelectedDeck: PropTypes.any,
+  from: PropTypes.any,
+  setClickedItem: PropTypes.any,
+  setVoted: PropTypes.any,
+  voted: PropTypes.any,
 }
 
 export default ViewDeck;
