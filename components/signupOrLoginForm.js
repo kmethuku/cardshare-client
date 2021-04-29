@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../contexts/AuthContext';
 import { Form, Button, Card } from 'react-bootstrap';
@@ -73,7 +73,7 @@ function SignupOrLoginForm() {
       </Form>
       {label === 'Sign Up' ?
         <div className="w-100 text-center mt-2" type="button" onClick={() => setLabel('Log In')}>Already have an account? Log In</div>
-        : <div className="w-100 text-center mt-2" type="button" onClick={() => setLabel('Sign Up')}>Don't have an account? Sign Up</div>}
+        : <div className="w-100 text-center mt-2" type="button" onClick={() => setLabel('Sign Up')}>Don&apos;t have an account? Sign Up</div>}
       </Card.Body>
     </Card>
   )

@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
   const [results, setResults] = useState('');
   const [input, setInput] = useState('');
@@ -62,6 +64,12 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
       </div>
     </div>
   )
+}
+
+Navbar.propTypes = {
+  setSelectedBook: PropTypes.any,
+  setNewDeck: PropTypes.any,
+  newDeck: PropTypes.any,
 }
 
 export default Navbar;

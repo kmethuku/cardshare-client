@@ -1,6 +1,6 @@
 import HeaderButtons from '../components/headerButtons';
 import { useAuth } from '../contexts/AuthContext';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Flashcards from '../components/flashcards';
 import { Button } from 'react-bootstrap';
 

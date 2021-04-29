@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import ViewDeck from './viewDeck';
 import { Button, Card } from 'react-bootstrap';
 
@@ -24,7 +25,7 @@ function Book({ selectedBook, setSelectedBook, setVoted, voted }) {
     <div style={{position:"absolute", top:"130px", zIndex:"1"}}>
       <Button className="mx-2 my-4 align-center" style={{position:"absolute", zIndex:"2"}} onClick={() => setSelectedBook('')}>Back</Button>
       <div className="d-flex flex-column align-items-center
-        justify-content-center" style={{width:"99vw", position:"absolute", top:"0vh"}}>
+        justify-content-center" style={flexColumnStyle}>
       <h2 className="mx-2 my-4 text-center">{selectedBook.title}</h2>
       {selectedBook.src ?
         <img className="mx-2 my-2" src={selectedBook.src} key={selectedBook._id}/> :
@@ -33,9 +34,9 @@ function Book({ selectedBook, setSelectedBook, setVoted, voted }) {
       {decks.length ? <h3 className="mx-2 my-4">Available Decks</h3> : <h3 className="mx-2 my-4">No Decks Available</h3>}
       </div>
       <div className="d-flex flex-row align-items-center
-        justify-content-center flex-wrap" style={{width:"99vw", position:"absolute", top:"52vh"}}>
+        justify-content-center flex-wrap" style={flexRowStyle}>
       {decks && decks.map(deck =>
-        <Card style={{ maxWidth:"200px" }} style={{ display:"inline-block"}} className="mx-2 my-2">
+        <Card key={deck.id} style={cardStyle} className="mx-2 my-2">
           <Card.Body className="text-center">
             <p>Creator: {deck.creator}</p>
             <p>Description: {deck.description}</p>
@@ -47,6 +48,30 @@ function Book({ selectedBook, setSelectedBook, setVoted, voted }) {
        </div>
     </div>
   )
+}
+
+const cardStyle = {
+  maxWidth: "200px",
+  display: "inline-block"
+}
+
+const flexRowStyle = {
+  width:"99vw",
+  position:"absolute",
+  top:"52vh"
+}
+
+const flexColumnStyle = {
+  width:"99vw",
+  position:"absolute",
+  top:"0vh"
+}
+
+Book.propTypes = {
+  selectedBook: PropTypes.any,
+  setSelectedBook: PropTypes.any,
+  setVoted: PropTypes.any,
+  voted: PropTypes.any,
 }
 
 export default Book;
