@@ -22,6 +22,7 @@ type Person = {
 };
 
 function Book({ selectedBook, setSelectedBook, setVoted, voted }: Props) {
+  const defaultBook = {title: '', src: '', OLID: ''}
   const [decks, setDecks] = useState<any>('');
   const [selectedDeck, setSelectedDeck] = useState<any>({});
 
@@ -36,8 +37,8 @@ if (selectedDeck.title) {
     <ViewDeck setVoted={setVoted} voted={voted} selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} from={'book'}></ViewDeck>
   )}
 else return (
-  <div style={{position:"absolute", top:"130px", zIndex:"1"}}>
-    <Button className="mx-2 my-4 align-center" style={{position:"absolute", zIndex:"2"}} onClick={() => setSelectedBook('')}>Back</Button>
+  <div style={{position:"absolute", top:"130px", zIndex: 1}}>
+    <Button className="mx-2 my-4 align-center" style={{position:"absolute", zIndex: 2}} onClick={() => setSelectedBook(defaultBook)}>Back</Button>
     <div className="d-flex flex-column align-items-center
       justify-content-center" style={flexColumnStyle}>
     <h2 className="mx-2 my-4 text-center">{selectedBook.title}</h2>
@@ -75,13 +76,13 @@ const cardStyle = {
 
 const flexRowStyle = {
   width:"99vw",
-  position:"absolute",
+  position:"absolute" as "absolute",
   top:"52vh"
 }
 
 const flexColumnStyle = {
   width:"99vw",
-  position:"absolute",
+  position:"absolute" as "absolute",
   top:"0vh"
 }
 

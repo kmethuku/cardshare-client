@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HeaderButtons from '../components/headerButtons';
-// import ViewDeck from '../components/viewDeck';
-// import NewDeck from '../components/newDeck';
+import ViewDeck from '../components/viewDeck';
+import NewDeck from '../components/newDeck';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from 'react-bootstrap';
 

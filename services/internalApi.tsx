@@ -1,6 +1,6 @@
 const URL = 'http://localhost:3000'
 
-export const newDeckService = (email: string, body: string): Promise<any> => {
+export const newDeckService = (email: string, body: any): Promise<any> => {
   return fetch(`${URL}/${email}`, {
     method: 'POST',
     headers: {

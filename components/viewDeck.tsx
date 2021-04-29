@@ -8,12 +8,12 @@ type Props = {
   selectedDeck: any,
   setSelectedDeck: Dispatch<SetStateAction<any>>,
   from: any,
-  setClickedItem: Dispatch<SetStateAction<any>>,
+  setClickedItem?: Dispatch<SetStateAction<any>>,
   setVoted: Dispatch<SetStateAction<number>>,
   voted: number,
 }
 
-function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVoted, voted }: Props) {
+function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => {}, setVoted, voted }: Props) {
   const saveURL = 'http://localhost:3001/savedDecks';
   const voteURL = 'http://localhost:3001/discover/vote';
   const getDeckURL = 'http://localhost:3001/discover';
@@ -32,7 +32,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
     router.push('/study');
   }
 
-  function handleVote(direction) {
+  function handleVote(direction: string) {
     fetch(voteURL + '/' + selectedDeck._id + '-' + direction, {
       method: 'POST'
     }).then(data => data.json());
@@ -46,10 +46,10 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
   return (
     <div>
       {from !== "book" && <HeaderButtons></HeaderButtons>}
-      <div style={{ position: "absolute", top: "130px", zIndex: "1" }}>
+      <div style={{ position: "absolute", top: "130px", zIndex: 1 }}>
         {from === "myDeck" ? (
           <Button
-            style={{ position: "absolute", zIndex: "2" }}
+            style={{ position: "absolute", zIndex: 2 }}
             className="mx-2 my-4"
             onClick={() => setClickedItem("")}
           >
@@ -57,7 +57,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
           </Button>
         ) : (
           <Button
-            style={{ position: "absolute", zIndex: "2" }}
+            style={{ position: "absolute", zIndex: 2 }}
             className="mx-2 my-4"
             onClick={() => setSelectedDeck("")}
           >
@@ -136,7 +136,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
           justify-content-center flex-wrap"
           style={{ width: "99vw", position: "absolute", top: "57vh" }}
         >
-          {selectedDeck.cards.map((card) => (
+          {selectedDeck.cards.map((card: any) => (
             <Card key={card.id} style={{ maxWidth: "200px" }} className="mx-2 my-2">
               <Card.Body className="text-center">
                 <div className="mx-2 my-2">Question: {card.question}</div>
@@ -149,15 +149,6 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
       </div>
     </div>
   );
-}
-
-ViewDeck.propTypes = {
-  selectedDeck: PropTypes.any,
-  setSelectedDeck: PropTypes.any,
-  from: PropTypes.any,
-  setClickedItem: PropTypes.any,
-  setVoted: PropTypes.any,
-  voted: PropTypes.any,
 }
 
 export default ViewDeck;

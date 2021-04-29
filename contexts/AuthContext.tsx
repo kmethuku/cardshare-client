@@ -13,6 +13,7 @@ const AuthContext = React.createContext({
   setCurrentUser: (): void => {},
   email: '',
   signOut: () => {},
+  username: '',
 })
 
 export function useAuth() {

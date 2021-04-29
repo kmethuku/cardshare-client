@@ -16,7 +16,7 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
 
   const handleChange: any = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
-    if (input === '') setResults('');
+    if (input === '') setResults([]);
     else {
       let query = input.split(' ').join('+');
       let result = await searchService(query);
@@ -36,7 +36,7 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
       });
       setInput(e.target.title);
     }
-    else {
+    else if (setSelectedBook) {
       setSelectedBook({
         title: e.target.title,
         src: e.target.src ? e.target.src : undefined,
