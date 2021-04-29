@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../contexts/AuthContext';
 import { Form, Button, Card } from 'react-bootstrap';
+import  { signUpService } from '../services/internalApi';
 
 function SignupOrLoginForm() {
   const [label, setLabel] = useState('Sign Up');
@@ -16,13 +17,19 @@ function SignupOrLoginForm() {
     try {
       setError('');
       await signUp(userInfo.email, userInfo.password);
-      fetch(userURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({username: userInfo.username, email: userInfo.email})
-      }).then(data => data.json());
+      const newUser = {
+        username: userInfo.username,
+        email: userInfo.email,
+      }
+      await signUpService(newUser);
+
+      // fetch(userURL, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({username: userInfo.username, email: userInfo.email})
+      // }).then(data => data.json());
       setUsername(userInfo.username);
       setEmail(userInfo.email);
       router.push('/discover');

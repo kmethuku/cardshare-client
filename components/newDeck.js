@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Navbar from './navbar';
 import HeaderButtons from './headerButtons';
 import { useAuth } from '../contexts/AuthContext';
-import newDeckService from '../services/internalApi';
+import { newDeckService } from '../services/internalApi';
 import { Form, Button, Card, Container } from 'react-bootstrap';
 
 const NewDeck = ({ setClickedItem }) => {

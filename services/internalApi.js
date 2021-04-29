@@ -23,5 +23,13 @@ export const discoverBookService = (selectedBook) => {
   })
 }
 
-// OLID
-// 
+export const signUpService = (body) => {
+  return fetch(`${URL}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  .then(data => data.json())
+}
