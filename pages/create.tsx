@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import HeaderButtons from '../components/headerButtons';
-import ViewDeck from '../components/viewDeck';
-import NewDeck from '../components/newDeck';
+// import ViewDeck from '../components/viewDeck';
+// import NewDeck from '../components/newDeck';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from 'react-bootstrap';
 
 function Create() {
-  const [deleteCount, setDeleteCount] = useState(0);
-  const [deckList, setDeckList] = useState([]);
-  const [clickedItem, setClickedItem] = useState('');
-  const [selectedDeck, setSelectedDeck] = useState('');
+  const [deleteCount, setDeleteCount] = useState<number>(0);
+  const [deckList, setDeckList] = useState<any[]>([]);
+  const [clickedItem, setClickedItem] = useState<string>('');
+  const [selectedDeck, setSelectedDeck] = useState<string>('');
   const URL = 'http://localhost:3001/myDecks';
   const { currentUser, email } = useAuth();
 
@@ -18,8 +18,9 @@ function Create() {
 
   }, [deleteCount, clickedItem]);
 
-  function handleDeleteClick(e) {
-    fetch(`${URL}/${email || currentUser.email}-${e.target.id}`, {
+  function handleDeleteClick(e: React.FormEvent): void {
+    const { target: { id }} = e;
+    fetch(`${URL}/${email || currentUser.email}-${id}`, {
       method: 'DELETE'
     }).then(data => data.json()).then(data => data.json());
     setDeleteCount(deleteCount + 1);

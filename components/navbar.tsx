@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { searchService } from '../services/externalApi'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
-  const [results, setResults] = useState('');
+type Props = {
+  setSelectedBook?: Dispatch<SetStateAction<any>>,
+  setNewDeck?: Dispatch<SetStateAction<any>>,
+  newDeck?: any,
+}
+
+function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
+  const [results, setResults] = useState<any[]>([]);
   const [input, setInput] = useState('');
   // const searchURL = 'http://openlibrary.org/search.json?title=';
 
-  function handleChange(e) {
+  const handleChange: any = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
     if (input === '') setResults('');
     else {
@@ -20,7 +25,7 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
     }
   }
 
-  function handleClick(e) {
+  function handleClick(e: React.SyntheticEvent<HTMLDivElement>) {
     let shortOLID = e.target.id.substring(7);
     if (setNewDeck) {
       setNewDeck({
@@ -53,7 +58,7 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
       scrollBehavior: "smooth", border: "1px solid rgba(0,0,0,.125)", borderRadius: ".25rem"}}>
         {input !== '' && <div className="d-flex flex-column align-items-center
           justify-content-center mx-2 mt-2">
-          {results.length > 0 && results.map(result => {
+          {results.length > 0 && results.map((result: any) => {
             return (
               (result.cover_i ?
                 <div className="my-2 mx-2" key={result.key}>

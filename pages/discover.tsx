@@ -5,20 +5,22 @@ import Book from '../components/book';
 import { useAuth } from '../contexts/AuthContext';
 
 function Discover() {
-  const [selectedBook, setSelectedBook] = useState('');
-  const [voted, setVoted] = useState(0);
-  const [popular, setPopular] = useState([]);
-  const [selfGrowth, setSelfGrowth] = useState([]);
-  const [history, setHistory] = useState([]);
+  type SBook = {title: any; src: string | undefined; OLID: any;}
+  const defaultBook = {title: '', src:'', OLID: ''}
+  const [selectedBook, setSelectedBook] = useState<SBook>(defaultBook);
+  const [voted, setVoted] = useState<number>(0);
+  const [popular, setPopular] = useState<any[]>([]);
+  const [selfGrowth, setSelfGrowth] = useState<any[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
   const discoverURL = 'http://localhost:3001/discover';
   const { currentUser } = useAuth();
   const searchURL = 'http://openlibrary.org/search.json?title=';
 
   useEffect(() => {
     fetch(discoverURL).then(data => data.json()).then(res => {
-      let allDecks = [];
-      let duplicateCheck = [];
-      res.forEach(match => match.myDecks.forEach(deck => {
+      let allDecks: any[] = [];
+      let duplicateCheck: any[] = [];
+      res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
         if (!duplicateCheck.includes(deck.OLID)) {
           deck.username = match.username;
           allDecks.push(deck);
@@ -28,9 +30,9 @@ function Discover() {
       setPopular(allDecks);
     })
     fetch(discoverURL + `/genre/self-growth`).then(data => data.json()).then(res => {
-      let allDecks = [];
-      let duplicateCheck = [];
-      res.forEach(match => match.myDecks.forEach(deck => {
+      let allDecks: any[] = [];
+      let duplicateCheck: any[] = [];
+      res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
         if (!duplicateCheck.includes(deck.OLID)) {
           deck.username = match.username;
           allDecks.push(deck);
@@ -40,9 +42,9 @@ function Discover() {
       setSelfGrowth(allDecks);
     })
     fetch(discoverURL + `/genre/history`).then(data => data.json()).then(res => {
-      let allDecks = [];
-      let duplicateCheck = [];
-      res.forEach(match => match.myDecks.forEach(deck => {
+      let allDecks: any[] = [];
+      let duplicateCheck: any[] = [];
+      res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
         if (!duplicateCheck.includes(deck.OLID)) {
           deck.username = match.username;
           allDecks.push(deck);
@@ -53,11 +55,11 @@ function Discover() {
     })
   }, [voted])
 
-  function handleClick(e) {
+  function handleClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
     let query = e.target.title.split(' ').join('+');
     fetch(searchURL + query).then(data => data.json()).then(res => {
       let longKey = '/works/' + e.target.id;
-      let found = res.docs.find(match => match.key === longKey);
+      let found = res.docs.find((match: any) => match.key === longKey);
       setSelectedBook({
         title: found.title,
         src: found.cover_i ? `https://covers.openlibrary.org/b/id/${found.cover_i}-M.jpg` : undefined,
@@ -67,14 +69,16 @@ function Discover() {
   }
 
   return (
-    <div>
+    <div onClick={handleClick}>
       {currentUser ?
         <div style={{position:"relative"}}>
           <HeaderButtons></HeaderButtons>
           <div className="mx-2">
             <div style={{position:"relative", zIndex:"2"}}>
               <Navbar setSelectedBook={setSelectedBook}></Navbar>
-            </div>
+           
+          </div>
+
             {selectedBook ? <Book setVoted={setVoted} voted={voted} selectedBook={selectedBook} setSelectedBook={setSelectedBook} ></Book> :
             <div style={{position:"absolute", top:"130px", zIndex:"1"}}>
               <h2 className="mt-4">Discover New Decks</h2>

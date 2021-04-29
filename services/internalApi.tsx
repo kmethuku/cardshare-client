@@ -1,6 +1,6 @@
 const URL = 'http://localhost:3000'
 
-export const newDeckService = (email, body) => {
+export const newDeckService = (email: string, body: string): Promise<any> => {
   return fetch(`${URL}/${email}`, {
     method: 'POST',
     headers: {
@@ -12,10 +12,10 @@ export const newDeckService = (email, body) => {
     .then(data => data.json());
 }
 
-export const discoverBookService = (selectedBook) => {
-  fetch(`${URL}/discover/${selectedBook.OLID}`).then(data => data.json()).then(res => {
-    let allDecks = [];
-    res.forEach(match => match.myDecks.forEach(deck => {
+export const discoverBookService = (selectedBook: any): Promise<any> => {
+  return fetch(`${URL}/discover/${selectedBook.OLID}`).then(data => data.json()).then(res => {
+    let allDecks: any[] = [];
+    res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
       deck.creator = match.username;
       allDecks.push(deck);
     }));
@@ -23,7 +23,7 @@ export const discoverBookService = (selectedBook) => {
   })
 }
 
-export const signUpService = (body) => {
+export const signUpService = (body: any): Promise<any> => {
   return fetch(`${URL}/users`, {
     method: 'POST',
     headers: {

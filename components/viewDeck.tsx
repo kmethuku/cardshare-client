@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import HeaderButtons from './headerButtons';
-import PropTypes from 'prop-types'
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
 
-function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVoted, voted }) {
+type Props = {
+  selectedDeck: any,
+  setSelectedDeck: Dispatch<SetStateAction<any>>,
+  from: any,
+  setClickedItem: Dispatch<SetStateAction<any>>,
+  setVoted: Dispatch<SetStateAction<number>>,
+  voted: number,
+}
+
+function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVoted, voted }: Props) {
   const saveURL = 'http://localhost:3001/savedDecks';
   const voteURL = 'http://localhost:3001/discover/vote';
   const getDeckURL = 'http://localhost:3001/discover';

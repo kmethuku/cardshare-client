@@ -6,10 +6,10 @@ import { Button } from 'react-bootstrap';
 
 function HeaderButtons() {
   const { signOut } = useAuth();
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
   const router = useRouter();
 
-  async function handleSignOut(e) {
+  const handleSignOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> => {
     e.preventDefault();
     try {
       setError('');

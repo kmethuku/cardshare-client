@@ -2,7 +2,7 @@ import React from 'react';
 import SignupOrLoginForm from '../components/signupOrLoginForm';
 import { Container } from 'react-bootstrap';
 
-export default function Home() {
+const Home: React.FC = () => {
   return (
     <div>
     <Container className="d-flex align-items-center
@@ -24,3 +24,5 @@ export default function Home() {
 }
 
 const containerStyle = { minHeight: "50vh" }
+
+export default Home;
