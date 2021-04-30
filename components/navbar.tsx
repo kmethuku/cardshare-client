@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import { Form } from 'react-bootstrap';
 import { searchService } from '../services/externalApi'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
-  const [results, setResults] = useState('');
+type Props = {
+  setSelectedBook?: Dispatch<SetStateAction<any>>,
+  setNewDeck?: Dispatch<SetStateAction<any>>,
+  newDeck?: any,
+}
+
+type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+
+function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
+  const [results, setResults] = useState<any[]>([]);
   const [input, setInput] = useState('');
   // const searchURL = 'http://openlibrary.org/search.json?title=';
 
-  function handleChange(e) {
+  const handleChange: any = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
-    if (input === '') setResults('');
+    if (input === '') setResults([]);
     else {
       let query = input.split(' ').join('+');
       let result = await searchService(query);
@@ -20,26 +26,29 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
     }
   }
 
-  function handleClick(e) {
-    let shortOLID = e.target.id.substring(7);
+  function handleClick(e: React.MouseEvent<HTMLImageElement>) {
+    const target = e.target as HTMLImageElement;
+    console.log(target.src)
+    let shortOLID = target.id.substring(7);
+    //console.log(e.target)
     if (setNewDeck) {
       setNewDeck({
         ...newDeck,
-        title: e.target.title,
-        src: e.target.src ? e.target.src : undefined,
+        title: target.title,
+        src: target.src ? target.src : undefined,
         OLID: shortOLID
       });
-      setInput(e.target.title);
+      setInput(target.title);
     }
-    else {
+    else if (setSelectedBook) {
       setSelectedBook({
-        title: e.target.title,
-        src: e.target.src ? e.target.src : undefined,
+        title: target.title,
+        src: target.src ? target.src : undefined,
         OLID: shortOLID
       });
       setInput('');
     }
-    setResults('');
+    setResults([]);
   }
 
   //This navbar is the main reason why the css is not responsive
@@ -53,11 +62,17 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
       scrollBehavior: "smooth", border: "1px solid rgba(0,0,0,.125)", borderRadius: ".25rem"}}>
         {input !== '' && <div className="d-flex flex-column align-items-center
           justify-content-center mx-2 mt-2">
-          {results.length > 0 && results.map(result => {
+          {results.length > 0 && results.map((result: any) => {
             return (
               (result.cover_i ?
                 <div className="my-2 mx-2" key={result.key}>
-                  <img src={`https://covers.openlibrary.org/b/id/${result.cover_i}-M.jpg`} width="150px" height="auto" title={result.title} id={result.key} onClick={handleClick}/>
+                  <img
+                    src={`https://covers.openlibrary.org/b/id/${result.cover_i}-M.jpg`}
+                    width="150px"
+                    height="auto"
+                    title={result.title}
+                    id={result.key}
+                    onClick={handleClick}/>
                 </div> :
                 <div className="my-2 mx-2 text-center" style={{ height:"220px", width:"150px", fontSize:"20px",
                 border: "1px solid rgba(0,0,0,.125)", borderRadius: ".25rem", padding: "2px" }} title={result.title} id={result.key} key={result.key} onClick={handleClick}>{result.title.length > 50 ? result.title.substring(0, 50) + '...' : result.title}</div>)
@@ -67,12 +82,6 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }) {
       </div>
     </div>
   )
-}
-
-Navbar.propTypes = {
-  setSelectedBook: PropTypes.any,
-  setNewDeck: PropTypes.any,
-  newDeck: PropTypes.any,
 }
 
 export default Navbar;

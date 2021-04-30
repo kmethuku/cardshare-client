@@ -1,29 +1,57 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, Dispatch, SetStateAction, useContext } from 'react';
 import Navbar from './navbar';
 import HeaderButtons from './headerButtons';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, AuthContext } from '../contexts/AuthContext';
 import { newDeckService } from '../services/internalApi';
 import { Form, Button, Card, Container } from 'react-bootstrap';
 
-const NewDeck = ({ setClickedItem }) => {
-  const [newDeck, setNewDeck] = useState({ title: '', description: '', src: '', genre: '', OLID: '' });
-  const [cardList, setCardList] = useState([{ question: '', answer: ''}]); // add highlight back
-  // const URL = 'http://localhost:3001/myDecks';
-  const { currentUser, username, email } = useAuth();
+type Props = {
+  setClickedItem: Dispatch<SetStateAction<any>>
+}
 
-  function handleChange(e, index) {
+type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+
+const NewDeck = ({ setClickedItem }: Props) => {
+  type List = { question: string, answer: string }
+  const defaultList = { question: '', answer: '' }
+  const defaultDeck = {
+    title: '',
+    description: '',
+    src: '',
+    genre: '',
+    OLID: '',
+    cards: [defaultList],
+    creator: '',
+  }
+
+  const context = useContext(AuthContext)
+  const email = context?.currentUser.email;
+
+  const [newDeck, setNewDeck] = useState(defaultDeck);
+  const [cardList, setCardList] = useState<List[]>([defaultList]); // add highlight back
+  // const URL = 'http://localhost:3001/myDecks';
+  const authorize = useAuth();
+  if (!authorize) return null;
+  const { currentUser, username } = authorize;
+  //const { currentUser, username } = useAuth();
+
+  function handleChange (e: React.ChangeEvent<FormControlElement>, index?: number): void {
     const { name, value } = e.target;
     if (name === 'description') setNewDeck({...newDeck, description: value});
     else if (name === 'genre') setNewDeck({...newDeck, genre: value});
-    else {
-      const tempList = [...cardList];
-      tempList[index][name] = name === 'highlight' ? e.target.files[0] : value;
+    else if (index !== undefined) {
+      const tempList: any[] = [...cardList]
+      tempList[index][name] = value;
       setCardList(tempList);
     }
+    // else if (files && index !== undefined) {
+    //   const tempList: any[] = [...cardList];
+    //   tempList[index][name] = name === 'highlight' ? files[0] : value;
+    //   setCardList(tempList);
+    // }
   }
 
-  function handleRemoveClick(index) {
+  function handleRemoveClick(index: number) {
     const tempList = [...cardList];
     tempList.splice(index, 1);
     setCardList(tempList);
@@ -33,20 +61,14 @@ const NewDeck = ({ setClickedItem }) => {
     setCardList([...cardList, { question: '', answer: ''}]); // add highlight back
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> {
+    e.preventDefault();
     let tempNewDeck = newDeck;
     tempNewDeck.genre = tempNewDeck.genre.toLowerCase();
     tempNewDeck.cards = cardList;
     tempNewDeck.creator = username;
+    console.log(email)
     newDeckService(email, tempNewDeck)
-    // fetch(URL + '/' + email, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Origin': 'http://localhost:3000'
-    //   },
-    //   body: JSON.stringify(tempNewDeck)
-    // }).then(data => data.json());
     setClickedItem('');
   }
 
@@ -63,7 +85,7 @@ const NewDeck = ({ setClickedItem }) => {
             <Form.Group>
               <Form.Label htmlFor="title">Title</Form.Label>
               <br />
-              <div style={{ position: "relative", zIndex: "2" }}>
+              <div style={{ position: "relative", zIndex: 2 }}>
                 <Navbar setNewDeck={setNewDeck} newDeck={newDeck}></Navbar>
               </div>
             </Form.Group>
@@ -72,7 +94,7 @@ const NewDeck = ({ setClickedItem }) => {
                 position: "absolute",
                 top: "130px",
                 left: "0px",
-                zIndex: "1",
+                zIndex: 1,
                 width: "400px",
                 border: "1px solid rgba(0,0,0,.125)",
                 borderRadius: ".25rem",
@@ -87,7 +109,7 @@ const NewDeck = ({ setClickedItem }) => {
                   type="text"
                   name="genre"
                   value={newDeck.genre}
-                  onChange={handleChange}
+                  onChange={(e) => handleChange(e)}
                   placeholder="Enter the genre of the book"
                 />
               </Form.Group>
@@ -98,12 +120,13 @@ const NewDeck = ({ setClickedItem }) => {
                   type="text"
                   name="description"
                   value={newDeck.description}
-                  onChange={handleChange}
+                  onChange={(e) => handleChange(e)}
                   placeholder="Enter a description of your deck"
                 />
               </Form.Group>
               {cardList.map((card, index) => (
                 <Form.Group className="my-3" key={index}>
+                  {console.log(index)}
                   <Form.Label htmlFor="question">Question</Form.Label>
                   <Form.Control
                     type="text"
@@ -131,14 +154,14 @@ const NewDeck = ({ setClickedItem }) => {
                   </Button>
                 </Form.Group>
               ))}
-              <Button type="button" onClick={handleAddClick}>
+              <Button type="button" onClick={() => handleAddClick()}>
                 Add Card
               </Button>
               <br />
               <Button
                 type="button"
                 className="w-100 mt-3"
-                onClick={handleSubmit}
+                onClick={(e) => handleSubmit(e)}
               >
                 Save
               </Button>
@@ -155,10 +178,6 @@ const NewDeck = ({ setClickedItem }) => {
       </Container>
     </div>
   );
-}
-
-NewDeck.propTypes = {
-  setClickedItem: PropTypes.func,
 }
 
 export default NewDeck;

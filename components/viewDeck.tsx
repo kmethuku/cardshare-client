@@ -1,47 +1,67 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import HeaderButtons from './headerButtons';
-import PropTypes from 'prop-types'
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
+import uuid from 'react-uuid';
 
-function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVoted, voted }) {
-  const saveURL = 'http://localhost:3001/savedDecks';
-  const voteURL = 'http://localhost:3001/discover/vote';
-  const getDeckURL = 'http://localhost:3001/discover';
-  const { currentUser, email } = useAuth();
+type Props = {
+  selectedDeck: any,
+  setSelectedDeck: Dispatch<SetStateAction<any>>,
+  from: any,
+  setClickedItem?: Dispatch<SetStateAction<any>>,
+  setVoted?: Dispatch<SetStateAction<number>>,
+  voted?: number,
+}
+
+function ViewDeck({
+  selectedDeck,
+  setSelectedDeck,
+  from,
+  setClickedItem = () => {},
+  setVoted,
+  voted,
+}: Props) {
+  const saveURL = "http://localhost:3001/savedDecks";
+  const voteURL = "http://localhost:3001/discover/vote";
+  const getDeckURL = "http://localhost:3001/discover";
+  const authorized = useAuth();
+  if (!authorized) return null;
+  const { currentUser, email } = authorized;
   const router = useRouter();
 
   function handleClick() {
-    fetch(saveURL + '/' + email, {
-      method: 'POST',
+    fetch(saveURL + "/" + email, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(selectedDeck)
-    }).then(data => data.json());
-    setVoted(voted + 1);
-    router.push('/study');
+      body: JSON.stringify(selectedDeck),
+    }).then((data) => data.json());
+    if (setVoted && voted) setVoted(voted + 1);
+    router.push("/study");
   }
 
-  function handleVote(direction) {
-    fetch(voteURL + '/' + selectedDeck._id + '-' + direction, {
-      method: 'POST'
-    }).then(data => data.json());
-    fetch(getDeckURL + `/${selectedDeck._id}`).then(data => data.json()).then(res => {
-      res[0].myDecks[0].username = res[0].username;
-      setSelectedDeck(res[0].myDecks[0]);
-    });
-    setVoted(voted + 1);
+  function handleVote(direction: string) {
+    fetch(voteURL + "/" + selectedDeck._id + "-" + direction, {
+      method: "POST",
+    }).then((data) => data.json());
+    fetch(getDeckURL + `/${selectedDeck._id}`)
+      .then((data) => data.json())
+      .then((res) => {
+        res[0].myDecks[0].username = res[0].username;
+        setSelectedDeck(res[0].myDecks[0]);
+      });
+    if (setVoted && voted) setVoted(voted + 1);
   }
 
   return (
     <div>
       {from !== "book" && <HeaderButtons></HeaderButtons>}
-      <div style={{ position: "absolute", top: "130px", zIndex: "1" }}>
+      <div style={{ position: "absolute", top: "130px", zIndex: 1 }}>
         {from === "myDeck" ? (
           <Button
-            style={{ position: "absolute", zIndex: "2" }}
+            style={{ position: "absolute", zIndex: 2 }}
             className="mx-2 my-4"
             onClick={() => setClickedItem("")}
           >
@@ -49,7 +69,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
           </Button>
         ) : (
           <Button
-            style={{ position: "absolute", zIndex: "2" }}
+            style={{ position: "absolute", zIndex: 2 }}
             className="mx-2 my-4"
             onClick={() => setSelectedDeck("")}
           >
@@ -128,9 +148,13 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
           justify-content-center flex-wrap"
           style={{ width: "99vw", position: "absolute", top: "57vh" }}
         >
-          {selectedDeck.cards.map((card) => (
-            <Card key={card.id} style={{ maxWidth: "200px" }} className="mx-2 my-2">
-              <Card.Body className="text-center">
+          {selectedDeck.cards.map((card: any) => (
+            <Card
+              key={uuid()}
+              style={{ maxWidth: "200px" }}
+              className="mx-2 my-2"
+            >
+              <Card.Body key={uuid()} className="text-center">
                 <div className="mx-2 my-2">Question: {card.question}</div>
                 <div className="mx-2 my-2">Answer: {card.answer}</div>
               </Card.Body>
@@ -141,15 +165,6 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem, setVote
       </div>
     </div>
   );
-}
-
-ViewDeck.propTypes = {
-  selectedDeck: PropTypes.any,
-  setSelectedDeck: PropTypes.any,
-  from: PropTypes.any,
-  setClickedItem: PropTypes.any,
-  setVoted: PropTypes.any,
-  voted: PropTypes.any,
 }
 
 export default ViewDeck;

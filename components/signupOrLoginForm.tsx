@@ -7,12 +7,14 @@ import  { signUpService } from '../services/internalApi';
 function SignupOrLoginForm() {
   const [label, setLabel] = useState('Sign Up');
   const [userInfo, setUserInfo] = useState({username: '', email: '', password: ''});
-  const { signUp, logIn, currentUser, setCurrentUser, setUsername, setEmail } = useAuth();
+  const authorized = useAuth();
+  if (!authorized) return null;
+  const { signUp, logIn, currentUser, setCurrentUser, setUsername, setEmail } = authorized;
   const [error, setError] = useState('');
   const router = useRouter();
-  const userURL = 'http://localhost:3001/users';
+  const userURL:string = 'http://localhost:3001/users';
 
-  async function handleSignUp(e) {
+  async function handleSignUp(e:any):Promise<void> {
     e.preventDefault();
     try {
       setError('');
@@ -38,7 +40,7 @@ function SignupOrLoginForm() {
     }
   }
 
-  async function handleLogIn(e) {
+  async function handleLogIn(e:any):Promise<void>  {
     e.preventDefault();
     try {
       setError('');
@@ -51,7 +53,7 @@ function SignupOrLoginForm() {
     }
   }
 
-  function handleChange(e) {
+  function handleChange(e:any) : void {
     if (e.target.id === 'username') setUserInfo({...userInfo, username: e.target.value})
     else if (e.target.id === 'email') setUserInfo({...userInfo, email: e.target.value})
     else setUserInfo({...userInfo, password: e.target.value})
@@ -79,8 +81,8 @@ function SignupOrLoginForm() {
           <Button className="w-100" type="submit" onClick={label === 'Sign Up' ? handleSignUp : handleLogIn}>{label}</Button>
       </Form>
       {label === 'Sign Up' ?
-        <div className="w-100 text-center mt-2" type="button" onClick={() => setLabel('Log In')}>Already have an account? Log In</div>
-        : <div className="w-100 text-center mt-2" type="button" onClick={() => setLabel('Sign Up')}>Don&apos;t have an account? Sign Up</div>}
+        <div className="w-100 text-center mt-2" onClick={() => setLabel('Log In')}>Already have an account? Log In</div>
+        : <div className="w-100 text-center mt-2" onClick={() => setLabel('Sign Up')}>Don&apos;t have an account? Sign Up</div>}
       </Card.Body>
     </Card>
   )

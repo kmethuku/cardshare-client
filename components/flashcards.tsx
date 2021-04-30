@@ -1,14 +1,18 @@
 import HeaderButtons from './headerButtons';
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import Link from 'next/link';
 import { Button, Card } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
 
-function Flashcards({ flashcards, setFlashcards }) {
-  const [cardText, setCardText] = useState('');
-  const [card, setCard] = useState(flashcards[0]);
-  const [index, setIndex] = useState(0);
+type Props = {
+  flashcards: any,
+  setFlashcards: Dispatch<SetStateAction<any>>,
+}
+
+function Flashcards({ flashcards, setFlashcards }: Props) {
+  const [cardText, setCardText] = useState<string>('');
+  const [card, setCard] = useState<any>(flashcards[0]);
+  const [index, setIndex] = useState<number>(0);
   const headers = [
     { label: "Question", key: "question" },
     { label: "Answer", key: "answer" }
@@ -24,20 +28,20 @@ function Flashcards({ flashcards, setFlashcards }) {
     setCard(flashcards.cards[index]);
   }, [card])
 
-  function toggleCardText(card) {
+  function toggleCardText(card: any): void {
     if (cardText === card.question)
       setCardText(card.answer);
     else setCardText(card.question);
   }
 
-  function handleNextClick() {
+  function handleNextClick(): void {
     if (flashcards.cards[index+1] !== undefined) {
       setCard(flashcards.cards[index+1]);
       setIndex(index+1);
     }
   }
 
-  function handlePrevClick() {
+  function handlePrevClick(): void {
     if (flashcards.cards[index-1] !== undefined) {
       setCard(flashcards.cards[index-1]);
       setIndex(index-1);
@@ -66,11 +70,6 @@ function Flashcards({ flashcards, setFlashcards }) {
       </div>
     </div>
   )
-}
-
-Flashcards.propTypes = {
-  flashcards: PropTypes.any,
-  setFlashcards: PropTypes.any,
 }
 
 export default Flashcards;
