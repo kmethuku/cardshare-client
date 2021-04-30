@@ -18,14 +18,17 @@ export const newDeckService = (email: string, body: any): Promise<any> => {
 }
 
 export const discoverBookService = (selectedBook: any): Promise<any> => {
-  return fetch(`${URL}/discover/${selectedBook.OLID}`).then(data => data.json()).then(res => {
-    let allDecks: any[] = [];
-    res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
-      deck.creator = match.username;
-      allDecks.push(deck);
-    }));
-    return allDecks;
-  })
+  const OLID = selectedBook.OLID.slice(6)
+  return fetch(`${URL}/discover/OLID${OLID}`)
+    .then(data => data.json())
+    .then(res => {
+      let allDecks: any[] = [];
+      res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
+        deck.creator = match.username;
+        allDecks.push(deck);
+      }));
+      return allDecks;
+    })
 }
 
 export const signUpService = (body: any): Promise<any> => {

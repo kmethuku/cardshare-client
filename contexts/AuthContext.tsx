@@ -14,6 +14,10 @@ export const AuthContext = React.createContext({
   email: '',
   signOut: () => {},
   username: '',
+  signUp: () => {},
+  logIn: () => {},
+  setUsername: () => {},
+  setEmail: () => {}
 })
 
 export function useAuth() {

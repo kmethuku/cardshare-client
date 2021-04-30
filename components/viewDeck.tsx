@@ -9,8 +9,8 @@ type Props = {
   setSelectedDeck: Dispatch<SetStateAction<any>>,
   from: any,
   setClickedItem?: Dispatch<SetStateAction<any>>,
-  setVoted: Dispatch<SetStateAction<number>>,
-  voted: number,
+  setVoted?: Dispatch<SetStateAction<number>>,
+  voted?: number,
 }
 
 function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => {}, setVoted, voted }: Props) {
@@ -28,7 +28,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => 
       },
       body: JSON.stringify(selectedDeck)
     }).then(data => data.json());
-    setVoted(voted + 1);
+    if (setVoted && voted) setVoted(voted + 1);
     router.push('/study');
   }
 
@@ -40,7 +40,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => 
       res[0].myDecks[0].username = res[0].username;
       setSelectedDeck(res[0].myDecks[0]);
     });
-    setVoted(voted + 1);
+    if (setVoted && voted) setVoted(voted + 1);
   }
 
   return (

@@ -65,8 +65,8 @@ function Discover() {
     fetch(searchURL + query)
       .then(data => data.json())
       .then(res => {
-        let longKey = '/works/' + target.id;
-        let found = res.docs.find((match: any) => match.key === longKey);
+        let longKey = target.id;
+        let found = res.docs.find((match: any) => match.key == longKey);
         setSelectedBook({
           title: found.title,
           src: found.cover_i ? `https://covers.openlibrary.org/b/id/${found.cover_i}-M.jpg` : undefined,
@@ -74,7 +74,7 @@ function Discover() {
         });
     });
   }
-console.log(popular)
+
   return (
     <div onClick={handleClick}>
       {currentUser ?

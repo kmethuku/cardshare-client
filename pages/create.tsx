@@ -5,7 +5,7 @@ import NewDeck from '../components/newDeck';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from 'react-bootstrap';
 
-function Create(): JSX.Element {
+function Create() {
   const [deleteCount, setDeleteCount] = useState<number>(0);
   const [deckList, setDeckList] = useState<any[]>([]);
   const [clickedItem, setClickedItem] = useState<string>('');
@@ -33,7 +33,11 @@ function Create(): JSX.Element {
     return (
       <div>
         {currentUser ?
-          <ViewDeck selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} from={'myDeck'} setClickedItem={setClickedItem}></ViewDeck>
+          <ViewDeck
+            selectedDeck={selectedDeck}
+            setSelectedDeck={setSelectedDeck}
+            from={'myDeck'}
+            setClickedItem={setClickedItem} />
           : <h1>Access Unauthorized</h1>}
       </div>
       )
@@ -42,7 +46,7 @@ function Create(): JSX.Element {
     return (
       <div>
         {currentUser ?
-        <NewDeck setClickedItem={setClickedItem}></NewDeck>
+        <NewDeck setClickedItem={setClickedItem} />
         : <h1>Access Unauthorized</h1>}
       </div>
     )
@@ -51,14 +55,20 @@ function Create(): JSX.Element {
     <div>
       {currentUser ?
         <div>
-          <HeaderButtons></HeaderButtons>
+          <HeaderButtons />
           <div className="d-flex align-items-center
             justify-content-between mx-2">
-            <h1 className="mx-2 my-4">My Decks</h1>
-            <Button className="mx-2 my-4" type="button" onClick={() => setClickedItem('createDeck')}>Create a New Deck</Button>
+            <h1 className="mx-2 my-4">
+              My Decks
+            </h1>
+            <Button
+              className="mx-2 my-4"
+              type="button"
+              onClick={() => setClickedItem('createDeck')}>
+                Create a New Deck
+            </Button>
           </div>
-          <div className="d-flex flex-row align-items-center
-            justify-content-start mx-2">
+          <div className="d-flex flex-row align-items-center justify-content-start mx-2">
             {deckList && deckList.map(deck => deck.src ?
               <div style={{ display:"inline-block" }} className="mx-2 my-2" key={deck._id}>
                 <img className="mx-2 my-2" src={deck.src} width="150px" height="auto" onClick={() => { setClickedItem('viewDeck'); setSelectedDeck(deck) }}/>
@@ -66,15 +76,37 @@ function Create(): JSX.Element {
               </div> :
               <div style={{ display:"inline-block" }} className="mx-2 my-2 d-flex flex-row align-items-center
                 justify-content-center" key={deck._id}>
-                <div className="my-2 mx-2 text-center" style={{ height:"220px", width:"150px", fontSize:"20px",
-                  border: "1px solid rgba(0,0,0,.125)", borderRadius: ".25rem", padding: "2px" }} width="150px" height="auto" onClick={() => { setClickedItem('viewDeck'); setSelectedDeck(deck) }}>{deck.title.length > 50 ? deck.title.substring(0, 50) + '...' : deck.title}</div>
-                <Button className="mx-2 my-2" type="button" id={deck._id} onClick={handleDeleteClick}>❌</Button>
+                <div
+                  className="my-2 mx-2 text-center"
+                  style={deckStyle}
+                  onClick={() => {
+                    setClickedItem('viewDeck');
+                    setSelectedDeck(deck)
+                  }}>
+                  {deck.title.length > 50 ? deck.title.substring(0, 50) + '...' : deck.title}
+                </div>
+                <Button
+                  className="mx-2 my-2"
+                  type="button"
+                  id={deck._id}
+                  onClick={handleDeleteClick}>
+                    ❌
+                </Button>
               </div>)}
             </div>
         </div>
       : <h1>Access Unauthorized</h1>}
     </div>
   )
+}
+
+const deckStyle = {
+  height:"220px",
+  width:"150px",
+  fontSize:"20px",
+  border: "1px solid rgba(0,0,0,.125)",
+  borderRadius: ".25rem",
+  padding: "2px"
 }
 
 export default Create;
