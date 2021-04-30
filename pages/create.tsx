@@ -5,7 +5,7 @@ import NewDeck from '../components/newDeck';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from 'react-bootstrap';
 
-function Create() {
+function Create(): JSX.Element {
   const [deleteCount, setDeleteCount] = useState<number>(0);
   const [deckList, setDeckList] = useState<any[]>([]);
   const [clickedItem, setClickedItem] = useState<string>('');
