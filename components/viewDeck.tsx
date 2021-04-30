@@ -13,33 +13,42 @@ type Props = {
   voted?: number,
 }
 
-function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => {}, setVoted, voted }: Props) {
-  const saveURL = 'http://localhost:3001/savedDecks';
-  const voteURL = 'http://localhost:3001/discover/vote';
-  const getDeckURL = 'http://localhost:3001/discover';
+function ViewDeck({
+  selectedDeck,
+  setSelectedDeck,
+  from,
+  setClickedItem = () => {},
+  setVoted,
+  voted,
+}: Props) {
+  const saveURL = "http://localhost:3001/savedDecks";
+  const voteURL = "http://localhost:3001/discover/vote";
+  const getDeckURL = "http://localhost:3001/discover";
   const { currentUser, email } = useAuth();
   const router = useRouter();
 
   function handleClick() {
-    fetch(saveURL + '/' + email, {
-      method: 'POST',
+    fetch(saveURL + "/" + email, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(selectedDeck)
-    }).then(data => data.json());
+      body: JSON.stringify(selectedDeck),
+    }).then((data) => data.json());
     if (setVoted && voted) setVoted(voted + 1);
-    router.push('/study');
+    router.push("/study");
   }
 
   function handleVote(direction: string) {
-    fetch(voteURL + '/' + selectedDeck._id + '-' + direction, {
-      method: 'POST'
-    }).then(data => data.json());
-    fetch(getDeckURL + `/${selectedDeck._id}`).then(data => data.json()).then(res => {
-      res[0].myDecks[0].username = res[0].username;
-      setSelectedDeck(res[0].myDecks[0]);
-    });
+    fetch(voteURL + "/" + selectedDeck._id + "-" + direction, {
+      method: "POST",
+    }).then((data) => data.json());
+    fetch(getDeckURL + `/${selectedDeck._id}`)
+      .then((data) => data.json())
+      .then((res) => {
+        res[0].myDecks[0].username = res[0].username;
+        setSelectedDeck(res[0].myDecks[0]);
+      });
     if (setVoted && voted) setVoted(voted + 1);
   }
 
@@ -137,7 +146,11 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => 
           style={{ width: "99vw", position: "absolute", top: "57vh" }}
         >
           {selectedDeck.cards.map((card: any) => (
-            <Card key={card.id} style={{ maxWidth: "200px" }} className="mx-2 my-2">
+            <Card
+              key={card.id}
+              style={{ maxWidth: "200px" }}
+              className="mx-2 my-2"
+            >
               <Card.Body className="text-center">
                 <div className="mx-2 my-2">Question: {card.question}</div>
                 <div className="mx-2 my-2">Answer: {card.answer}</div>

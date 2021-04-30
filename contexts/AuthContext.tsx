@@ -1,86 +1,86 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { Dispatch, useContext, useState, useEffect, SetStateAction } from 'react';
 import { auth } from '../firebase';
 
 type Props = {
   children: JSX.Element,
 }
 
-export const AuthContext = React.createContext({
+interface AuthContextInterface {
   currentUser: {
-    uid: '',
-    email: '',
+    uid: string,
+    email: string,
   },
-  setCurrentUser: (): void => {},
-  email: '',
-  signOut: () => {},
-  username: '',
-  signUp: () => {},
-  logIn: () => {},
-  setUsername: () => {},
-  setEmail: () => {}
-})
+  setCurrentUser: Dispatch<SetStateAction<any>>,
+  setUsername: Dispatch<SetStateAction<any>>,
+  setEmail: Dispatch<SetStateAction<any>>,
+  email: string,
+  username: string,
+  signUp: (email: string, password: string) => void,
+  signOut: (email: string, password: string) => void,
+  logIn: (email: string, password: string) => void,
+
+}
+
+export const AuthContext = React.createContext<AuthContextInterface | null>(null)
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
-type ICurrent = { uid: string, email: string }
+type ICurrent = { uid: string; email: string };
 
 export function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<ICurrent>({
-    uid: '',
-    email: '',
+    uid: "",
+    email: "",
   });
-  const [username, setUsername] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
-  async function signUp (email: string, password: string) {
+  async function signUp(email: string, password: string) {
     return await auth.createUserWithEmailAndPassword(email, password);
   }
 
-  async function logIn (email: string, password: string) {
+  async function logIn(email: string, password: string) {
     return await auth.signInWithEmailAndPassword(email, password);
   }
 
-  async function signOut () {
+  async function signOut() {
     return await auth.signOut();
   }
-      //User randomly will become null at some point while using the app,
-      //so they won't be able to access the page. If you go to /discover, it will work again,
-      //but if you create a new deck, the username will not be recognized so the deck will have a
-      //creator field as ''. This is why I wrote the if..else statement below, so the user can still
-      //view the pages
+  //User randomly will become null at some point while using the app,
+  //so they won't be able to access the page. If you go to /discover, it will work again,
+  //but if you create a new deck, the username will not be recognized so the deck will have a
+  //creator field as ''. This is why I wrote the if..else statement below, so the user can still
+  //view the pages
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user === null || user.uid === null || user.email === null) {
         setCurrentUser({
-        ...currentUser,
-        uid: 'waiting...',
-        email: 'waiting...'
-      })} else setCurrentUser({
-        uid: user.uid,
-        email: user.email,
-      });
-    })
+          ...currentUser,
+          uid: "waiting...",
+          email: "waiting...",
+        });
+      } else
+        setCurrentUser({
+          uid: user.uid,
+          email: user.email,
+        });
+    });
     return unsubscribe;
-  }, [])
-
+  }, []);
 
   const value = {
     currentUser,
-    setCurrentUser: () => setCurrentUser,
+    setCurrentUser,
     username,
     setUsername,
     email,
     setEmail,
     signUp,
     logIn,
-    signOut
+    signOut,
   };
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
