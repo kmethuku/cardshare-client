@@ -10,9 +10,9 @@ function SignupOrLoginForm() {
   const { signUp, logIn, currentUser, setCurrentUser, setUsername, setEmail } = useAuth();
   const [error, setError] = useState('');
   const router = useRouter();
-  const userURL = 'http://localhost:3001/users';
+  const userURL:string = 'http://localhost:3001/users';
 
-  async function handleSignUp(e) {
+  async function handleSignUp(e:any):void {
     e.preventDefault();
     try {
       setError('');
@@ -38,7 +38,7 @@ function SignupOrLoginForm() {
     }
   }
 
-  async function handleLogIn(e) {
+  async function handleLogIn(e:any) {
     e.preventDefault();
     try {
       setError('');
@@ -51,7 +51,7 @@ function SignupOrLoginForm() {
     }
   }
 
-  function handleChange(e) {
+  function handleChange(e:any) : void {
     if (e.target.id === 'username') setUserInfo({...userInfo, username: e.target.value})
     else if (e.target.id === 'email') setUserInfo({...userInfo, email: e.target.value})
     else setUserInfo({...userInfo, password: e.target.value})

@@ -3,6 +3,7 @@ import HeaderButtons from './headerButtons';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
+import uuid from 'react-uuid';
 
 type Props = {
   selectedDeck: any,
@@ -147,11 +148,11 @@ function ViewDeck({
         >
           {selectedDeck.cards.map((card: any) => (
             <Card
-              key={card.id}
+              key={uuid()}
               style={{ maxWidth: "200px" }}
               className="mx-2 my-2"
             >
-              <Card.Body className="text-center">
+              <Card.Body key={uuid()} className="text-center">
                 <div className="mx-2 my-2">Question: {card.question}</div>
                 <div className="mx-2 my-2">Answer: {card.answer}</div>
               </Card.Body>

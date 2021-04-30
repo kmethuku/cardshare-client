@@ -69,20 +69,22 @@ function Discover() {
 
   function handleClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
     const target = e.target as HTMLImageElement;
-    let query = target.title.split(" ").join("+");
-    fetch(searchURL + query)
-      .then((data) => data.json())
-      .then((res) => {
-        let longKey = target.id;
-        let found = res.docs.find((match: any) => match.key == longKey);
-        setSelectedBook({
-          title: found.title,
-          src: found.cover_i
-            ? `https://covers.openlibrary.org/b/id/${found.cover_i}-M.jpg`
-            : undefined,
-          OLID: e.target.id,
+    if (target.title) {
+      let query = target.title.split(" ").join("+");
+      fetch(searchURL + query)
+        .then((data) => data.json())
+        .then((res) => {
+          let longKey = '/works/'+target.id;
+          let found = res.docs.find((match: any) => match.key == longKey);
+          setSelectedBook({
+            title: found.title,
+            src: found.cover_i
+              ? `https://covers.openlibrary.org/b/id/${found.cover_i}-M.jpg`
+              : undefined,
+            OLID: target.id,
+          });
         });
-      });
+    }
   }
 
   return (

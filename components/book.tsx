@@ -2,6 +2,7 @@ import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import ViewDeck from './viewDeck';
 import { Button, Card } from 'react-bootstrap';
 import { discoverBookService } from '../services/internalApi';
+import uuid from 'react-uuid';
 
 type SBook = {
   title: any;
@@ -60,8 +61,8 @@ else return (
     <div className="d-flex flex-row align-items-center
       justify-content-center flex-wrap" style={flexRowStyle}>
     {decks && decks.map((deck: any) =>
-      <Card key={deck.id} style={cardStyle} className="mx-2 my-2">
-        <Card.Body className="text-center">
+      <Card key={uuid()} style={cardStyle} className="mx-2 my-2">
+        <Card.Body key={uuid()} className="text-center">
           <p>Creator: {deck.creator}</p>
           <p>Description: {deck.description}</p>
           <p>Cards: {deck.cards.length}</p>

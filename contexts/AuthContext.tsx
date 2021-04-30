@@ -82,5 +82,6 @@ export function AuthProvider({ children }: Props) {
     logIn,
     signOut,
   };
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
