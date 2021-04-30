@@ -12,9 +12,9 @@ function Discover() {
   const [popular, setPopular] = useState<any[]>([]);
   const [selfGrowth, setSelfGrowth] = useState<any[]>([]);
   const [history, setHistory] = useState<any[]>([]);
-  const discoverURL = 'http://localhost:3001/discover';
+  const discoverURL:string = 'http://localhost:3001/discover';
   const { currentUser } = useAuth();
-  const searchURL = 'http://openlibrary.org/search.json?title=';
+  const searchURL:string = 'http://openlibrary.org/search.json?title=';
 
   useEffect(() => {
     fetch(discoverURL)

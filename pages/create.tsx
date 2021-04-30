@@ -10,9 +10,9 @@ function Create() {
   const [deckList, setDeckList] = useState<any[]>([]);
   const [clickedItem, setClickedItem] = useState<string>("");
   const [selectedDeck, setSelectedDeck] = useState<string>("");
-  const URL = "http://localhost:3001/myDecks";
+  const URL:string = "http://localhost:3001/myDecks";
   const { currentUser, email } = useAuth();
-  console.log(email);
+  //console.log(email);
 
   useEffect(() => {
     if (currentUser.email || email) {
