@@ -13,7 +13,9 @@ function Discover() {
   const [selfGrowth, setSelfGrowth] = useState<any[]>([]);
   const [history, setHistory] = useState<any[]>([]);
   const discoverURL:string = 'http://localhost:3001/discover';
-  const { currentUser } = useAuth();
+  const authorized = useAuth();
+  if (!authorized) return null;
+  const { currentUser } = authorized;
   const searchURL:string = 'http://openlibrary.org/search.json?title=';
 
   useEffect(() => {

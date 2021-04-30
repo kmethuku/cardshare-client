@@ -1,6 +1,6 @@
 const URL = 'http://localhost:3001'
 
-export const newDeckService = (email: string, body: any): Promise<any> => {
+export const newDeckService = (email: string|undefined, body: any): Promise<any> => {
   body = JSON.stringify(body)
   return fetch(`${URL}/myDecks/${email}`, {
     method: 'POST',
@@ -21,11 +21,11 @@ export const discoverBookService = (selectedBook: any): Promise<any> => {
   
   //const OLID = selectedBook.OLID.slice(6)
   const OLID = selectedBook.OLID
-  console.log("OLID", selectedBook)
+  //console.log("OLID", selectedBook)
   return fetch(`${URL}/discover/OLID/${OLID}`)
     .then(data => data.json())
     .then(res => {
-      console.log("RESPONSE INTERNAL API", res)
+      //console.log("RESPONSE INTERNAL API", res)
       let allDecks: any[] = [];
       res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
         deck.creator = match.username;

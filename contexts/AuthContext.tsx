@@ -16,7 +16,7 @@ interface AuthContextInterface {
   email: string,
   username: string,
   signUp: (email: string, password: string) => void,
-  signOut: (email: string, password: string) => void,
+  signOut: () => void,
   logIn: (email: string, password: string) => void,
 
 }

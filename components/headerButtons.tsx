@@ -5,7 +5,9 @@ import { useRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
 
 function HeaderButtons() {
-  const { signOut } = useAuth();
+  const context = useAuth();
+  if (!context) return null;
+  const { signOut } = context;
   const [error, setError] = useState<string>('');
   const router = useRouter();
 

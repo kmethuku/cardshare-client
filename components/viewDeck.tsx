@@ -25,7 +25,9 @@ function ViewDeck({
   const saveURL = "http://localhost:3001/savedDecks";
   const voteURL = "http://localhost:3001/discover/vote";
   const getDeckURL = "http://localhost:3001/discover";
-  const { currentUser, email } = useAuth();
+  const authorized = useAuth();
+  if (!authorized) return null;
+  const { currentUser, email } = authorized;
   const router = useRouter();
 
   function handleClick() {

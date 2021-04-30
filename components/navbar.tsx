@@ -29,8 +29,8 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
   function handleClick(e: React.MouseEvent<HTMLImageElement>) {
     const target = e.target as HTMLImageElement;
     console.log(target.src)
-    let shortOLID = e.target.id.substring(7);
-    console.log(e.target)
+    let shortOLID = target.id.substring(7);
+    //console.log(e.target)
     if (setNewDeck) {
       setNewDeck({
         ...newDeck,

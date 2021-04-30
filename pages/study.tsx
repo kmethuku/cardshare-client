@@ -5,7 +5,9 @@ import Flashcards from '../components/flashcards';
 import { Button } from 'react-bootstrap';
 
 function Study() {
-  const { currentUser, email } = useAuth();
+  const authorized = useAuth();
+  if (!authorized) return null;
+  const { currentUser, email } = authorized;
   const URL = 'http://localhost:3001/savedDecks';
   const [savedDecks, setSavedDecks] = useState([]);
   const [flashcards, setFlashcards] = useState('');
@@ -15,7 +17,7 @@ function Study() {
     fetch(URL + `/${email || currentUser.email}`).then(data => data.json()).then(res => res[0] ? setSavedDecks(res[0].savedDecks) : setSavedDecks(savedDecks));
   }, [numDeleted]);
 
-  function handleDeleteClick(e) {
+  function handleDeleteClick(e:any) {
     fetch(`${URL}/${email || currentUser.email}-${e.target.id}`, {
       method: 'DELETE'
     }).then(data => data.json()).then(data => data.json());
@@ -79,8 +81,8 @@ function Study() {
                       borderRadius: ".25rem",
                       padding: "2px",
                     }}
-                    width="150px"
-                    height="auto"
+                    // width="150px"
+                    // height="auto"
                     onClick={() => setFlashcards(deck)}
                   >
                     {deck.title.length > 50

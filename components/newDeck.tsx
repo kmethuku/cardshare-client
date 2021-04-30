@@ -25,12 +25,15 @@ const NewDeck = ({ setClickedItem }: Props) => {
   }
 
   const context = useContext(AuthContext)
-  const email = context.currentUser.email;
+  const email = context?.currentUser.email;
 
   const [newDeck, setNewDeck] = useState(defaultDeck);
   const [cardList, setCardList] = useState<List[]>([defaultList]); // add highlight back
   // const URL = 'http://localhost:3001/myDecks';
-  const { currentUser, username } = useAuth();
+  const authorize = useAuth();
+  if (!authorize) return null;
+  const { currentUser, username } = authorize;
+  //const { currentUser, username } = useAuth();
 
   function handleChange (e: React.ChangeEvent<FormControlElement>, index?: number): void {
     const { name, value } = e.target;
