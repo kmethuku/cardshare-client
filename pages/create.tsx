@@ -12,9 +12,12 @@ function Create() {
   const [selectedDeck, setSelectedDeck] = useState<string>('');
   const URL = 'http://localhost:3001/myDecks';
   const { currentUser, email } = useAuth();
+  console.log(email)
 
   useEffect(() => {
-    fetch(`${URL}/${email || currentUser.email}`).then(data => data.json()).then(res => res[0] ? setDeckList(res[0].myDecks) : setDeckList(deckList)); // add setDeckList(res[0].myDecks
+    if (currentUser.email || email) {
+      fetch(`${URL}/${email || currentUser.email}`).then(data => data.json()).then(res => res[0] ? setDeckList(res[0].myDecks) : setDeckList(deckList)); // add setDeckList(res[0].myDecks
+    }
 
   }, [deleteCount, clickedItem]);
 

@@ -17,7 +17,9 @@ function Discover() {
   const searchURL = 'http://openlibrary.org/search.json?title=';
 
   useEffect(() => {
-    fetch(discoverURL).then(data => data.json()).then(res => {
+    fetch(discoverURL)
+      .then(data => data.json())
+      .then(res => {
       let allDecks: any[] = [];
       let duplicateCheck: any[] = [];
       res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
@@ -29,17 +31,19 @@ function Discover() {
       }));
       setPopular(allDecks);
     })
-    fetch(discoverURL + `/genre/self-growth`).then(data => data.json()).then(res => {
-      let allDecks: any[] = [];
-      let duplicateCheck: any[] = [];
-      res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
-        if (!duplicateCheck.includes(deck.OLID)) {
-          deck.username = match.username;
-          allDecks.push(deck);
-          duplicateCheck.push(deck.OLID);
-        }
-      }));
-      setSelfGrowth(allDecks);
+    fetch(discoverURL + `/genre/self-growth`)
+      .then(data => data.json())
+      .then(res => {
+        let allDecks: any[] = [];
+        let duplicateCheck: any[] = [];
+        res.forEach((match: any) => match.myDecks.forEach((deck: any) => {
+          if (!duplicateCheck.includes(deck.OLID)) {
+            deck.username = match.username;
+            allDecks.push(deck);
+            duplicateCheck.push(deck.OLID);
+          }
+        }));
+        setSelfGrowth(allDecks);
     })
     fetch(discoverURL + `/genre/history`).then(data => data.json()).then(res => {
       let allDecks: any[] = [];
@@ -57,14 +61,17 @@ function Discover() {
 
   function handleClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
     let query = e.target.title.split(' ').join('+');
-    fetch(searchURL + query).then(data => data.json()).then(res => {
-      let longKey = '/works/' + e.target.id;
-      let found = res.docs.find((match: any) => match.key === longKey);
-      setSelectedBook({
-        title: found.title,
-        src: found.cover_i ? `https://covers.openlibrary.org/b/id/${found.cover_i}-M.jpg` : undefined,
-        OLID: e.target.id
-      });
+    fetch(searchURL + query)
+      .then(data => data.json())
+      .then(res => {
+        console.log(res)
+        let longKey = '/works/' + e.target.id;
+        let found = res.docs.find((match: any) => match.key === longKey);
+        setSelectedBook({
+          title: found.title,
+          src: found.cover_i ? `https://covers.openlibrary.org/b/id/${found.cover_i}-M.jpg` : undefined,
+          OLID: e.target.id
+        });
     });
   }
 
@@ -76,7 +83,7 @@ function Discover() {
           <div className="mx-2">
             <div style={{position:"relative", zIndex:"2"}}>
               <Navbar setSelectedBook={setSelectedBook}></Navbar>
-           
+
           </div>
 
             {selectedBook ? <Book setVoted={setVoted} voted={voted} selectedBook={selectedBook} setSelectedBook={setSelectedBook} ></Book> :

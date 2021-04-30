@@ -5,7 +5,7 @@ type Props = {
   children: JSX.Element,
 }
 
-const AuthContext = React.createContext({
+export const AuthContext = React.createContext({
   currentUser: {
     uid: '',
     email: '',

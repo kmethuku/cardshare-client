@@ -1,15 +1,20 @@
-const URL = 'http://localhost:3000'
+const URL = 'http://localhost:3001'
 
 export const newDeckService = (email: string, body: any): Promise<any> => {
-  return fetch(`${URL}/${email}`, {
+  body = JSON.stringify(body)
+  return fetch(`${URL}/myDecks/${email}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Origin': 'http://localhost:3000',
     },
-    body: JSON.stringify(body),
+    body,
   })
-    .then(data => data.json());
+    .then(data => {
+      let result = data.json();
+      console.log(result)
+      return result;
+    });
 }
 
 export const discoverBookService = (selectedBook: any): Promise<any> => {

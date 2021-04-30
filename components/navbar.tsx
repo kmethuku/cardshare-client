@@ -1,5 +1,4 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
-import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { searchService } from '../services/externalApi'
 
@@ -8,6 +7,8 @@ type Props = {
   setNewDeck?: Dispatch<SetStateAction<any>>,
   newDeck?: any,
 }
+
+type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 
 function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
   const [results, setResults] = useState<any[]>([]);
@@ -25,26 +26,29 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
     }
   }
 
-  function handleClick(e: React.SyntheticEvent<HTMLDivElement>) {
+  function handleClick(e: React.MouseEvent<HTMLImageElement>) {
+    const target = e.target as HTMLImageElement;
+    console.log(target.src)
     let shortOLID = e.target.id.substring(7);
+    console.log(e.target)
     if (setNewDeck) {
       setNewDeck({
         ...newDeck,
-        title: e.target.title,
-        src: e.target.src ? e.target.src : undefined,
+        title: target.title,
+        src: target.src ? target.src : undefined,
         OLID: shortOLID
       });
-      setInput(e.target.title);
+      setInput(target.title);
     }
     else if (setSelectedBook) {
       setSelectedBook({
-        title: e.target.title,
-        src: e.target.src ? e.target.src : undefined,
+        title: target.title,
+        src: target.src ? target.src : undefined,
         OLID: shortOLID
       });
       setInput('');
     }
-    setResults('');
+    setResults([]);
   }
 
   //This navbar is the main reason why the css is not responsive
@@ -62,7 +66,13 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
             return (
               (result.cover_i ?
                 <div className="my-2 mx-2" key={result.key}>
-                  <img src={`https://covers.openlibrary.org/b/id/${result.cover_i}-M.jpg`} width="150px" height="auto" title={result.title} id={result.key} onClick={handleClick}/>
+                  <img
+                    src={`https://covers.openlibrary.org/b/id/${result.cover_i}-M.jpg`}
+                    width="150px"
+                    height="auto"
+                    title={result.title}
+                    id={result.key}
+                    onClick={handleClick}/>
                 </div> :
                 <div className="my-2 mx-2 text-center" style={{ height:"220px", width:"150px", fontSize:"20px",
                 border: "1px solid rgba(0,0,0,.125)", borderRadius: ".25rem", padding: "2px" }} title={result.title} id={result.key} key={result.key} onClick={handleClick}>{result.title.length > 50 ? result.title.substring(0, 50) + '...' : result.title}</div>)
@@ -72,12 +82,6 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
       </div>
     </div>
   )
-}
-
-Navbar.propTypes = {
-  setSelectedBook: PropTypes.any,
-  setNewDeck: PropTypes.any,
-  newDeck: PropTypes.any,
 }
 
 export default Navbar;
