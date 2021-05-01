@@ -4,14 +4,16 @@ import { Button, Card } from 'react-bootstrap';
 import { discoverBookService } from '../services/internalApi';
 import uuid from 'react-uuid';
 
+
 type SBook = {
+  _id?: any,
   title: any;
   src: string | undefined;
   OLID: any;
 }
 
-interface Props {
-  selectedBook: any;
+export interface Props {
+  selectedBook: SBook;
   setSelectedBook: Dispatch<SetStateAction<SBook>>;
   setVoted: Dispatch<SetStateAction<any>>;
   voted: any;
@@ -26,7 +28,7 @@ function Book({ selectedBook, setSelectedBook, setVoted, voted }: Props) {
   const defaultBook = {title: '', src: '', OLID: ''}
   const [decks, setDecks] = useState<any>('');
   const [selectedDeck, setSelectedDeck] = useState<any>({});
- 
+
   useEffect (() => {
     discoverBookService(selectedBook)
       .then(res => setDecks(res));
@@ -35,8 +37,15 @@ function Book({ selectedBook, setSelectedBook, setVoted, voted }: Props) {
 
 if (selectedDeck.title) {
   return (
-    <ViewDeck setVoted={setVoted} voted={voted} selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} from={'book'}></ViewDeck>
-  )}
+    <ViewDeck
+      setVoted={setVoted}
+      voted={voted}
+      selectedDeck={selectedDeck}
+      setSelectedDeck={setSelectedDeck}
+      from={"book"}
+    ></ViewDeck>
+  );
+}
 else return (
   <div style={{position:"absolute", top:"130px", zIndex: 1}}>
     <Button
