@@ -17,9 +17,7 @@ function Discover() {
   const authorized = useAuth();
   if (!authorized) return null;
   const { currentUser } = authorized;
-  // const discoverURL:string = 'http://localhost:3001/discover';
-  const searchURL:string = 'http://openlibrary.org/search.json?title=';
-
+  console.log(currentUser)
   useEffect(() => {
     const getDecksByGenre = async (): Promise<any> => {
       const discover = await getDecksByGenreService('discover')
@@ -30,54 +28,6 @@ function Discover() {
       setHistory(history)
     }
     getDecksByGenre();
-    // fetch(discoverURL)
-    //   .then((data) => data.json())
-    //   .then((res) => {
-    //     let allDecks: any[] = [];
-    //     let duplicateCheck: any[] = [];
-    //     res.forEach((match: any) =>
-    //       match.myDecks.forEach((deck: any) => {
-    //         if (!duplicateCheck.includes(deck.OLID)) {
-    //           deck.username = match.username;
-    //           allDecks.push(deck);
-    //           duplicateCheck.push(deck.OLID);
-    //         }
-    //       })
-    //     );
-    //     setPopular(allDecks);
-    //   });
-    // fetch(discoverURL + `/genre/self-growth`)
-    //   .then((data) => data.json())
-    //   .then((res) => {
-    //     let allDecks: any[] = [];
-    //     let duplicateCheck: any[] = [];
-    //     res.forEach((match: any) =>
-    //       match.myDecks.forEach((deck: any) => {
-    //         if (!duplicateCheck.includes(deck.OLID)) {
-    //           deck.username = match.username;
-    //           allDecks.push(deck);
-    //           duplicateCheck.push(deck.OLID);
-    //         }
-    //       })
-    //     );
-    //     setSelfGrowth(allDecks);
-    //   });
-    // fetch(discoverURL + `/genre/history`)
-    //   .then((data) => data.json())
-    //   .then((res) => {
-    //     let allDecks: any[] = [];
-    //     let duplicateCheck: any[] = [];
-    //     res.forEach((match: any) =>
-    //       match.myDecks.forEach((deck: any) => {
-    //         if (!duplicateCheck.includes(deck.OLID)) {
-    //           deck.username = match.username;
-    //           allDecks.push(deck);
-    //           duplicateCheck.push(deck.OLID);
-    //         }
-    //       })
-    //     );
-    //     setHistory(allDecks);
-    //   });
   }, [voted])
 
   async function handleClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
@@ -86,19 +36,6 @@ function Discover() {
       let query = target.title.split(" ").join("+");
       let searchResult = await discoverSearchService(query, target.id);
       setSelectedBook(searchResult)
-      // fetch(searchURL + query)
-      //   .then((data) => data.json())
-      //   .then((res) => {
-      //     let longKey = '/works/'+target.id;
-      //     let found = res.docs.find((match: any) => match.key == longKey);
-        //   setSelectedBook({
-        //     title: found.title,
-        //     src: found.cover_i
-        //       ? `https://covers.openlibrary.org/b/id/${found.cover_i}-M.jpg`
-        //       : undefined,
-        //     OLID: target.id,
-        //   });
-        // });
     }
   }
 
@@ -127,7 +64,6 @@ function Discover() {
                 justify-content-start mx-2 mt-2"
                 >
                   {popular.map((deck: any) => {
-                    console.log(deck);
                     return deck.src ? (
                       <img
                         src={deck.src}

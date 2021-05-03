@@ -72,21 +72,21 @@ export const signUpService = async (body: any): Promise<any> => {
 }
 
 export const saveDeckService = (email: string, selectedDeck: any): Promise<any> => {
-  return fetch(`${URL}/savedDecks`, {
+  return fetch(`${URL}/savedDecks/${email}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(selectedDeck)
   })
-    .then(res => res.json())
+    .then(res => res.text())
 }
 
 export const voteService = (id: string, direction: string): Promise<any> => {
   return fetch(`${URL}/discover/vote/${id}-${direction}`, {
-    method: 'POST',
+    method: 'GET',
   })
-  .then(res => res.json())
+  .then(res => res.text())
 }
 
 export const getDecksByGenreService = (genre: string): Promise<any> => {
@@ -128,6 +128,7 @@ export const getDecksByGenreService = (genre: string): Promise<any> => {
 }
 
 export const getSavedDecksByEmailService = (email: string): Promise<any> => {
+  console.log(email)
   return fetch(`${URL}/savedDecks/${email}`)
     .then(res => res.json())
 }

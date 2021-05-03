@@ -1,12 +1,12 @@
 import HeaderButtons from '../components/headerButtons';
-import { useAuth } from '../contexts/AuthContext';
-import React, { useState, useEffect } from 'react';
+import { AuthContext, useAuth } from '../contexts/AuthContext';
+import React, { useState, useEffect, useContext } from 'react';
 import Flashcards from '../components/flashcards';
 import { Button } from 'react-bootstrap';
 import { deleteSavedDeckByIdService, getSavedDecksByEmailService } from '../services/internalApi';
 
 function Study() {
-  const authorized = useAuth();
+  const authorized = useContext(AuthContext);
   if (!authorized) return null;
   const { currentUser, email } = authorized;
   const URL = 'http://localhost:3001/savedDecks';
@@ -16,13 +16,13 @@ function Study() {
 
   useEffect(() => {
     const sendEmail = email || currentUser.email;
-    getSavedDecksByEmailService(sendEmail)
-      .then((data) => {
-        if (data) setSavedDecks(data)
-      })
-
-    // fetch(URL + `/${email || currentUser.email}`).then(data => data.json()).then(res => res[0] ? setSavedDecks(res[0].savedDecks) : setSavedDecks(savedDecks));
-  }, [numDeleted]);
+    if(sendEmail) {
+      getSavedDecksByEmailService(sendEmail)
+        .then((data) => {
+          if (data) setSavedDecks(data[0].savedDecks)
+        })
+    }
+  }, [numDeleted, currentUser, email]);
 
   function handleDeleteClick(e:any) {
     const sendEmail = email || currentUser.email;
@@ -44,10 +44,12 @@ function Study() {
     )
   } else return (
     <div data-testid="study" key="study">
-      {currentUser ? (
+      {currentUser? (
         <div key="study2">
           <HeaderButtons key="headerbuttons"></HeaderButtons>
-          <h1 className="mx-2 my-4" key="title">My Saved Decks</h1>
+          {(savedDecks.length > 0) ?
+            (<>
+            <h1 className="mx-2 my-4" key="title">My Saved Decks</h1>
           <div
             key="deckList"
             className="d-flex flex-row align-items-center     justify-content-start mx-2 mt-2">
@@ -112,6 +114,7 @@ function Study() {
               )
             )}
           </div>
+          </>) : (<div>No decks saved.</div>)}
         </div>
       ) : (
         <h1>Access Unauthorized</h1>

@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import HeaderButtons from './headerButtons';
-import { useAuth } from '../contexts/AuthContext';
+import { AuthContext, useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
 import { saveDeckService, voteService, getDeckByIdService } from '../services/internalApi'
@@ -26,22 +26,14 @@ function ViewDeck({
   // const saveURL = "http://localhost:3001/savedDecks";
   // const voteURL = "http://localhost:3001/discover/vote";
   // const getDeckURL = "http://localhost:3001/discover";
-  const authorized = useAuth();
+  const authorized = useContext(AuthContext);
   if (!authorized) return null;
   const { currentUser, email } = authorized;
   const router = useRouter();
 
   function handleClick() {
-    saveDeckService(email, selectedDeck)
-
-    // fetch(saveURL + "/" + email, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(selectedDeck),
-    // }).then((data) => data.json());
-
+    let sendEmail = currentUser.email || email;
+    saveDeckService(sendEmail, selectedDeck)
     if (setVoted && voted) setVoted(voted + 1);
     router.push("/study");
   }
