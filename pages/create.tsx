@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import HeaderButtons from '../components/headerButtons';
 import ViewDeck from '../components/viewDeck';
 import NewDeck from '../components/newDeck';
-import { useAuth } from '../contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import { Button } from 'react-bootstrap';
 import { getDeckByEmailService, deleteDeckByIdService } from '../services/internalApi'
 
@@ -12,7 +12,7 @@ function Create() {
   const [clickedItem, setClickedItem] = useState<string>("");
   const [selectedDeck, setSelectedDeck] = useState<string>("");
   const URL:string = "http://localhost:3001/myDecks";
-  const context = useAuth();
+  const context = useContext(AuthContext);
   if (!context) return null;
   const { currentUser, email } = context;
   //console.log(email);
@@ -33,11 +33,12 @@ function Create() {
   }, [deleteCount, clickedItem]);
 
   function handleDeleteClick(e: React.FormEvent): void {
-    const {
-      target: { id },
-    } = e;
+    const target = e.target as HTMLElement
+    // const {
+    //   target: { id },
+    // } = e;
     let emailArg =email ||currentUser.email;
-    deleteDeckByIdService(emailArg, id)
+    deleteDeckByIdService(emailArg, target.id)
     // fetch(`${URL}/${email || currentUser.email}-${id}`, {
     //   method: "DELETE",
     // })

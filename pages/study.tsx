@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import React, { useState, useEffect } from 'react';
 import Flashcards from '../components/flashcards';
 import { Button } from 'react-bootstrap';
-import { deleteSavedDeckByIdService, getSavedDecksByEmail } from '../services/internalApi';
+import { deleteSavedDeckByIdService, getSavedDecksByEmailService } from '../services/internalApi';
 
 function Study() {
   const authorized = useAuth();
@@ -16,7 +16,7 @@ function Study() {
 
   useEffect(() => {
     const sendEmail = email || currentUser.email;
-    getSavedDecksByEmail(sendEmail)
+    getSavedDecksByEmailService(sendEmail)
       .then((data) => {
         if (data) setSavedDecks(data)
       })
@@ -36,30 +36,31 @@ function Study() {
 
   if (flashcards) {
     return (
-      <div>
+      <div data-testid="study">
       {currentUser ?
         <Flashcards flashcards={flashcards} setFlashcards={setFlashcards}></Flashcards>
         : <h1>Access Unauthorized</h1>}
       </div>
     )
   } else return (
-    <div>
+    <div data-testid="study" key="study">
       {currentUser ? (
-        <div>
-          <HeaderButtons></HeaderButtons>
-          <h1 className="mx-2 my-4">My Saved Decks</h1>
+        <div key="study2">
+          <HeaderButtons key="headerbuttons"></HeaderButtons>
+          <h1 className="mx-2 my-4" key="title">My Saved Decks</h1>
           <div
-            className="d-flex flex-row align-items-center
-          justify-content-start mx-2 mt-2"
-          >
+            key="deckList"
+            className="d-flex flex-row align-items-center     justify-content-start mx-2 mt-2">
             {savedDecks.map((deck: any) =>
               deck.src ? (
                 <div
                   style={{ display: "inline-block" }}
                   className="mx-2 my-2"
-                  key={deck._id}
+                  key={`divmain${deck._id}`}
                 >
                   <img
+                    data-testid={`setflash${deck._id}`}
+                    key={`img${deck._id}`}
                     className="mx-2 my-2"
                     src={deck.src}
                     width="150px"
@@ -67,6 +68,7 @@ function Study() {
                     onClick={() => setFlashcards(deck)}
                   />
                   <Button
+                    key={`button${deck.id}`}
                     className="mx-2 my-2"
                     type="button"
                     id={deck._id}
@@ -79,7 +81,7 @@ function Study() {
                 <div
                   style={{ display: "inline-block" }}
                   className="mx-2 my-2 d-flex flex-row align-items-center justify-content-center"
-                  key={deck._id}
+                  key={`div${deck._id}`}
                 >
                   <div
                     className="my-2 mx-2 text-center"
@@ -91,8 +93,6 @@ function Study() {
                       borderRadius: ".25rem",
                       padding: "2px",
                     }}
-                    // width="150px"
-                    // height="auto"
                     onClick={() => setFlashcards(deck)}
                   >
                     {deck.title.length > 50
@@ -102,7 +102,7 @@ function Study() {
                   <Button
                     className="mx-2 my-2"
                     type="button"
-                    id={deck._id}
+                    id={`button2${deck._id}`}
                     onClick={handleDeleteClick}
                   >
                     ❌

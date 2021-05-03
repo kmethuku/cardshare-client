@@ -126,7 +126,7 @@ export const getDecksByGenreService = (genre: string): Promise<any> => {
   }
 }
 
-export const getSavedDecksByEmail = (email: string): Promise<any> => {
+export const getSavedDecksByEmailService = (email: string): Promise<any> => {
   return fetch(`${URL}/savedDecks/${email}`)
     .then(res => res.json())
 }

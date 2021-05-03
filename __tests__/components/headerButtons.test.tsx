@@ -1,11 +1,11 @@
-import React, { createContext, Provider } from 'react';
+import React from 'react';
 import { act, cleanup, render, RenderResult, createEvent, fireEvent, waitFor, getByTestId } from '@testing-library/react';
-import { AuthProvider } from './mocks';
 import { mount, configure, shallow } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { Button } from 'react-bootstrap';
-import * as Auth from '../contexts/AuthContext';
-import HeaderButtons from '../components/headerButtons'
+import * as Auth from '../../contexts/AuthContext';
+import HeaderButtons from '../../components/headerButtons'
+
 
 configure({adapter: new Adapter()});
 const contextValues = {
