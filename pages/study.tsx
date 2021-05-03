@@ -65,6 +65,7 @@ function Study() {
                     src={deck.src}
                     width="150px"
                     height="auto"
+                    alt={`setflash${deck._id}`}
                     onClick={() => setFlashcards(deck)}
                   />
                   <Button

@@ -26,7 +26,6 @@ function SignupOrLoginForm() {
         email: userInfo.email,
       }
       await signUpService(newUser);
-
       setUsername(userInfo.username);
       setEmail(userInfo.email);
       router.push('/discover');
@@ -58,7 +57,7 @@ function SignupOrLoginForm() {
     <Card style={{ position: "relative", maxWidth: "400px", top: "-50px" }}>
       <Card.Body>
         <h2 className="text-center mb-4">{label}</h2>
-        <Form>
+        <Form data-testid="form">
           {error && <p>{error}</p>}
           {label === "Sign Up" && (
             <Form.Group>

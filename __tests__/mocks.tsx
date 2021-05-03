@@ -164,6 +164,11 @@ export const testUser = {
   savedDecks: [],
 }
 
+export interface NewUser {
+  username: string,
+  email: string,
+}
+
 export const testUserArray = [
   {
     username: 'testUserOne',
@@ -216,7 +221,7 @@ export const contextValues = {
   setUsername: jest.fn(),
   email: 'test@test.com',
   setEmail: jest.fn(),
-  signUp: jest.fn(),
+  signUp: async () => Promise.resolve(true),
   logIn: jest.fn(),
 };
 

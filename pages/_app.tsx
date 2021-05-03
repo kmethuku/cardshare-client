@@ -4,7 +4,7 @@ import '../styles/globals.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AppProps } from 'next/app'
 
-const MyApp = (props: AppProps) => {
+const MyApp = (props) => {
   const { Component, pageProps } = props;
   return (
     <AuthProvider>
