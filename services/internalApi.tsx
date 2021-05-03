@@ -2,6 +2,7 @@ const URL = 'http://localhost:3001'
 
 export const newDeckService = (email: string|undefined, body: any): Promise<any> => {
   body = JSON.stringify(body)
+  console.log(body)
   return fetch(`${URL}/myDecks/${email}`, {
     method: 'POST',
     headers: {
@@ -59,15 +60,15 @@ export const discoverBookService = (selectedBook: any): Promise<any> => {
     })
 }
 
-export const signUpService = (body: any): Promise<any> => {
-  return fetch(`${URL}/users`, {
+export const signUpService = async (body: any): Promise<any> => {
+  return await fetch(`${URL}/users`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   })
-  .then(res => res.json())
+  .then(res => res.text())
 }
 
 export const saveDeckService = (email: string, selectedDeck: any): Promise<any> => {

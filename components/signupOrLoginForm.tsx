@@ -25,11 +25,13 @@ function SignupOrLoginForm() {
         username: userInfo.username,
         email: userInfo.email,
       }
-      await signUpService(newUser);
+      let result = await signUpService(newUser);
+      console.log(result)
       setUsername(userInfo.username);
       setEmail(userInfo.email);
       router.push('/discover');
     } catch (err) {
+      console.log(err)
       setError('Failed to create an account.');
     }
   }

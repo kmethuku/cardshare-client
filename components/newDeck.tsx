@@ -125,7 +125,6 @@ const NewDeck = ({ setClickedItem }: Props) => {
               </Form.Group>
               {cardList.map((card, index) => (
                 <Form.Group className="my-3" key={index}>
-                  {console.log(index)}
                   <Form.Label htmlFor="question">Question</Form.Label>
                   <Form.Control
                     type="text"
