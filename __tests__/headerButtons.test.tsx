@@ -4,61 +4,37 @@ import { AuthProvider } from './mocks';
 import { mount, configure, shallow } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { Button } from 'react-bootstrap';
-
-configure({adapter: new Adapter()});
-
+import * as Auth from '../contexts/AuthContext';
 import HeaderButtons from '../components/headerButtons'
 
-const AuthContext = createContext({
+configure({adapter: new Adapter()});
+const contextValues = {
   signOut: jest.fn(),
-});
+  currentUser: { uid: 'string', email: 'string' },
+  setCurrentUser: jest.fn(),
+  username: 'test',
+  setUsername: jest.fn(),
+  email: 'test@test.com',
+  setEmail: jest.fn(),
+  signUp: jest.fn(),
+  logIn: jest.fn(),
+};
 
 describe('<HeaderButtons />', () => {
-  it('should display a navbar with a sign out button', async () => {
-    const test = render(
-      <AuthProvider>
+  it('should useContext mock and shallow render a div tag', () => {
+    const wrapper = mount(
+      <Auth.AuthContext.Provider value={contextValues}>
         <HeaderButtons />
-      </AuthProvider>
-    )
-    const button = test.getByTestId('signout');
-    console.log()
-
+      </Auth.AuthContext.Provider>
+    );
+    const button = wrapper.find('[data-testid="signout"]').at(0);
+    expect(button.prop('onClick')).toEqual(expect.any(Function));
     const handleSignOut = jest.fn();
-    const myEvent = createEvent.click(button, handleSignOut)
-    fireEvent.click(button, myEvent);
-    expect(handleSignOut).toHaveBeenCalledTimes(1);
 
-    // expect(getByTestId('signout')).toBe(true);
-
-    // act(() => {
-    //   fireEvent.click(button);
-    // })
-
-    // expect().toBeInTheDocument();
-    // const title = await screen.getByTestId('test')
-    // console.log(title)
-    // await waitFor(() => {
-    //   console.log(testing.getByTestId('test'))
-    // })
+    jest.spyOn(Auth, 'useAuth').mockImplementation(() => contextValues);
   })
 
-  // it('should call HandleSignOut when sign out button is clicked', () => {
-  //   const wrapper = mount(
-  //     <AuthProvider>
-  //       <HeaderButtons />
-  //     </AuthProvider>
-  //   );
-
-  //   const instance: any = wrapper.instance();
-
-  //   const button = wrapper.find('#signout');
-  //   button.simulate('click')
-
-  //   expect((instance as any).handleSignOut).toHaveBeenCalled();
-
-  // })
-
-  // it('should have a list of nav links', () => {
-  //   expect(screen.findByText('Discover')).toHaveClass('nav-link')
-  // })
 })
+
+
+

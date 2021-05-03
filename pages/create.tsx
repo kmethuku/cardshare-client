@@ -4,6 +4,7 @@ import ViewDeck from '../components/viewDeck';
 import NewDeck from '../components/newDeck';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from 'react-bootstrap';
+import { getDeckByEmailService, deleteDeckByIdService } from '../services/internalApi'
 
 function Create() {
   const [deleteCount, setDeleteCount] = useState<number>(0);
@@ -11,16 +12,23 @@ function Create() {
   const [clickedItem, setClickedItem] = useState<string>("");
   const [selectedDeck, setSelectedDeck] = useState<string>("");
   const URL:string = "http://localhost:3001/myDecks";
-  const { currentUser, email } = useAuth();
+  const context = useAuth();
+  if (!context) return null;
+  const { currentUser, email } = context;
   //console.log(email);
 
   useEffect(() => {
-    if (currentUser.email || email) {
-      fetch(`${URL}/${email || currentUser.email}`)
-        .then((data) => data.json())
-        .then((res) =>
-          res[0] ? setDeckList(res[0].myDecks) : setDeckList(deckList)
-        ); // add setDeckList(res[0].myDecks
+    let emailArg = email|| currentUser.email;
+    if (emailArg) {
+      getDeckByEmailService(emailArg)
+      .then(res => {
+        res? setDeckList(res) : setDeckList(deckList)
+      })
+      // fetch(`${URL}/${email || currentUser.email}`)
+      //   .then((data) => data.json())
+      //   .then((res) =>
+      //     res[0] ? setDeckList(res[0].myDecks) : setDeckList(deckList)
+      //   ); // add setDeckList(res[0].myDecks
     }
   }, [deleteCount, clickedItem]);
 
@@ -28,11 +36,13 @@ function Create() {
     const {
       target: { id },
     } = e;
-    fetch(`${URL}/${email || currentUser.email}-${id}`, {
-      method: "DELETE",
-    })
-      .then((data) => data.json())
-      .then((data) => data.json());
+    let emailArg =email ||currentUser.email;
+    deleteDeckByIdService(emailArg, id)
+    // fetch(`${URL}/${email || currentUser.email}-${id}`, {
+    //   method: "DELETE",
+    // })
+    //   .then((data) => data.json())
+    //   .then((data) => data.json());
     setDeleteCount(deleteCount + 1);
   }
 

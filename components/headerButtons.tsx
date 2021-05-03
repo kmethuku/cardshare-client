@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Link from 'next/link';
-import { useAuth } from '../contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
 
 const HeaderButtons = () => {
-  const context = useAuth();
+  const context = useContext(AuthContext);
   if (!context) return null;
   const { signOut } = context;
   const [error, setError] = useState<string>('');

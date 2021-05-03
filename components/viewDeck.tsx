@@ -3,6 +3,7 @@ import HeaderButtons from './headerButtons';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
+import { saveDeckService, voteService, getDeckByIdService } from '../services/internalApi'
 import uuid from 'react-uuid';
 
 type Props = {
@@ -22,36 +23,42 @@ function ViewDeck({
   setVoted,
   voted,
 }: Props) {
-  const saveURL = "http://localhost:3001/savedDecks";
-  const voteURL = "http://localhost:3001/discover/vote";
-  const getDeckURL = "http://localhost:3001/discover";
+  // const saveURL = "http://localhost:3001/savedDecks";
+  // const voteURL = "http://localhost:3001/discover/vote";
+  // const getDeckURL = "http://localhost:3001/discover";
   const authorized = useAuth();
   if (!authorized) return null;
   const { currentUser, email } = authorized;
   const router = useRouter();
 
   function handleClick() {
-    fetch(saveURL + "/" + email, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(selectedDeck),
-    }).then((data) => data.json());
+    saveDeckService(email, selectedDeck)
+
+    // fetch(saveURL + "/" + email, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(selectedDeck),
+    // }).then((data) => data.json());
+
     if (setVoted && voted) setVoted(voted + 1);
     router.push("/study");
   }
 
-  function handleVote(direction: string) {
-    fetch(voteURL + "/" + selectedDeck._id + "-" + direction, {
-      method: "POST",
-    }).then((data) => data.json());
-    fetch(getDeckURL + `/${selectedDeck._id}`)
-      .then((data) => data.json())
-      .then((res) => {
-        res[0].myDecks[0].username = res[0].username;
-        setSelectedDeck(res[0].myDecks[0]);
-      });
+  async function handleVote(direction: string) {
+    // fetch(voteURL + "/" + selectedDeck._id + "-" + direction, {
+    //   method: "POST",
+    // }).then((data) => data.json());
+    // fetch(getDeckURL + `/${selectedDeck._id}`)
+    //   .then((data) => data.json())
+    //   .then((res) => {
+    //     res[0].myDecks[0].username = res[0].username;
+    //     setSelectedDeck(res[0].myDecks[0]);
+    //   });
+    voteService(selectedDeck._id, direction)
+    const result = await getDeckByIdService(selectedDeck._id)
+    setSelectedDeck(result);
     if (setVoted && voted) setVoted(voted + 1);
   }
 

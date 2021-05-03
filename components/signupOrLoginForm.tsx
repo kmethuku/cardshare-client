@@ -25,13 +25,6 @@ function SignupOrLoginForm() {
       }
       await signUpService(newUser);
 
-      // fetch(userURL, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({username: userInfo.username, email: userInfo.email})
-      // }).then(data => data.json());
       setUsername(userInfo.username);
       setEmail(userInfo.email);
       router.push('/discover');

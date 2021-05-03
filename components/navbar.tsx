@@ -13,7 +13,6 @@ type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaEle
 function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
   const [results, setResults] = useState<any[]>([]);
   const [input, setInput] = useState('');
-  // const searchURL = 'http://openlibrary.org/search.json?title=';
 
   const handleChange: any = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -22,7 +21,6 @@ function Navbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
       let query = input.split(' ').join('+');
       let result = await searchService(query);
       setResults(result);
-      // fetch(searchURL + query).then(data => data.json()).then(res => setResults(res.docs));
     }
   }
 

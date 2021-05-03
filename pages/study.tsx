@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import React, { useState, useEffect } from 'react';
 import Flashcards from '../components/flashcards';
 import { Button } from 'react-bootstrap';
+import { deleteSavedDeckByIdService, getSavedDecksByEmail } from '../services/internalApi';
 
 function Study() {
   const authorized = useAuth();
@@ -14,13 +15,22 @@ function Study() {
   const [numDeleted, setNumDeleted] = useState(0);
 
   useEffect(() => {
-    fetch(URL + `/${email || currentUser.email}`).then(data => data.json()).then(res => res[0] ? setSavedDecks(res[0].savedDecks) : setSavedDecks(savedDecks));
+    const sendEmail = email || currentUser.email;
+    getSavedDecksByEmail(sendEmail)
+      .then((data) => {
+        if (data) setSavedDecks(data)
+      })
+
+    // fetch(URL + `/${email || currentUser.email}`).then(data => data.json()).then(res => res[0] ? setSavedDecks(res[0].savedDecks) : setSavedDecks(savedDecks));
   }, [numDeleted]);
 
   function handleDeleteClick(e:any) {
-    fetch(`${URL}/${email || currentUser.email}-${e.target.id}`, {
-      method: 'DELETE'
-    }).then(data => data.json()).then(data => data.json());
+    const sendEmail = email || currentUser.email;
+    deleteSavedDeckByIdService(sendEmail, e.target.id)
+
+    // fetch(`${URL}/${email || currentUser.email}-${e.target.id}`, {
+    //   method: 'DELETE'
+    // }).then(data => data.json()).then(data => data.json());
     setNumDeleted(numDeleted + 1);
   }
 

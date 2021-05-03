@@ -67,7 +67,6 @@ const NewDeck = ({ setClickedItem }: Props) => {
     tempNewDeck.genre = tempNewDeck.genre.toLowerCase();
     tempNewDeck.cards = cardList;
     tempNewDeck.creator = username;
-    console.log(email)
     newDeckService(email, tempNewDeck)
     setClickedItem('');
   }
