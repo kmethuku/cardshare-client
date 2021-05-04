@@ -1,4 +1,5 @@
 const URL = 'http://localhost:3001'
+import IDeck from '../interfaces/IDeck';
 
 export const newDeckService = (email: string|undefined, body: any): Promise<any> => {
   body = JSON.stringify(body)
@@ -16,7 +17,7 @@ export const newDeckService = (email: string|undefined, body: any): Promise<any>
     });
 }
 
-export const getDeckByEmailService = (email:string): Promise<any> => {
+export const getDeckByEmailService = (email:string): Promise<IDeck[]> => {
   return fetch(`${URL}/myDecks/${email}`)
     .then(res => res.json())
     .then(data => {
@@ -37,22 +38,35 @@ export const deleteSavedDeckByIdService = (email:string, id:string) : Promise<an
   })
 }
 
-export const getDeckByIdService = (id: string): Promise<any> => {
+export const getDeckByIdService = (id: string): Promise<IDeck | null> => {
   return fetch(`${URL}/discover/${id}`)
     .then(res => res.json())
     .then(data => {
-      data[0].myDecks[0].username = data[0].username;
-      return data;
+      console.log(data)
+      if (data[0]){
+        const result = {
+          _id: data[0].myDecks[0]._id,
+          title: data[0].myDecks[0].title,
+          description: data[0].myDecks[0].description,
+          src: data[0].myDecks[0].src,
+          votes: data[0].myDecks[0].votes,
+          cards: data[0].myDecks[0].cards,
+          genre: data[0].myDecks[0].genre,
+          OLID: data[0].myDecks[0].OLID,
+          creator: data[0].username,
+        }
+        return result;
+      } else return null;
     })
 }
 
-export const discoverBookService = (selectedBook: any): Promise<any> => {
+export const discoverBookService = (selectedBook: any): Promise<IDeck[]> => {
   const OLID = selectedBook.OLID
   return fetch(`${URL}/discover/OLID/${OLID}`)
     .then(res => res.json())
     .then(data => {
-      let allDecks: any[] = [];
-      data.forEach((match: any) => match.myDecks.forEach((deck: any) => {
+      let allDecks: IDeck[] = [];
+      data.forEach((match: any) => match.myDecks.forEach((deck: IDeck) => {
         deck.creator = match.username;
         allDecks.push(deck);
       }));

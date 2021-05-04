@@ -15,17 +15,7 @@ type Props = {
   voted?: number,
 }
 
-function ViewDeck({
-  selectedDeck,
-  setSelectedDeck,
-  from,
-  setClickedItem = () => {},
-  setVoted,
-  voted,
-}: Props) {
-  // const saveURL = "http://localhost:3001/savedDecks";
-  // const voteURL = "http://localhost:3001/discover/vote";
-  // const getDeckURL = "http://localhost:3001/discover";
+function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => {}, setVoted, voted }: Props) {
   const authorized = useContext(AuthContext);
   if (!authorized) return null;
   const { currentUser, email } = authorized;
@@ -39,15 +29,6 @@ function ViewDeck({
   }
 
   async function handleVote(direction: string) {
-    // fetch(voteURL + "/" + selectedDeck._id + "-" + direction, {
-    //   method: "POST",
-    // }).then((data) => data.json());
-    // fetch(getDeckURL + `/${selectedDeck._id}`)
-    //   .then((data) => data.json())
-    //   .then((res) => {
-    //     res[0].myDecks[0].username = res[0].username;
-    //     setSelectedDeck(res[0].myDecks[0]);
-    //   });
     voteService(selectedDeck._id, direction)
     const result = await getDeckByIdService(selectedDeck._id)
     setSelectedDeck(result);
