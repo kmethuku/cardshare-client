@@ -3,20 +3,19 @@ import { useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
 import { Form, Button, Card } from 'react-bootstrap';
 import  { signUpService } from '../services/internalApi';
+import FormControlElement from '../interfaces/FormControlElement';
 
 function SignupOrLoginForm() {
   const [label, setLabel] = useState('Sign Up');
   const [userInfo, setUserInfo] = useState({username: '', email: '', password: ''});
   const authorized = useContext(AuthContext);
   if (!authorized) return null;
-  // const authorized = useAuth();
-  // if (!authorized) return null;
   const { signUp, logIn, currentUser, setCurrentUser, setUsername, setEmail } = authorized;
   const [error, setError] = useState('');
   const router = useRouter();
   const userURL:string = 'http://localhost:3001/users';
 
-  async function handleSignUp(e:any):Promise<void> {
+  async function handleSignUp(e: React.MouseEvent<HTMLElement>):Promise<void> {
     e.preventDefault();
     try {
       setError('');
@@ -36,7 +35,7 @@ function SignupOrLoginForm() {
     }
   }
 
-  async function handleLogIn(e:any):Promise<void>  {
+  async function handleLogIn(e: React.MouseEvent<HTMLElement>):Promise<void>  {
     e.preventDefault();
     try {
       setError('');
@@ -49,10 +48,21 @@ function SignupOrLoginForm() {
     }
   }
 
-  function handleChange(e:any) : void {
-    if (e.target.id === 'username') setUserInfo({...userInfo, username: e.target.value})
-    else if (e.target.id === 'email') setUserInfo({...userInfo, email: e.target.value})
-    else setUserInfo({...userInfo, password: e.target.value})
+  function handleChange(e: React.ChangeEvent<FormControlElement>) : void {
+    const target = e.target
+    if (target.id === 'username') {
+      setUserInfo({
+        ...userInfo,
+        username: target.value})}
+    else if (target.id === 'email') {
+      setUserInfo({
+        ...userInfo,
+        email: target.value})
+    } else {
+      setUserInfo({
+        ...userInfo,
+        password: target.value})
+    }
   }
 
   return (

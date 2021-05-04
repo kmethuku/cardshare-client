@@ -1,6 +1,7 @@
 import ICard from './ICard'
 
-export default interface Deck {
+export default interface IDeck {
+  _id?: string,
   title: string,
   description: string,
   src?: string,
@@ -8,4 +9,5 @@ export default interface Deck {
   genre: string,
   OLID: string,
   creator: string,
+  votes: number,
 }

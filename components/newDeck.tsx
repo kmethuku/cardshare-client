@@ -4,16 +4,16 @@ import HeaderButtons from './headerButtons';
 import { useAuth, AuthContext } from '../contexts/AuthContext';
 import { newDeckService } from '../services/internalApi';
 import { Form, Button, Card, Container } from 'react-bootstrap';
+import IList from '../interfaces/IList'
+import ICard from '../interfaces/ICard'
+import FormControlElement from '../interfaces/FormControlElement'
 
 type Props = {
-  setClickedItem: Dispatch<SetStateAction<any>>
+  setClickedItem: Dispatch<SetStateAction<string>>
 }
 
-type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-
 const NewDeck = ({ setClickedItem }: Props) => {
-  type List = { question: string, answer: string }
-  const defaultList = { question: '', answer: '' }
+  const defaultList: IList = { question: '', answer: '' }
   const defaultDeck = {
     title: '',
     description: '',
@@ -28,36 +28,29 @@ const NewDeck = ({ setClickedItem }: Props) => {
   const email = context?.currentUser.email;
 
   const [newDeck, setNewDeck] = useState(defaultDeck);
-  const [cardList, setCardList] = useState<List[]>([defaultList]); // add highlight back
-  // const URL = 'http://localhost:3001/myDecks';
+  const [cardList, setCardList] = useState<IList[]>([defaultList]); // add highlight back
   const authorize = useAuth();
   if (!authorize) return null;
   const { currentUser, username } = authorize;
-  //const { currentUser, username } = useAuth();
 
-  function handleChange (e: React.ChangeEvent<FormControlElement>, index?: number): void {
+  const handleChange = (e: React.ChangeEvent<FormControlElement>, index?: number): void => {
     const { name, value } = e.target;
     if (name === 'description') setNewDeck({...newDeck, description: value});
     else if (name === 'genre') setNewDeck({...newDeck, genre: value});
-    else if (index !== undefined) {
-      const tempList: any[] = [...cardList]
+    else if (index) {
+      const tempList: any = [...cardList]
       tempList[index][name] = value;
       setCardList(tempList);
     }
-    // else if (files && index !== undefined) {
-    //   const tempList: any[] = [...cardList];
-    //   tempList[index][name] = name === 'highlight' ? files[0] : value;
-    //   setCardList(tempList);
-    // }
   }
 
-  function handleRemoveClick(index: number) {
+  function handleRemoveClick(index: number): void {
     const tempList = [...cardList];
     tempList.splice(index, 1);
     setCardList(tempList);
   }
 
-  function handleAddClick() {
+  function handleAddClick(): void {
     setCardList([...cardList, { question: '', answer: ''}]); // add highlight back
   }
 
@@ -123,7 +116,7 @@ const NewDeck = ({ setClickedItem }: Props) => {
                   placeholder="Enter a description of your deck"
                 />
               </Form.Group>
-              {cardList.map((card, index) => (
+              {cardList.map((card: ICard, index: number) => (
                 <Form.Group className="my-3" key={index}>
                   <Form.Label htmlFor="question">Question</Form.Label>
                   <Form.Control

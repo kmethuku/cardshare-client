@@ -3,15 +3,17 @@ import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import Link from 'next/link';
 import { Button, Card } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
+import IDeck from '../interfaces/IDeck';
+import ICard from '../interfaces/ICard';
 
 type Props = {
-  flashcards: any,
-  setFlashcards: Dispatch<SetStateAction<any>>,
+  flashcards: IDeck,
+  setFlashcards: Dispatch<SetStateAction<IDeck | null>>,
 }
 
 function Flashcards({ flashcards, setFlashcards }: Props) {
   const [cardText, setCardText] = useState<string>('');
-  const [card, setCard] = useState<any>(flashcards[0]);
+  const [card, setCard] = useState<ICard>(flashcards.cards[0]);
   const [index, setIndex] = useState<number>(0);
   const headers = [
     { label: "Question", key: "question" },
@@ -28,7 +30,7 @@ function Flashcards({ flashcards, setFlashcards }: Props) {
     setCard(flashcards.cards[index]);
   }, [card])
 
-  function toggleCardText(card: any): void {
+  function toggleCardText(card: ICard): void {
     if (cardText === card.question)
       setCardText(card.answer);
     else setCardText(card.question);
@@ -42,9 +44,9 @@ function Flashcards({ flashcards, setFlashcards }: Props) {
   }
 
   function handlePrevClick(): void {
-    if (flashcards.cards[index-1] !== undefined) {
-      setCard(flashcards.cards[index-1]);
-      setIndex(index-1);
+    if (flashcards.cards[index - 1] !== undefined) {
+      setCard(flashcards.cards[index - 1]);
+      setIndex(index - 1);
     }
   }
 
@@ -52,7 +54,7 @@ function Flashcards({ flashcards, setFlashcards }: Props) {
     <div>
       <HeaderButtons></HeaderButtons>
       <Link href="/study">
-        <Button className="mx-2 my-4" type="button" onClick={() => setFlashcards('')}>Back</Button>
+        <Button className="mx-2 my-4" type="button" onClick={() => setFlashcards(null)}>Back</Button>
       </Link>
       <div className="d-flex flex-column align-items-center justify-content-center">
         <Card style={{ width:"700px", height: "400px" }}>

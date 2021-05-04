@@ -4,15 +4,16 @@ import React, { useState, useEffect, useContext } from 'react';
 import Flashcards from '../components/flashcards';
 import { Button } from 'react-bootstrap';
 import { deleteSavedDeckByIdService, getSavedDecksByEmailService } from '../services/internalApi';
+import IDeck from '../interfaces/IDeck'
 
 function Study() {
   const authorized = useContext(AuthContext);
   if (!authorized) return null;
   const { currentUser, email } = authorized;
   const URL = 'http://localhost:3001/savedDecks';
-  const [savedDecks, setSavedDecks] = useState([]);
-  const [flashcards, setFlashcards] = useState('');
-  const [numDeleted, setNumDeleted] = useState(0);
+  const [savedDecks, setSavedDecks] = useState<IDeck[] | null>(null);
+  const [flashcards, setFlashcards] = useState<IDeck | null>(null);
+  const [numDeleted, setNumDeleted] = useState<number>(0);
 
   useEffect(() => {
     const sendEmail = email || currentUser.email;
@@ -24,17 +25,13 @@ function Study() {
     }
   }, [numDeleted, currentUser, email]);
 
-  function handleDeleteClick(e:any) {
+  function handleDeleteClick (e: React.MouseEvent<HTMLElement, MouseEvent>): void {
     const sendEmail = email || currentUser.email;
     deleteSavedDeckByIdService(sendEmail, e.target.id)
-
-    // fetch(`${URL}/${email || currentUser.email}-${e.target.id}`, {
-    //   method: 'DELETE'
-    // }).then(data => data.json()).then(data => data.json());
     setNumDeleted(numDeleted + 1);
   }
 
-  if (flashcards) {
+  if (flashcards !== null) {
     return (
       <div data-testid="study">
       {currentUser ?
@@ -47,13 +44,13 @@ function Study() {
       {currentUser? (
         <div key="study2">
           <HeaderButtons key="headerbuttons"></HeaderButtons>
-          {(savedDecks.length > 0) ?
+          {(savedDecks) ?
             (<>
             <h1 className="mx-2 my-4" key="title">My Saved Decks</h1>
           <div
             key="deckList"
             className="d-flex flex-row align-items-center     justify-content-start mx-2 mt-2">
-            {savedDecks.map((deck: any) =>
+            {savedDecks.map((deck: IDeck) =>
               deck.src ? (
                 <div
                   style={{ display: "inline-block" }}
@@ -71,7 +68,7 @@ function Study() {
                     onClick={() => setFlashcards(deck)}
                   />
                   <Button
-                    key={`button${deck.id}`}
+                    key={`button${deck._id}`}
                     className="mx-2 my-2"
                     type="button"
                     id={deck._id}

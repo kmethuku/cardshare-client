@@ -73,7 +73,7 @@ export const discoverBookService = (selectedBook: any): Promise<IDeck[]> => {
       return allDecks;
     })
 }
-
+// TEXT vs JSON
 export const signUpService = async (body: any): Promise<any> => {
   return await fetch(`${URL}/users`, {
     method: 'POST',
@@ -85,6 +85,7 @@ export const signUpService = async (body: any): Promise<any> => {
   .then(res => res.text())
 }
 
+// TEXT VS JSON
 export const saveDeckService = (email: string, selectedDeck: any): Promise<any> => {
   return fetch(`${URL}/savedDecks/${email}`, {
     method: 'POST',
@@ -96,6 +97,7 @@ export const saveDeckService = (email: string, selectedDeck: any): Promise<any> 
     .then(res => res.text())
 }
 
+// TEXT VS JSON
 export const voteService = (id: string, direction: string): Promise<any> => {
   return fetch(`${URL}/discover/vote/${id}-${direction}`, {
     method: 'GET',

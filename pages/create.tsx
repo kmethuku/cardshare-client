@@ -5,17 +5,17 @@ import NewDeck from '../components/newDeck';
 import { AuthContext } from '../contexts/AuthContext';
 import { Button } from 'react-bootstrap';
 import { getDeckByEmailService, deleteDeckByIdService } from '../services/internalApi'
+import IDeck from '../interfaces/IDeck'
 
 function Create() {
   const [deleteCount, setDeleteCount] = useState<number>(0);
   const [deckList, setDeckList] = useState<any[]>([]);
-  const [clickedItem, setClickedItem] = useState<string>("");
-  const [selectedDeck, setSelectedDeck] = useState<string>("");
+  const [clickedItem, setClickedItem] = useState<string>('');
+  const [selectedDeck, setSelectedDeck] = useState<IDeck | null>(null);
   const URL:string = "http://localhost:3001/myDecks";
   const context = useContext(AuthContext);
   if (!context) return null;
   const { currentUser, email } = context;
-  //console.log(email);
 
   useEffect(() => {
     let emailArg = email|| currentUser.email;
@@ -24,26 +24,13 @@ function Create() {
       .then(res => {
         res? setDeckList(res) : setDeckList(deckList)
       })
-      // fetch(`${URL}/${email || currentUser.email}`)
-      //   .then((data) => data.json())
-      //   .then((res) =>
-      //     res[0] ? setDeckList(res[0].myDecks) : setDeckList(deckList)
-      //   ); // add setDeckList(res[0].myDecks
     }
   }, [deleteCount, clickedItem]);
 
   function handleDeleteClick(e: React.FormEvent): void {
     const target = e.target as HTMLElement
-    // const {
-    //   target: { id },
-    // } = e;
     let emailArg =email ||currentUser.email;
     deleteDeckByIdService(emailArg, target.id)
-    // fetch(`${URL}/${email || currentUser.email}-${id}`, {
-    //   method: "DELETE",
-    // })
-    //   .then((data) => data.json())
-    //   .then((data) => data.json());
     setDeleteCount(deleteCount + 1);
   }
 

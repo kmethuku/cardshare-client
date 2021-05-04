@@ -1,23 +1,24 @@
 import Navbar from '../components/navbar';
 import HeaderButtons from '../components/headerButtons';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Book from '../components/book';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, AuthContext } from '../contexts/AuthContext';
 import { getDecksByGenreService } from '../services/internalApi';
-import { discoverSearchService } from '../services/externalApi';
+import { discoverSearchingService, searchBookService } from '../services/externalApi';
+import IBook from '../interfaces/IBook'
+import IDeck from '../interfaces/IDeck'
 
 function Discover() {
-  type SBook = {title: any; src: string | undefined; OLID: any;}
   const defaultBook = {title: '', src:'', OLID: ''}
-  const [selectedBook, setSelectedBook] = useState<SBook>(defaultBook);
+  const [selectedBook, setSelectedBook] = useState<IBook>(defaultBook);
   const [voted, setVoted] = useState<number>(0);
-  const [popular, setPopular] = useState<any[]>([]);
-  const [selfGrowth, setSelfGrowth] = useState<any[]>([]);
-  const [history, setHistory] = useState<any[]>([]);
-  const authorized = useAuth();
+  const [popular, setPopular] = useState<IDeck[]>([]);
+  const [selfGrowth, setSelfGrowth] = useState<IDeck[]>([]);
+  const [history, setHistory] = useState<IDeck[]>([]);
+  const authorized = useContext(AuthContext)
   if (!authorized) return null;
   const { currentUser } = authorized;
-  console.log(currentUser)
+
   useEffect(() => {
     const getDecksByGenre = async (): Promise<any> => {
       const discover = await getDecksByGenreService('discover')
@@ -34,7 +35,7 @@ function Discover() {
     const target = e.target as HTMLImageElement;
     if (target.title) {
       let query = target.title.split(" ").join("+");
-      let searchResult = await discoverSearchService(query, target.id);
+      let searchResult = await discoverSearchingService(query, target.id);
       setSelectedBook(searchResult)
     }
   }
@@ -63,7 +64,7 @@ function Discover() {
                   className="d-flex flex-row align-items-center
                 justify-content-start mx-2 mt-2"
                 >
-                  {popular.map((deck: any) => {
+                  {popular.map((deck: IDeck) => {
                     return deck.src ? (
                       <img
                         src={deck.src}

@@ -5,12 +5,14 @@ import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
 import { saveDeckService, voteService, getDeckByIdService } from '../services/internalApi'
 import uuid from 'react-uuid';
+import IDeck from '../interfaces/IDeck'
+import ICard from '../interfaces/ICard'
 
 type Props = {
-  selectedDeck: any,
-  setSelectedDeck: Dispatch<SetStateAction<any>>,
-  from: any,
-  setClickedItem?: Dispatch<SetStateAction<any>>,
+  selectedDeck: IDeck,
+  setSelectedDeck: Dispatch<SetStateAction<IDeck | null>>,
+  from: string,
+  setClickedItem?: Dispatch<SetStateAction<string>>,
   setVoted?: Dispatch<SetStateAction<number>>,
   voted?: number,
 }
@@ -29,15 +31,17 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => 
   }
 
   async function handleVote(direction: string) {
-    voteService(selectedDeck._id, direction)
-    const result = await getDeckByIdService(selectedDeck._id)
-    setSelectedDeck(result);
+    if(selectedDeck._id) {
+      voteService(selectedDeck._id, direction)
+      const result = await getDeckByIdService(selectedDeck._id)
+      setSelectedDeck(result);
+    }
     if (setVoted && voted) setVoted(voted + 1);
   }
 
   return (
     <div>
-      {from !== "book" && <HeaderButtons></HeaderButtons>}
+      {from !== "book" && <HeaderButtons />}
       <div style={{ position: "absolute", top: "130px", zIndex: 1 }}>
         {from === "myDeck" ? (
           <Button
@@ -51,7 +55,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => 
           <Button
             style={{ position: "absolute", zIndex: 2 }}
             className="mx-2 my-4"
-            onClick={() => setSelectedDeck("")}
+            onClick={() => setSelectedDeck(null)}
           >
             Back
           </Button>
@@ -128,7 +132,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => 
           justify-content-center flex-wrap"
           style={{ width: "99vw", position: "absolute", top: "57vh" }}
         >
-          {selectedDeck.cards.map((card: any) => (
+          {selectedDeck.cards.map((card: ICard) => (
             <Card
               key={uuid()}
               style={{ maxWidth: "200px" }}

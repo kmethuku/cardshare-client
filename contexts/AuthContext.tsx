@@ -1,33 +1,12 @@
 import React, { Dispatch, useContext, useState, useEffect, SetStateAction } from 'react';
 import { auth } from '../firebase';
+import { IAuthContext, ICurrent } from '../interfaces/IAuth'
 
-type Props = {
-  children: JSX.Element,
-}
-
-interface AuthContextInterface {
-  currentUser: {
-    uid: string,
-    email: string,
-  },
-  setCurrentUser: Dispatch<SetStateAction<any>>,
-  setUsername: Dispatch<SetStateAction<any>>,
-  setEmail: Dispatch<SetStateAction<any>>,
-  email: string,
-  username: string,
-  signUp: (email: string, password: string) => void,
-  signOut: () => void,
-  logIn: (email: string, password: string) => void,
-
-}
-
-export const AuthContext = React.createContext<AuthContextInterface | null>(null)
+export const AuthContext = React.createContext<IAuthContext | null>(null)
 
 export function useAuth() {
   return useContext(AuthContext);
 }
-
-type ICurrent = { uid: string; email: string };
 
 export function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<ICurrent>({
@@ -84,4 +63,8 @@ export function AuthProvider({ children }: Props) {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+type Props = {
+  children: JSX.Element,
 }

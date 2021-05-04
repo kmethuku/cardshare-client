@@ -18,7 +18,7 @@ const HeaderButtons = () => {
       await signOut();
       router.push('/');
     } catch (err) {
-      setError('Signout Failed.');
+      setError("Signout Failed.");
     }
   }
 
