@@ -30,7 +30,7 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 secret.json
-.next.config.js
+next.config.js
 
 # vercel
 .vercel
