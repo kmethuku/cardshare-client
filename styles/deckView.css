@@ -1,0 +1,33 @@
+.deckViewInfo {
+    width: fit-content;
+    background-color: var(--medium);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+}
+
+.deckViewInfoRight {
+    margin-left:20px;
+}
+
+.deckViewInfoRightTitle {
+    color: white;
+    font-size: 1.5em;
+    font-weight:500;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.deckViewInfoRightDescription {
+    font-size: 1em;
+    font-weight: 300;
+    color: rgb(75, 75, 75);
+    margin-bottom: 10px;
+}
+
+.deckViewInfoRightCreator {
+    font-size: 0.8em;
+    font-weight: 300;
+    color: rgb(75, 75, 75);
+    margin-bottom: 20px;
+}

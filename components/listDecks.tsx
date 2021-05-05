@@ -3,41 +3,46 @@ import { useRouter } from 'next/router';
 import IDeck from '../interfaces/IDeck';
 import { AuthContext, useAuth } from '../contexts/AuthContext';
 import Container from './Container';
-import SavedDeck from './savedDeck'
-import { deleteSavedDeckByIdService} from '../services/internalApi'
+import Deck from './Deck'
+import { deleteSavedDeckByIdService, deleteDeckByIdService } from '../services/internalApi'
 
 type Props = {
-    savedDecks: IDeck[],
-    setSavedDecks: Dispatch<SetStateAction<IDeck[]>>,
+    decks: IDeck[],
+    setDecks: Dispatch<SetStateAction<IDeck[]>>,
+    type: String,
 }
 //{book.volumeInfo.imageLinks.thumbnail ||
-function ListSavedDecks ({ savedDecks, setSavedDecks }:Props) {
+function ListDecks ({ decks, setDecks, type }:Props) {
     const authorized = useContext(AuthContext);
     if (!authorized) return null;
     const { currentUser, email } = authorized;
 
     const showDecks = () => {
-        if (savedDecks.length === 0) {
-            return <div className="noDeckAnnouncement">No Saved Decks</div>
+        if (decks.length === 0) {
+            return <div className="noDeckAnnouncement">No Decks Available</div>
         } else {
-            return savedDecks.map((deck) => {
+            return decks.map((deck) => {
                 console.log(deck)
                  return <div className="bookDisplay" key={deck._id}>
                      <div className="deleteButton" onClick={() => deleteHandler(deck)}>𝗫</div>
-                     <SavedDeck deck={deck} savedDecks={savedDecks} setSavedDecks={setSavedDecks} key={deck.title}/>
+                     <Deck deck={deck} decks={decks} setDecks={setDecks} key={deck.title} type={type}/>
                 </div>
             })
         }
     }
 
-    const deleteHandler = (deck)=> {
+    const deleteHandler = (deck:any)=> {
         const sendEmail = email ||currentUser.email;
         const id:string = deck._id ? deck._id :deck.OLID;
         const response = confirm(`You sure you want to delete ${deck.title}?`)
-        if (response) {
+        if (response && type==="savedDecks") {
             deleteSavedDeckByIdService(sendEmail, id);
-            let newSavedDecks = savedDecks.filter((sDeck) => sDeck._id !== deck._id);
-            setSavedDecks(newSavedDecks);
+            let newDecks = decks.filter((sDeck) => sDeck._id !== deck._id);
+            setDecks(newDecks);
+        } else if(response && type==="myDecks") {
+            deleteDeckByIdService(sendEmail, id);
+            let newDecks = decks.filter((sDeck) => sDeck._id !== deck._id);
+            setDecks(newDecks);
         }
     }
 
@@ -50,4 +55,4 @@ function ListSavedDecks ({ savedDecks, setSavedDecks }:Props) {
     )
 }
 
-export default ListSavedDecks;
+export default ListDecks;

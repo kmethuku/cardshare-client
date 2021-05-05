@@ -1,34 +1,35 @@
 import { AuthContext, useAuth } from '../contexts/AuthContext';
 import React, { useState, useEffect, useContext } from 'react';
-import { deleteSavedDeckByIdService, getSavedDecksByEmailService } from '../services/internalApi';
+import { getDeckByEmailService } from '../services/internalApi';
 import IDeck from '../interfaces/IDeck'
 import ListDecks from '../components/listDecks'
 import { useRouter } from 'next/router';
 
-function Study() {
+function MyDecks() {
 
 const authorized = useContext(AuthContext);
     if (!authorized) return null;
     const { currentUser, email } = authorized;
     const router = useRouter();
-    const [savedDecks, setSavedDecks] = useState<IDeck[]>([]);
+    const [myDecks, setMyDecks] = useState<IDeck[]>([]);
 
     useEffect(() => {
         const sendEmail = email||currentUser.email
         if (sendEmail) {
-            getSavedDecksByEmailService(sendEmail)
+            getDeckByEmailService(sendEmail)
             .then((data) => {
-                data && setSavedDecks(data[0].savedDecks)
+                console.log(data)
+                data && setMyDecks(data)
             });
         };
     },[currentUser, email, router]);
 
     return(
         <div>
-            <ListDecks decks={savedDecks} setDecks={setSavedDecks} type={"savedDecks"}/>
+            <ListDecks decks={myDecks} setDecks={setMyDecks} type={"myDecks"}/>
         </div>
     )
 
 }
 
-export default Study;
+export default MyDecks;

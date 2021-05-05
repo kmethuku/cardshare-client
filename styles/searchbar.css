@@ -1,0 +1,22 @@
+.searchdiv {
+  width: 100%;
+  position: relative;
+}
+
+.searchdiv .searchbar {
+  width: 100%;
+}
+
+.searchdiv .resultsdiv {
+  position: absolute;
+  background-color: white;
+  z-index: 2;
+  width: inherit;
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.resultbook img {
+  margin: auto;
+  display: block;
+}

@@ -4,6 +4,8 @@
 @import './form.css';
 @import './flip.css';
 @import './deckList.css';
+@import './searchbar.css';
+@import'./deckView.css';
 
 :root {
   --primary: #2364AA;
@@ -41,16 +43,16 @@ p, li {
 .card {
   margin: auto;
   padding: 20px;
-  max-width: 50%;
 }
 
 .cardstrong {
   margin: auto;
   padding: 20px;
-  max-width: 50%;
+  width: 50%;
+  min-width: 600px;
   border-radius: 20px;
   border: 3px solid var(--light);
-  box-shadow: 10px 10px 10px var(--accent);
+  box-shadow: 7px 10px 20px var(--accent);
 }
 
 .cardsmall {

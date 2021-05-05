@@ -3,15 +3,15 @@ import { useRouter } from 'next/router';
 import { AuthContext, useAuth } from '../contexts/AuthContext';
 import IDeck from '../interfaces/IDeck'
 import Container from './Container';
-import { deleteSavedDeckByIdService} from '../services/internalApi'
 
 type Props = {
     deck: IDeck,
-    savedDecks: IDeck[],
-    setSavedDecks: Dispatch<SetStateAction<IDeck[]>>,
+    decks: IDeck[],
+    setDecks: Dispatch<SetStateAction<IDeck[]>>,
+    type:String,
 }
 
-function SavedDeck ({ deck, savedDecks, setSavedDecks }:Props) {
+function Deck ({ deck, decks, setDecks, type }:Props) {
     const authorized = useContext(AuthContext);
     if (!authorized) return null;
     const { currentUser, email } = authorized;
@@ -20,7 +20,11 @@ function SavedDeck ({ deck, savedDecks, setSavedDecks }:Props) {
 
 
     const clickHandler = () => {
+    if (type === "savedDecks") {
         router.push(`/deck/${deck._id}`);
+    } else {
+        router.push(`/deck/view/${deck._id}`)
+    }
     }
 
     return (
@@ -31,4 +35,4 @@ function SavedDeck ({ deck, savedDecks, setSavedDecks }:Props) {
     )
 }
 
-export default SavedDeck
+export default Deck

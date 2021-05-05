@@ -46,6 +46,15 @@ export const getSavedDeckByIdService = (email:string, id:any) : Promise<any> => 
   })
 }
 
+export const getMyDeckByIdService = (email:string, id:any) : Promise<any> => {
+  return fetch(`${URL}/myDeck/${email}-${id}`)
+  .then(res=>res.json())
+  .then(data => {
+    console.log(data)
+    return data
+  })
+}
+
 export const getDeckByIdService = (id: string): Promise<IDeck | null> => {
   return fetch(`${URL}/discover/${id}`)
     .then(res => res.json())

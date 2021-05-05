@@ -33,114 +33,14 @@ function Create() {
     setDeleteCount(deleteCount + 1);
   }
 
-  if (clickedItem === "viewDeck") {
     return (
-      <div>
-        {currentUser ? (
-          <ViewDeck
-            selectedDeck={selectedDeck}
-            setSelectedDeck={setSelectedDeck}
-            from={"myDeck"}
-            setClickedItem={setClickedItem}
-          />
-        ) : (
-          <h1>Access Unauthorized</h1>
-        )}
-      </div>
+      currentUser ? (
+        <NewDeck setClickedItem={setClickedItem} />
+      ) : (
+        <h1>Access Unauthorized</h1>
+      )
     );
-  } else if (clickedItem === "createDeck") {
-    return (
-      <div>
-        {currentUser ? (
-          <NewDeck setClickedItem={setClickedItem} />
-        ) : (
-          <h1>Access Unauthorized</h1>
-        )}
-      </div>
-    );
-  } else
-    return (
-      <div>
-        {currentUser ? (
-          <div>
-            <div
-              className="d-flex align-items-center
-            justify-content-between mx-2"
-            >
-              <h1 className="mx-2 my-4">My Decks</h1>
-              <button
-                className="mx-2 my-4"
-                type="button"
-                onClick={() => setClickedItem("createDeck")}
-              >
-                Create a New Deck
-              </button>
-            </div>
-            <div className="d-flex flex-row align-items-center justify-content-start mx-2">
-              {deckList &&
-                deckList.map((deck) =>
-                  deck.src ? (
-                    <div
-                      style={{ display: "inline-block" }}
-                      className="mx-2 my-2"
-                      key={deck._id}
-                    >
-                      <img
-                        className="mx-2 my-2"
-                        src={deck.src}
-                        width="150px"
-                        height="auto"
-                        onClick={() => {
-                          setClickedItem("viewDeck");
-                          setSelectedDeck(deck);
-                        }}
-                      />
-                      <button
-                        className="mx-2 my-2"
-                        type="button"
-                        id={deck._id}
-                        onClick={handleDeleteClick}
-                      >
-                        ❌
-                      </button>
-                    </div>
-                  ) : (
-                    <div
-                      style={{ display: "inline-block" }}
-                      className="mx-2 my-2 d-flex flex-row align-items-center
-                justify-content-center"
-                      key={deck._id}
-                    >
-                      <div
-                        className="my-2 mx-2 text-center"
-                        style={deckStyle}
-                        onClick={() => {
-                          setClickedItem("viewDeck");
-                          setSelectedDeck(deck);
-                        }}
-                      >
-                        {deck.title.length > 50
-                          ? deck.title.substring(0, 50) + "..."
-                          : deck.title}
-                      </div>
-                      <button
-                        className="mx-2 my-2"
-                        type="button"
-                        id={deck._id}
-                        onClick={handleDeleteClick}
-                      >
-                        ❌
-                      </button>
-                    </div>
-                  )
-                )}
-            </div>
-          </div>
-        ) : (
-          <h1>Access Unauthorized</h1>
-        )}
-      </div>
-    );
+
 }
 
 const deckStyle = {

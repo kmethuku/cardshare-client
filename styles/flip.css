@@ -41,11 +41,13 @@
 .flip-container .card-container .front {
   z-index: 2;
   transform: rotateY(0deg);
+  height: fit-content;
   /* front tile styles go here! */
 }
 .flip-container .card-container .back {
   transform: rotateY(-180deg);
   padding: 20px;
   font-size: 20px;
+  height: fit-content;
   /* back tile styles go here! */
 }

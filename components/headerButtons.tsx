@@ -36,7 +36,7 @@ const HeaderButtons = () => {
           </Link>
         </li>
         <li>
-          <Link href="/create">
+          <Link href="/mydecks">
             <a>My Decks</a>
           </Link>
         </li>

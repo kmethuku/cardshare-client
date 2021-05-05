@@ -9,6 +9,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: Props) {
+  const [loading, setLoading] = useState<boolean>(true)
   const [currentUser, setCurrentUser] = useState<ICurrent>({
     uid: "",
     email: "",
@@ -35,17 +36,18 @@ export function AuthProvider({ children }: Props) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      setLoading(false)
       if (user === null || user.uid === null || user.email === null) {
         setCurrentUser({
           ...currentUser,
           uid: "waiting...",
           email: "waiting...",
         });
-      } else
+      } else {
         setCurrentUser({
           uid: user.uid,
           email: user.email,
-        });
+        });}
     });
     return unsubscribe;
   }, []);
@@ -62,7 +64,10 @@ export function AuthProvider({ children }: Props) {
     signOut,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>);
 }
 
 type Props = {

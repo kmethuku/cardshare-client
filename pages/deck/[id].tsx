@@ -9,7 +9,7 @@ import{ getSavedDeckByIdService } from '../../services/internalApi'
 
 function Deck () {
     const context = useContext(AuthContext);
-    if (!context) return null;
+    if (!context || !context.currentUser.email) return null;
     const { currentUser, email } = context;
     const router = useRouter();
     const {id} = router.query;
@@ -20,20 +20,23 @@ function Deck () {
     const [index, setIndex] = useState<number>(0)
 
     useEffect(() => {
+      console.log(currentUser, email)
         const sendEmail = currentUser.email || email;
-        getSavedDeckByIdService(sendEmail, id)
-        .then(data => {
-          setDeck(data);
-          setCardText(data.cards[0].question)
-          setCard(data.cards[0]);
-        })
-    }, [router])
-  
+        if(sendEmail) {
+          getSavedDeckByIdService(sendEmail, id)
+          .then(data => {
+            setDeck(data);
+            setCardText(data.cards[0].question)
+            setCard(data.cards[0]);
+          })
+        }
+    }, [router, currentUser])
+
   const handleMove = (inc:number) : void => {
     setCard(deck?.cards[index+inc]);
     setCardText(deck?.cards[index+inc].question)
+    setTextType("Question:");
     setIndex(index+inc);
-    console.log(index+inc);
   }
 
   const toggleText = (card:any) : void => {
@@ -47,11 +50,12 @@ function Deck () {
   }
 
   return(
-  <Container>
+    deck ? (
+    <Container>
     <div>{deck?.title}</div>
     <div>Created by:{` ${deck?.creator}`}</div>
     <div className="flashCardWrapper">
-        <button disabled={index===0} 
+        <button disabled={index===0}
           className="flashCardButton"
           onClick={()=>handleMove(-1)}
           type="button">Previous</button>
@@ -60,13 +64,13 @@ function Deck () {
           <div className="flashcardType">{textType}</div>
           <div className="flashcardContent">{cardText}</div>
         </div>
-        <button 
+        <button
           disabled={index===deck?.cards?.length-1}
           onClick={()=>handleMove(1)}
           className="flashCardButton"
           type="button">Next</button>
     </div>
-  </Container>
+  </Container>) : (<div>loading...</div>)
   )
 }
 

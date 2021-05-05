@@ -12,7 +12,6 @@ import Dropdown from 'react-dropdown'
 import { TextField } from '@material-ui/core'
 import 'react-dropdown/style.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import css from '../styles/important.module.css'
 
 type Props = {
   setClickedItem: Dispatch<SetStateAction<string>>,
@@ -55,6 +54,7 @@ const NewDeck = ({ setClickedItem }: Props) => {
   }
 
   function handleRemoveClick(index: number): void {
+    console.log(index)
     let cardArray = [...newDeck.cards]
     cardArray.splice(index, 1)
     setNewDeck({
@@ -69,7 +69,7 @@ const NewDeck = ({ setClickedItem }: Props) => {
       cards: [...newDeck.cards, { question: '', answer: '' }]
     })
   }
-  console.log(newDeck.cards)
+  console.log(newDeck)
   async function handleSubmit (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> {
     e.preventDefault();
     newDeckService(email, newDeck)
@@ -78,47 +78,36 @@ const NewDeck = ({ setClickedItem }: Props) => {
   }
 
   return (
-    <div>
+    <Container>
+      <Card option="strong">
+        <h1>New Deck</h1>
         <Searchbar setNewDeck={setNewDeck} newDeck={newDeck} />
-      <Container>
-        <Card option="strong">
-          <h1>New Deck</h1>
-          <TextField
-            className="textfield"
-            type="text"
-            label="Title"
-            name="title"
-            value={newDeck.title}
-            onChange={handleDeckChange}
-            required
-            disabled
-          />
-          <Dropdown
-            className="formDropdown"
-            options={genreOption}
-            value={newDeck.genre}
-            placeholder="Select a Genre"
-            onChange={(option) => handleGenreChange(option)}
-          />
-          <TextField
-            className="textfield"
-            type="text"
-            label="Description"
-            name="description"
-            value={newDeck.description}
-            onChange={handleDeckChange}
-          />
-          <Carousel selectedItem={newDeck.cards.length-1} showThumbs={false}>
-            {newDeck.cards.map((card: ICard, index: number) => (
-              <Card option="small" key={index}>
-                Flashcard {index +1}
-                <a onClick={() => handleRemoveClick(index)}>
-                  <img
-                    style={{width: '20px', float: 'right'}}
-                    src="/delete.png"
-
-                /></a>
-                <form id={index.toString()}>
+        <Dropdown
+          className="formDropdown"
+          options={genreOption}
+          value={newDeck.genre}
+          placeholder="Select a Genre"
+          onChange={(option) => handleGenreChange(option)}
+        />
+        <TextField
+          className="textfield"
+          type="text"
+          label="Description"
+          name="description"
+          value={newDeck.description}
+          onChange={handleDeckChange}
+        />
+        <Carousel selectedItem={newDeck.cards.length - 1} showThumbs={false}>
+          {newDeck.cards.map((card: ICard, index: number) => (
+            <Card option="small" key={index}>
+              Flashcard {index + 1}
+              <a
+                style={{ float: "right", cursor: "pointer" }}
+                onClick={() => handleRemoveClick(index)}
+              >
+                <img style={{ width: "20px" }} src="/delete.png" />
+              </a>
+              <form id={index.toString()}>
                 <TextField
                   className="textfield"
                   type="text"
@@ -135,35 +124,34 @@ const NewDeck = ({ setClickedItem }: Props) => {
                   value={card.answer}
                   onChange={handleCardChange}
                 />
-
-                </form>
-                </Card>
-              ))}
-              </Carousel>
-              <button
-                className="btn btn-primary"
-                type="button"
-                onClick={() => handleAddClick()}>
-                Add Card
-              </button>
-              <br />
-              <button
-                className="btn btn-primary"
-                type="button"
-                onClick={(e) => handleSubmit(e)}
-              >
-                Save
-              </button>
-              <button
-                className="btn btn-primary"
-                type="button"
-                onClick={() => setClickedItem("")}
-              >
-                Cancel
-              </button>
-        </Card>
-      </Container>
-    </div>
+              </form>
+            </Card>
+          ))}
+        </Carousel>
+        <button
+          className="btn btn-primary"
+          type="button"
+          onClick={() => handleAddClick()}
+        >
+          Add Card
+        </button>
+        <br />
+        <button
+          className="btn btn-primary"
+          type="button"
+          onClick={(e) => handleSubmit(e)}
+        >
+          Save
+        </button>
+        <button
+          className="btn btn-primary"
+          type="button"
+          onClick={() => setClickedItem("")}
+        >
+          Cancel
+        </button>
+      </Card>
+    </Container>
   );
 }
 
