@@ -12,8 +12,6 @@ jest.mock('../../services/internalApi.tsx', () => ({
   deleteDeckByIdService: async () => (Promise.resolve(true)),
 }))
 
-
-
 let container: any;
 
 describe('<Index />', () => {
@@ -53,7 +51,7 @@ describe('<Index />', () => {
     const usernameInput = screen.getByPlaceholderText(/jack1234/)
     const submitBtn = screen.getByTestId('form')
     fireEvent.submit(submitBtn)
-    
+
     })
   })
 

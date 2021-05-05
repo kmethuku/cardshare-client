@@ -1,4 +1,5 @@
-import ICard from './ICard'
+import ICard, { defaultCard } from './ICard'
+
 
 export default interface IDeck {
   _id?: string,
@@ -10,4 +11,15 @@ export default interface IDeck {
   OLID: string,
   creator: string,
   votes: number,
+}
+
+export const defaultDeck = {
+  title: '',
+  description: '',
+  src: '',
+  genre: '',
+  OLID: '',
+  cards: [defaultCard],
+  creator: '',
+  votes: 0,
 }

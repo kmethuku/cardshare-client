@@ -1,0 +1,8 @@
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid2 h1 {
+  color: var(--primary);
+}

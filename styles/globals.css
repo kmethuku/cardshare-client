@@ -1,3 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+@import './landingpage.css';
+@import './navbar.css';
+@import './form.css';
+@import './flip.css';
+@import './deckList.css';
+
+:root {
+  --primary: #2364AA;
+  --secondary: #3DA5D9;
+  --medium: #73BFB8;
+  --light: #FEC601;
+  --accent: #EA7317;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+p, li {
+  font-size: 1.1rem;
+}
+
+.container {
+  padding: 15px;
+  display: block;
+  height: auto;
+  margin: auto;
+}
+
+.container h1, h2, h3, h4, h5 {
+  text-align: center;
+}
+
+.card {
+  margin: auto;
+  padding: 20px;
+  max-width: 50%;
+}
+
+.cardstrong {
+  margin: auto;
+  padding: 20px;
+  max-width: 50%;
+  border-radius: 20px;
+  border: 3px solid var(--light);
+  box-shadow: 10px 10px 10px var(--accent);
+}
+
+.cardsmall {
+  margin: 30px auto;
+  padding: 20px;
+  max-width: 90%;
+  border-radius: 20px;
+  border: 3px solid var(--secondary);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -20,3 +83,4 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #007bff;
 }
+

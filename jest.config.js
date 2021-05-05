@@ -5,10 +5,17 @@ module.exports = {
   // using ts-jest
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.jsx?$': 'babel-jest',
   },
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
+  testRegex: '(test|spec)\\.tsx?$',
 
   // Module file extensions for importing
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  setupFilesAfterEnv: ["./globals.d.ts"]
+  // transformIgnorePatterns: ['<rootDir>/node_modules/'],
+  setupFilesAfterEnv: ["./globals.d.ts"],
+  globals: {
+    "ts-jest": {
+      tsconfig: "tsconfig.jest.json"
+    }
+  }
 }

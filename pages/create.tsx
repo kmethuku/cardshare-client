@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import HeaderButtons from '../components/headerButtons';
+
 import ViewDeck from '../components/viewDeck';
 import NewDeck from '../components/newDeck';
 import { AuthContext } from '../contexts/AuthContext';
@@ -22,14 +22,14 @@ function Create() {
     if (emailArg) {
       getDeckByEmailService(emailArg)
       .then(res => {
-        res? setDeckList(res) : setDeckList(deckList)
+        res && setDeckList(res);
       })
     }
   }, [deleteCount, clickedItem]);
 
   function handleDeleteClick(e: React.FormEvent): void {
     const target = e.target as HTMLElement
-    let emailArg =email ||currentUser.email;
+    let emailArg = email ||currentUser.email;
     deleteDeckByIdService(emailArg, target.id)
     setDeleteCount(deleteCount + 1);
   }
@@ -64,7 +64,6 @@ function Create() {
       <div>
         {currentUser ? (
           <div>
-            <HeaderButtons />
             <div
               className="d-flex align-items-center
             justify-content-between mx-2"

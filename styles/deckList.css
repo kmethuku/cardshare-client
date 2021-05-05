@@ -1,0 +1,74 @@
+.deckListing {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.noDeckAnnouncement {
+    width: 100%;
+    text-align: center;
+    color:rgb(75, 75, 75);
+    font-weight: 500;
+}
+
+.deleteButton {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    font-size: 12px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.deleteButton:hover {
+    cursor: pointer;
+}
+
+.bookDisplay {
+    position: relative;
+    width: 170px;
+    height: auto;
+    background-color: var(--medium);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    margin: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bookCover {
+    width: 150px;
+    height:auto;
+    border: solid 0.2em white;
+    margin-bottom: 10px;
+}
+
+.flashCardWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.flashCardButton {
+    background-color: var(--medium);
+    border-radius: 10px;
+    border: 0;
+    color: white;
+    padding: 0.5em 1em;
+}
+.flashCardBody {
+height: 50vh;
+width:60vw;
+box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+border: solid 3px var(--light);
+border-radius: 10px;
+padding: 20px;
+}

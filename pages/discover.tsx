@@ -1,10 +1,9 @@
-import Navbar from '../components/navbar';
-import HeaderButtons from '../components/headerButtons';
+import Searchbar from '../components/searchbar';
 import React, { useState, useEffect, useContext } from 'react';
 import Book from '../components/book';
 import { useAuth, AuthContext } from '../contexts/AuthContext';
 import { getDecksByGenreService } from '../services/internalApi';
-import { discoverSearchingService, searchBookService } from '../services/externalApi';
+import { discoverySearchingService, searchBookService } from '../services/externalApi';
 import IBook from '../interfaces/IBook'
 import IDeck from '../interfaces/IDeck'
 
@@ -35,7 +34,7 @@ function Discover() {
     const target = e.target as HTMLImageElement;
     if (target.title) {
       let query = target.title.split(" ").join("+");
-      let searchResult = await discoverSearchingService(query, target.id);
+      let searchResult = await discoverySearchingService(query, target.id);
       setSelectedBook(searchResult)
     }
   }
@@ -44,10 +43,9 @@ function Discover() {
     <div onClick={handleClick}>
       {currentUser ? (
         <div style={{ position: "relative" }}>
-          <HeaderButtons />
           <div className="mx-2">
             <div style={{ position: "relative", zIndex: 2 }}>
-              <Navbar setSelectedBook={setSelectedBook} />
+              <Searchbar setSelectedBook={setSelectedBook} />
             </div>
             {selectedBook.title ? (
               <Book

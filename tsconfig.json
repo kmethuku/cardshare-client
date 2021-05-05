@@ -69,11 +69,10 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "jest.config.js"
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules",
-    "babel.config.js"
+    "__babel.config.js"
   ]
 }
