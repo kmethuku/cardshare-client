@@ -24,7 +24,11 @@
 }
 
 .nav a {
-  color: black;
+  color: white;
   text-decoration: none;
   cursor: pointer;
+}
+
+.nav a:hover {
+  color: var(--accent)
 }

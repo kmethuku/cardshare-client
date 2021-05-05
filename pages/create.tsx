@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import ViewDeck from '../components/viewDeck';
 import NewDeck from '../components/newDeck';
 import { AuthContext } from '../contexts/AuthContext';
-import { Button } from 'react-bootstrap';
 import { getDeckByEmailService, deleteDeckByIdService } from '../services/internalApi'
 import IDeck from '../interfaces/IDeck'
 
@@ -69,13 +68,13 @@ function Create() {
             justify-content-between mx-2"
             >
               <h1 className="mx-2 my-4">My Decks</h1>
-              <Button
+              <button
                 className="mx-2 my-4"
                 type="button"
                 onClick={() => setClickedItem("createDeck")}
               >
                 Create a New Deck
-              </Button>
+              </button>
             </div>
             <div className="d-flex flex-row align-items-center justify-content-start mx-2">
               {deckList &&
@@ -96,14 +95,14 @@ function Create() {
                           setSelectedDeck(deck);
                         }}
                       />
-                      <Button
+                      <button
                         className="mx-2 my-2"
                         type="button"
                         id={deck._id}
                         onClick={handleDeleteClick}
                       >
                         ❌
-                      </Button>
+                      </button>
                     </div>
                   ) : (
                     <div
@@ -124,14 +123,14 @@ function Create() {
                           ? deck.title.substring(0, 50) + "..."
                           : deck.title}
                       </div>
-                      <Button
+                      <button
                         className="mx-2 my-2"
                         type="button"
                         id={deck._id}
                         onClick={handleDeleteClick}
                       >
                         ❌
-                      </Button>
+                      </button>
                     </div>
                   )
                 )}
