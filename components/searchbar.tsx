@@ -3,7 +3,6 @@ import { searchBookService } from '../services/externalApi'
 import IBook from '../interfaces/IBook'
 import { useRouter } from 'next/router';
 import TextField from '@material-ui/core/TextField'
-import { route } from 'next/dist/next-server/server/router';
 
 type Props = {
   setSelectedBook?: Dispatch<SetStateAction<IBook>>,
@@ -13,8 +12,8 @@ type Props = {
 
 function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
   const [results, setResults] = useState<any[]>([]);
-  const [input, setInput] = useState('');
-  const [time, setTime] = useState(0);
+  const [input, setInput] = useState<string>('');
+  const [time, setTime] = useState<number>(0);
   const router = useRouter();
 
 
@@ -31,7 +30,7 @@ function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
         let query = input.split(' ').join('+');
         let result = await searchBookService(query);
         setResults(result);
-    }
+      }
     }
     setTime(newTime)
   }
@@ -68,7 +67,7 @@ function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
         label="What book are you looking for?"
         onChange={handleChange}
       />
-      {results.length > 0 && <div className="resultsdiv">
+      {results && results.length > 0 && <div className="resultsdiv">
         {results.map((book: any) => {
           return (
             <div

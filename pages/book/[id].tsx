@@ -4,12 +4,13 @@ import BookDetails from '../../components/BookDetails'
 import ListDecks from '../../components/ListDecks'
 import { getBookDetailsService } from '../../services/externalApi'
 import { discoverBookService } from '../../services/internalApi'
+import IDeck from '../../interfaces/IDeck';
 
 const BookDetailPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [book, setBook] = useState<any>(null);
-  const [decks, setDecks] = useState<any>(null);
+  const [decks, setDecks] = useState<IDeck[] | null>(null);
 
   useEffect(() => {
     const getBookDetails = async () => {
@@ -20,7 +21,6 @@ const BookDetailPage = () => {
 
         const deckResult = await discoverBookService(queryId);
         setDecks(deckResult);
-        console.log(deckResult)
       }
     }
     getBookDetails();

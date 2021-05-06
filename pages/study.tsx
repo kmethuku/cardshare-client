@@ -19,7 +19,7 @@ const authorized = useContext(AuthContext);
         if (sendEmail) {
             getSavedDecksByEmailService(sendEmail)
             .then((data) => {
-                data && setSavedDecks(data[0].savedDecks)
+                data.length && setSavedDecks(data[0].savedDecks)
             });
         };
     },[router, currentUser, email]);

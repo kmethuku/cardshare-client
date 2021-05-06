@@ -84,7 +84,7 @@ const NewDeck = ({ setClickedItem }: Props) => {
       creator: username
     }
     e.preventDefault();
-    newDeckService(email, newDeck)
+    await newDeckService(email, submitDeck)
     newDefaultDeck = defaultDeck;
     newDefaultDeck.cards = [{question: '', answer: ''}]
     await setNewDeck(newDefaultDeck)

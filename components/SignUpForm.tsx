@@ -1,13 +1,10 @@
 import React, { useState, useContext, Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
-import { Form, Button } from 'react-bootstrap';
 import Card from '../components/Card'
 import  { signUpService } from '../services/internalApi';
 import TextField from '@material-ui/core/TextField';
 import FormControlElement from '../interfaces/FormControlElement';
-import { Transition } from 'react-transition-group';
-import Link from 'next/link'
 
 const initialState = {
   username: '',
@@ -26,7 +23,7 @@ const SignUpForm = ({setLogin}: Props) => {
   const auth = useContext(AuthContext);
   if (!auth) return null;
 
-  const { signUp, setCurrentUser, setEmail, setUsername } = auth;
+  const { signUp, setEmail, setUsername } = auth;
 
   const handleSignUp = async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
     e.preventDefault();

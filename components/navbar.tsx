@@ -20,15 +20,13 @@ const Navbar = () => {
     if (currentUser.email !== email) setEmail(currentUser.email)
 
     const getUsername = async () => {
-      if (loggedIn) {
+      if (loggedIn && currentUser.email) {
         let username = await getUserService(currentUser.email)
-        if (username) setUsername(username[0].username)
-      }
-      else {
+        if (username && username[0]) setUsername(username[0].username)
+      } else {
         setUsername('')
         setEmail('')
       }
-
     }
     getUsername();
   },[currentUser])
@@ -39,6 +37,9 @@ const Navbar = () => {
     try {
       setError('');
       await signOut();
+      await setUsername('')
+      await setEmail('')
+      loggedIn = false;
       router.push('/');
     } catch (err) {
       setError("Signout Failed.");

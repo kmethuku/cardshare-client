@@ -12,7 +12,7 @@ const authorized = useContext(AuthContext);
     if (!authorized) return null;
     const { currentUser, email } = authorized;
     const router = useRouter();
-    const [myDecks, setMyDecks] = useState<IDeck[]>([]);
+    const [myDecks, setMyDecks] = useState<IDeck[] | null>(null);
 
     useEffect(() => {
         const sendEmail = email||currentUser.email
@@ -23,7 +23,7 @@ const authorized = useContext(AuthContext);
                 data && setMyDecks(data)
             });
         };
-    },[currentUser, email, router]);
+    },[]);
 
     const handleNewDeck = () => {
         router.push("/create")
