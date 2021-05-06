@@ -1,12 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Link from 'next/link';
 import { AuthContext } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
+import { getUserService } from '../services/internalApi'
 
 const Navbar = () => {
   const context = useContext(AuthContext);
   if (!context) return null;
-  const { signOut, currentUser } = context;
+  const { signOut, currentUser, setEmail, email, setUsername } = context;
   let loggedIn: boolean
   if (currentUser.email !== "waiting...") {
     loggedIn = true;
@@ -14,6 +15,25 @@ const Navbar = () => {
 
   const [error, setError] = useState<string>('');
   const router = useRouter();
+
+  useEffect(() => {
+    if (currentUser.email !== email) setEmail(currentUser.email)
+
+    const getUsername = async () => {
+      if (loggedIn) {
+        let username = await getUserService(currentUser.email)
+        if (username) setUsername(username[0].username)
+      }
+      else {
+        setUsername('')
+        setEmail('')
+      }
+
+    }
+    getUsername();
+  },[currentUser])
+
+  console.log(context)
 
   const handleSignOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> => {
     try {
@@ -35,16 +55,16 @@ const Navbar = () => {
             <a>Discover</a>
           </Link>
         </li>
-        <li className="navButton">
+        {email && <li className="navButton">
           <Link href="/mydecks">
             <a>My Decks</a>
           </Link>
-        </li>
-        <li className="navButton">
+        </li>}
+        {email && <li className="navButton">
           <Link href="/study">
             <a >Study</a>
           </Link>
-        </li>
+        </li>}
         <li className="navButton">
           {loggedIn ? (
             <a
