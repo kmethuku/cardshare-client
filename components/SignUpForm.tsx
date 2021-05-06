@@ -52,7 +52,7 @@ const SignUpForm = ({setLogin}: Props) => {
   }
 
   return (
-    <div className="front">
+    <div className="back">
     <Card>
       <h2>Sign Up</h2>
       <form className="form-control" data-testid="form">
@@ -72,6 +72,7 @@ const SignUpForm = ({setLogin}: Props) => {
           autoComplete="off"
           type="email"
           label="Email"
+          name="email"
           value={user.email}
           onChange={handleChange}
           required
@@ -98,7 +99,7 @@ const SignUpForm = ({setLogin}: Props) => {
           Sign Up
         </button>
       </form>
-      <a onClick={() => setLogin(true)}>Already have an account? Log In</a>
+      <a onClick={() => setLogin(false)}>Already have an account? Log In</a>
     </Card>
     </div>
   );

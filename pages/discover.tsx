@@ -1,8 +1,6 @@
-import Searchbar from '../components/searchbar';
-import React, { useState, useEffect, useContext } from 'react';
-import Book from '../components/book';
-import { useAuth, AuthContext } from '../contexts/AuthContext';
-import { getDecksByGenreService } from '../services/internalApi';
+import Searchbar from '../components/Searchbar';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
 import { discoverySearchingService, searchBookService } from '../services/externalApi';
 import IBook from '../interfaces/IBook'
 import IDeck from '../interfaces/IDeck'
@@ -20,8 +18,6 @@ function Discover() {
   if (!authorized) return null;
   const { currentUser } = authorized;
 
-
-
   async function handleClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
     const target = e.target as HTMLImageElement;
     if (target.title) {
@@ -30,8 +26,6 @@ function Discover() {
       setSelectedBook(searchResult)
     }
   }
-
-
 
   return (
    <Container>

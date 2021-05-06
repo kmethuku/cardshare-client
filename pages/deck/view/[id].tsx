@@ -1,11 +1,11 @@
 import React, { useState, Dispatch, SetStateAction, useContext, useEffect } from 'react';
-import { AuthContext, useAuth } from '../../../contexts/AuthContext';
+import { AuthContext } from '../../../contexts/AuthContext';
 import IDeck from '../../../interfaces/IDeck'
 import ICard from '../../../interfaces/ICard';
 import { useRouter } from 'next/router';
 import Container from '../../../components/Container';
 import Card from '../../../components/Card';
-import ListFlashcards from '../../../components/listFlashcards'
+import ListFlashcards from '../../../components/ListFlashCards'
 import{ getDeckByIdService, getUserService, voteService, getSavedDecksByEmailService, saveDeckService } from '../../../services/internalApi'
 
 function ViewDeck () {
@@ -50,12 +50,16 @@ function ViewDeck () {
   }
 
   const voteHandler = (direction:string) => {
-    if (direction === "up" && upvoted===false) {
-      voteService(deck?._id, direction);
-      setUpvoted(true);
-    } else if (direction==="down" && downvoted===false) {
-      voteService(deck?._id, direction);
-      setDownvoted(true)
+    if (deck) {
+      let stringId = deck._id as string;
+      if (direction === "up" && upvoted===false) {
+        deck && voteService(stringId, direction);
+        setUpvoted(true);
+      } else if (direction==="down" && downvoted===false) {
+        voteService(stringId, direction);
+        setDownvoted(true)
+      }
+
     }
   }
 

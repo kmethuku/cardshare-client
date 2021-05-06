@@ -2,7 +2,7 @@ import { AuthContext, useAuth } from '../contexts/AuthContext';
 import React, { useState, useEffect, useContext } from 'react';
 import { getDeckByEmailService } from '../services/internalApi';
 import IDeck from '../interfaces/IDeck';
-import ListDecks from '../components/listDecks';
+import ListDecks from '../components/ListDecks';
 import Container from '../components/Container';
 import { useRouter } from 'next/router';
 

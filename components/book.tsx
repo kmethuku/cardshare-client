@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import ViewDeck from './viewDeck';
+import ViewDeck from './ViewDeck';
 import { Button, Card } from 'react-bootstrap';
 import { discoverBookService } from '../services/internalApi';
 import uuid from 'react-uuid';

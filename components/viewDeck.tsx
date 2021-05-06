@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction, useContext } from 'react';
-import HeaderButtons from './headerButtons';
 import { AuthContext, useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
@@ -41,7 +40,7 @@ function ViewDeck({ selectedDeck, setSelectedDeck, from, setClickedItem = () => 
 
   return (
     <div>
-      {from !== "book" && <HeaderButtons />}
+      
       <div style={{ position: "absolute", top: "130px", zIndex: 1 }}>
         {from === "myDeck" ? (
           <button

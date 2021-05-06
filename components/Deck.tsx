@@ -31,6 +31,7 @@ function Deck ({ deck, decks, setDecks, type }:Props) {
         <div  onClick={clickHandler}>
             <img className="bookCover" src={deck.src}/>
             <div className="bookTitle">{deck.title}</div>
+            <div className="deckNumber"># of Cards: {deck.cards.length}</div>
         </div>
     )
 }

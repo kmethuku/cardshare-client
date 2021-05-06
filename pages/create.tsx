@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-
-import ViewDeck from '../components/viewDeck';
-import NewDeck from '../components/newDeck';
+import NewDeck from '../components/NewDeck';
 import { AuthContext } from '../contexts/AuthContext';
 import { getDeckByEmailService, deleteDeckByIdService } from '../services/internalApi'
 import IDeck from '../interfaces/IDeck'
