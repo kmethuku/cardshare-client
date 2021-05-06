@@ -1,35 +1,15 @@
 import React, { Dispatch, useContext, useState, useEffect, SetStateAction } from 'react';
 import { auth } from '../firebase';
+import { IAuthContext, ICurrent } from '../interfaces/IAuth'
 
-type Props = {
-  children: JSX.Element,
-}
-
-interface AuthContextInterface {
-  currentUser: {
-    uid: string,
-    email: string,
-  },
-  setCurrentUser: Dispatch<SetStateAction<any>>,
-  setUsername: Dispatch<SetStateAction<any>>,
-  setEmail: Dispatch<SetStateAction<any>>,
-  email: string,
-  username: string,
-  signUp: (email: string, password: string) => void,
-  signOut: () => void,
-  logIn: (email: string, password: string) => void,
-
-}
-
-export const AuthContext = React.createContext<AuthContextInterface | null>(null)
+export const AuthContext = React.createContext<IAuthContext | null>(null)
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
-type ICurrent = { uid: string; email: string };
-
 export function AuthProvider({ children }: Props) {
+  const [loading, setLoading] = useState<boolean>(true)
   const [currentUser, setCurrentUser] = useState<ICurrent>({
     uid: "",
     email: "",
@@ -56,17 +36,18 @@ export function AuthProvider({ children }: Props) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      setLoading(false)
       if (user === null || user.uid === null || user.email === null) {
         setCurrentUser({
           ...currentUser,
           uid: "waiting...",
           email: "waiting...",
         });
-      } else
+      } else {
         setCurrentUser({
           uid: user.uid,
           email: user.email,
-        });
+        });}
     });
     return unsubscribe;
   }, []);
@@ -83,5 +64,12 @@ export function AuthProvider({ children }: Props) {
     signOut,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>);
+}
+
+type Props = {
+  children: JSX.Element,
 }

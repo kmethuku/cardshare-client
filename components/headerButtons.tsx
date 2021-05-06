@@ -1,52 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Link from 'next/link';
-import { useAuth } from '../contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
-import { Button } from 'react-bootstrap';
 
-function HeaderButtons() {
-  const context = useAuth();
+const HeaderButtons = () => {
+  const context = useContext(AuthContext);
   if (!context) return null;
-  const { signOut } = context;
+  const { signOut, currentUser } = context;
+  let loggedIn: boolean
+  if (currentUser.email !== "waiting...") {
+    loggedIn = true;
+  } else loggedIn = false;
+
   const [error, setError] = useState<string>('');
   const router = useRouter();
 
   const handleSignOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> => {
-    e.preventDefault();
     try {
       setError('');
       await signOut();
       router.push('/');
     } catch (err) {
-      setError('Signout Failed.');
+      setError("Signout Failed.");
     }
   }
 
   return (
-    <div>
-      <div className="d-flex justify-content-between mx-2 my-2">
-        <h3>Cardshare</h3>
-        <Button type="button" onClick={handleSignOut}>Sign Out</Button>
-      </div>
-      <ul className="nav nav-tabs d-flex justify-content-between text-center">
-        <li className="nav-item w-25">
+    <>
+    <nav className="nav">
+      <Link href="/"><a><h1>Cardshare</h1></a></Link>
+      <ul>
+        <li className="navButton">
           <Link href="/discover">
-          <a className="nav-link">Discover</a>
+            <a>Discover</a>
           </Link>
         </li>
-        <li className="nav-item w-25">
-          <Link href="/create">
-          <a className="nav-link">Create</a>
+        <li className="navButton">
+          <Link href="/mydecks">
+            <a>My Decks</a>
           </Link>
         </li>
-        <li className="nav-item w-25">
+        <li className="navButton">
           <Link href="/study">
-          <a className="nav-link">Study</a>
+            <a >Study</a>
           </Link>
+        </li>
+        <li className="navButton">
+          {loggedIn ? (
+            <a 
+              onClick={handleSignOut}
+            >Sign Out</a>
+          ) : (
+            <Link href='/'><a>Log In</a></Link>
+          )}
         </li>
       </ul>
-    </div>
-  )
+    </nav>
+    <p>{error && error}</p>
+    </>
+  );
 }
 
 export default HeaderButtons;

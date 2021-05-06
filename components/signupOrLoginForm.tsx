@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth } from '../contexts/AuthContext';
-import { Form, Button, Card } from 'react-bootstrap';
+import { AuthContext } from '../contexts/AuthContext';
+import { Form, Button } from 'react-bootstrap';
+import TextField from '@material-ui/core/TextField';
+import Card from '../components/Card'
 import  { signUpService } from '../services/internalApi';
+import FormControlElement from '../interfaces/FormControlElement';
 
 function SignupOrLoginForm() {
   const [label, setLabel] = useState('Sign Up');
   const [userInfo, setUserInfo] = useState({username: '', email: '', password: ''});
-  const authorized = useAuth();
+  const authorized = useContext(AuthContext);
   if (!authorized) return null;
   const { signUp, logIn, currentUser, setCurrentUser, setUsername, setEmail } = authorized;
   const [error, setError] = useState('');
   const router = useRouter();
-  const userURL:string = 'http://localhost:3001/users';
 
-  async function handleSignUp(e:any):Promise<void> {
+  async function handleSignUp(e: React.MouseEvent<HTMLElement>):Promise<void> {
     e.preventDefault();
     try {
       setError('');
@@ -23,24 +25,18 @@ function SignupOrLoginForm() {
         username: userInfo.username,
         email: userInfo.email,
       }
-      await signUpService(newUser);
-
-      // fetch(userURL, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({username: userInfo.username, email: userInfo.email})
-      // }).then(data => data.json());
+      let result = await signUpService(newUser);
+      console.log(result)
       setUsername(userInfo.username);
       setEmail(userInfo.email);
       router.push('/discover');
     } catch (err) {
+      console.log(err)
       setError('Failed to create an account.');
     }
   }
 
-  async function handleLogIn(e:any):Promise<void>  {
+  async function handleLogIn(e: React.MouseEvent<HTMLElement>):Promise<void>  {
     e.preventDefault();
     try {
       setError('');
@@ -53,39 +49,87 @@ function SignupOrLoginForm() {
     }
   }
 
-  function handleChange(e:any) : void {
-    if (e.target.id === 'username') setUserInfo({...userInfo, username: e.target.value})
-    else if (e.target.id === 'email') setUserInfo({...userInfo, email: e.target.value})
-    else setUserInfo({...userInfo, password: e.target.value})
+  function handleChange(e: React.ChangeEvent<FormControlElement>) : void {
+    const target = e.target
+    if (target.name === 'username') {
+      setUserInfo({
+        ...userInfo,
+        username: target.value})}
+    else if (target.name === 'email') {
+      setUserInfo({
+        ...userInfo,
+        email: target.value})
+    } else {
+      setUserInfo({
+        ...userInfo,
+        password: target.value})
+    }
   }
-
+  console.log(userInfo)
   return (
-    <Card style={{ position:"relative", maxWidth:"400px", top:"-50px" }}>
-      <Card.Body>
-      <h2 className="text-center mb-4">{label}</h2>
-      <Form>
-        {error && <p>{error}</p>}
-        {label === 'Sign Up' &&
-        <Form.Group>
-          <Form.Label htmlFor="username">Username</Form.Label><br/>
-          <Form.Control type="text" id="username" value={userInfo.username} onChange={handleChange} placeholder="jack1234" required/>
-        </Form.Group>}
-        <Form.Group>
-          <Form.Label htmlFor="email">Email</Form.Label><br/>
-          <Form.Control type="email" id="email" value={userInfo.email} onChange={handleChange} placeholder="jack@example.com" required/>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label htmlFor="password">Password</Form.Label><br/>
-          <Form.Control type="password" id="password" value={userInfo.password} onChange={handleChange} placeholder="********" required/>
-        </Form.Group>
-          <Button className="w-100" type="submit" onClick={label === 'Sign Up' ? handleSignUp : handleLogIn}>{label}</Button>
-      </Form>
-      {label === 'Sign Up' ?
-        <div className="w-100 text-center mt-2" onClick={() => setLabel('Log In')}>Already have an account? Log In</div>
-        : <div className="w-100 text-center mt-2" onClick={() => setLabel('Sign Up')}>Don&apos;t have an account? Sign Up</div>}
-      </Card.Body>
+    <Card>
+        <h2>{label}</h2>
+          <form className="form-control" data-testid="form">
+          {error && <p>{error}</p>}
+          {label === "Sign Up" && (
+              <TextField
+                className="textfield"
+                autoComplete="off"
+                type="text"
+                name="username"
+                value={userInfo.username}
+                onChange={handleChange}
+                label="Username"
+                required
+              />
+          )}
+          <>
+            <TextField
+              className="textfield"
+              autoComplete="off"
+              type="email"
+              label="Email"
+              value={userInfo.email}
+              onChange={handleChange}
+              required
+            />
+          </>
+          <>
+            <TextField
+              className="textfield"
+              autoComplete="off"
+              type="password"
+              name="password"
+              label="Password"
+              value={userInfo.password}
+              onChange={handleChange}
+              required
+            />
+          </>
+          <button
+            name="signup"
+            className="btn btn-primary"
+            type="submit"
+            onClick={label === "Sign Up" ? handleSignUp : handleLogIn}
+          >
+            {label}
+          </button>
+        </form>
+        {label === "Sign Up" ? (
+          <div
+            onClick={() => setLabel("Log In")}
+          >
+            Already have an account? Log In
+          </div>
+        ) : (
+          <div
+            onClick={() => setLabel("Sign Up")}
+          >
+            Don&apos;t have an account? Sign Up
+          </div>
+        )}
     </Card>
-  )
+  );
 }
 
 export default SignupOrLoginForm;

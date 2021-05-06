@@ -1,183 +1,173 @@
-import React, { useState, Dispatch, SetStateAction, useContext } from 'react';
-import Navbar from './navbar';
-import HeaderButtons from './headerButtons';
-import { useAuth, AuthContext } from '../contexts/AuthContext';
-import { newDeckService } from '../services/internalApi';
-import { Form, Button, Card, Container } from 'react-bootstrap';
+import React, { useEffect, useState, Dispatch, SetStateAction, useContext } from 'react';
+import { useRouter } from 'next/router'
+import Searchbar from './searchbar';
+import { AuthContext } from '../contexts/AuthContext';
+import { getUserService, newDeckService } from '../services/internalApi';
+import ICard from '../interfaces/ICard'
+import IDeck, { defaultDeck } from '../interfaces/IDeck'
+import FormControlElement from '../interfaces/FormControlElement'
+import Container from '../components/Container'
+import Card from '../components/Card'
+import { Carousel } from 'react-responsive-carousel'
+import Dropdown from 'react-dropdown'
+import { TextField } from '@material-ui/core'
+import 'react-dropdown/style.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 type Props = {
-  setClickedItem: Dispatch<SetStateAction<any>>
+  setClickedItem: Dispatch<SetStateAction<string>>,
 }
 
-type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-
 const NewDeck = ({ setClickedItem }: Props) => {
-  type List = { question: string, answer: string }
-  const defaultList = { question: '', answer: '' }
-  const defaultDeck = {
-    title: '',
-    description: '',
-    src: '',
-    genre: '',
-    OLID: '',
-    cards: [defaultList],
-    creator: '',
-  }
-
   const context = useContext(AuthContext)
+  if (!context) return null;
+
+  const router = useRouter();
+  const genreOption:Array<string> =[
+    'Self-Growth', 'History'
+  ]
+  const defaultOption = genreOption[0];
+
   const email = context?.currentUser.email;
+  let username = context.username;
+  const [newDeck, setNewDeck] = useState<IDeck>(defaultDeck);
 
-  const [newDeck, setNewDeck] = useState(defaultDeck);
-  const [cardList, setCardList] = useState<List[]>([defaultList]); // add highlight back
-  // const URL = 'http://localhost:3001/myDecks';
-  const authorize = useAuth();
-  if (!authorize) return null;
-  const { currentUser, username } = authorize;
-  //const { currentUser, username } = useAuth();
-
-  function handleChange (e: React.ChangeEvent<FormControlElement>, index?: number): void {
+  const handleDeckChange = (e: React.ChangeEvent<FormControlElement>): void => {
     const { name, value } = e.target;
-    if (name === 'description') setNewDeck({...newDeck, description: value});
-    else if (name === 'genre') setNewDeck({...newDeck, genre: value});
-    else if (index !== undefined) {
-      const tempList: any[] = [...cardList]
-      tempList[index][name] = value;
-      setCardList(tempList);
-    }
-    // else if (files && index !== undefined) {
-    //   const tempList: any[] = [...cardList];
-    //   tempList[index][name] = name === 'highlight' ? files[0] : value;
-    //   setCardList(tempList);
-    // }
+    setNewDeck({ ...newDeck, [name]: value, })
   }
 
-  function handleRemoveClick(index: number) {
-    const tempList = [...cardList];
-    tempList.splice(index, 1);
-    setCardList(tempList);
+  const handleGenreChange = (option: any) => {
+    setNewDeck({
+      ...newDeck,
+      genre: option.value
+    })
   }
 
-  function handleAddClick() {
-    setCardList([...cardList, { question: '', answer: ''}]); // add highlight back
+  const handleCardChange = (e: any): void => {
+    const { name, value } = e.target;
+    const { id } = e.target.form;
+    let cardArray = [...newDeck.cards] as any[]
+    cardArray[Number(id)][name] = value
+    setNewDeck({
+      ...newDeck,
+      cards: cardArray
+    })
+  }
+
+  function handleRemoveClick(index: number): void {
+    console.log(index)
+    let cardArray = [...newDeck.cards]
+    cardArray.splice(index, 1)
+    setNewDeck({
+      ...newDeck,
+      cards: cardArray
+    })
+  }
+
+  function handleAddClick(): void {
+    setNewDeck({
+      ...newDeck,
+      cards: [...newDeck.cards, { question: '', answer: '' }]
+    })
   }
 
   async function handleSubmit (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> {
+    if (!username) {
+      username = await getUserService(email)
+    }
+    const submitDeck = {
+      ...newDeck,
+      creator: username
+    }
     e.preventDefault();
-    let tempNewDeck = newDeck;
-    tempNewDeck.genre = tempNewDeck.genre.toLowerCase();
-    tempNewDeck.cards = cardList;
-    tempNewDeck.creator = username;
-    console.log(email)
-    newDeckService(email, tempNewDeck)
-    setClickedItem('');
+    newDeckService(email, newDeck)
+    setNewDeck(defaultDeck)
+    router.push('/mydecks')
   }
 
   return (
-    <div style={{ position: "relative" }}>
-      <HeaderButtons></HeaderButtons>
-      <h1 className="text-center my-4">New Deck</h1>
-      <Container
-        className="d-flex align-items-center
-        justify-content-center text-center mt-4"
-      >
-        <Card style={{ width: "400px" }}>
-          <Card.Body>
-            <Form.Group>
-              <Form.Label htmlFor="title">Title</Form.Label>
-              <br />
-              <div style={{ position: "relative", zIndex: 2 }}>
-                <Navbar setNewDeck={setNewDeck} newDeck={newDeck}></Navbar>
-              </div>
-            </Form.Group>
-            <div
-              style={{
-                position: "absolute",
-                top: "130px",
-                left: "0px",
-                zIndex: 1,
-                width: "400px",
-                border: "1px solid rgba(0,0,0,.125)",
-                borderRadius: ".25rem",
-                padding: "20px",
-                borderTop: "none",
-              }}
-            >
-              <Form.Group className="my-3">
-                <Form.Label htmlFor="genre">Genre</Form.Label>
-                <br />
-                <Form.Control
-                  type="text"
-                  name="genre"
-                  value={newDeck.genre}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Enter the genre of the book"
-                />
-              </Form.Group>
-              <Form.Group className="my-3">
-                <Form.Label htmlFor="description">Description</Form.Label>
-                <br />
-                <Form.Control
-                  type="text"
-                  name="description"
-                  value={newDeck.description}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Enter a description of your deck"
-                />
-              </Form.Group>
-              {cardList.map((card, index) => (
-                <Form.Group className="my-3" key={index}>
-                  {console.log(index)}
-                  <Form.Label htmlFor="question">Question</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="question"
-                    value={card.question}
-                    onChange={(e) => handleChange(e, index)}
-                    placeholder="Enter question"
-                  />
-                  <Form.Label htmlFor="answer">Answer</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="answer"
-                    value={card.answer}
-                    onChange={(e) => handleChange(e, index)}
-                    placeholder="Enter answer"
-                  />
-                  {/* <label htmlFor="highlight">Upload Reference Highlight</label><br/> */}
-                  {/* <input type="file" name="highlight" accept="image/*" onChange={e => handleChange(e, index)}/><br/> */}
-                  <Button
-                    type="button"
-                    className="mt-3"
-                    onClick={() => handleRemoveClick(index)}
-                  >
-                    ❌
-                  </Button>
-                </Form.Group>
-              ))}
-              <Button type="button" onClick={() => handleAddClick()}>
-                Add Card
-              </Button>
-              <br />
-              <Button
-                type="button"
-                className="w-100 mt-3"
-                onClick={(e) => handleSubmit(e)}
+    <Container >
+      <Card option="strong">
+        <h3>New Deck</h3>
+        <Searchbar setNewDeck={setNewDeck} newDeck={newDeck} /><br />
+        <Dropdown
+          className="formDropdown"
+          options={genreOption}
+          value={newDeck.genre}
+          placeholder="Select a Genre"
+          onChange={(option) => handleGenreChange(option)}
+        />
+        <TextField
+          className="textfield"
+          type="text"
+          label="Description"
+          name="description"
+          value={newDeck.description}
+          onChange={handleDeckChange}
+        />
+        <Carousel selectedItem={newDeck.cards.length - 1} showThumbs={false}>
+          {newDeck.cards.map((card: ICard, index: number) => (
+            <Card option="small" key={index}>
+              Flashcard {index + 1}
+              <a
+                style={{ float: "right", cursor: "pointer" }}
+                onClick={() => handleRemoveClick(index)}
               >
-                Save
-              </Button>
-              <Button
-                type="button"
-                className="w-100 mt-3"
-                onClick={() => setClickedItem("")}
-              >
-                Cancel
-              </Button>
-            </div>
-          </Card.Body>
-        </Card>
-      </Container>
-    </div>
+                <img style={{ width: "20px" }} src="/delete.png" />
+              </a>
+              <form id={index.toString()}>
+                <TextField
+                  className="textfield"
+                  type="text"
+                  name="question"
+                  label="Question"
+                  value={card.question}
+                  onChange={handleCardChange}
+                />
+                <TextField
+                  className="textfield"
+                  type="text"
+                  name="answer"
+                  label="Answer"
+                  value={card.answer}
+                  onChange={handleCardChange}
+                />
+              </form>
+            </Card>
+          ))}
+        </Carousel>
+        <div className="center">
+        <button
+          className="saveButton"
+          type="button"
+          onClick={() => handleAddClick()}
+        >
+          Add Card
+        </button>
+        <div className="createDeckButton">
+        <button
+          className="saveButton"
+          type="button"
+          onClick={(e) => handleSubmit(e)}
+        >
+          Save Deck
+        </button>
+        <button
+          className="saveButton"
+          type="button"
+          onClick={() => setClickedItem("")}
+        >
+          Cancel
+        </button>
+
+        </div>
+        </div>
+      </Card>
+    </Container>
   );
 }
+
+
 
 export default NewDeck;

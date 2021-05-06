@@ -1,40 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SignupOrLoginForm from '../components/signupOrLoginForm';
-import { Container } from 'react-bootstrap';
+import Container from '../components/Container'
+import Card from '../components/Card'
+import SignUpForm from '../components/SignUpForm'
+import LogInForm from '../components/LogInForm'
 
 const Home: React.FC = () => {
+  const [login, setLogin] = useState<boolean>(false)
+  console.log(login)
   return (
-    <div>
-      <Container
-        className="d-flex align-items-center
-      justify-content-center my-5"
-      >
-        <div className="w-100 text-center" style={{ maxWidth: "800px" }}>
-          <h5 style={{ fontSize: "40px" }}>
-            How much do you remember from the books you&apos;ve read?
-          </h5>
-          <br />
-          <h1 style={{ fontSize: "60px", color: "#007bff" }}>
+    <div className="grid2">
+      <Container>
+        <Card>
+        <div className="welcome">
             Welcome to Cardshare
-          </h1>
+          </div>
+          <br />
+          <h4>
+            How much do you remember from the books you&apos;ve read?
+          </h4>
           <br />
           <h4>The flashcard sharing app for lifelong learners</h4>
           <br />
-        </div>
+        </Card>
       </Container>
-      <Container
-        className="d-flex align-items-center
-      justify-content-center"
-        style={containerStyle}
-      >
-        <div className="w-100 text-center" style={{ maxWidth: "400px" }}>
-          <SignupOrLoginForm></SignupOrLoginForm>
+      {/* <Container> */}
+        <div className="flip-container">
+          <div className={"card-container" + (login ? " flipped" : "")}>
+          <SignUpForm setLogin={setLogin}/>
+          <LogInForm setLogin={setLogin} />
+          </div>
         </div>
-      </Container>
+
+
+      {/* </Container> */}
     </div>
   );
 }
-
-const containerStyle = { minHeight: "50vh" }
 
 export default Home;
