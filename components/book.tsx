@@ -12,7 +12,7 @@ function Book({ selectedBook, setSelectedBook, setVoted, voted }: Props) {
   const [selectedDeck, setSelectedDeck] = useState<IDeck | null>(null);
 
   useEffect (() => {
-    discoverBookService(selectedBook)
+    discoverBookService(selectedBook.OLID)
       .then(res => setDecks(res));
   }, [selectedBook])
 

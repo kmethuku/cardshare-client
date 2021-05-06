@@ -1,8 +1,9 @@
 import { AuthContext, useAuth } from '../contexts/AuthContext';
 import React, { useState, useEffect, useContext } from 'react';
 import { getDeckByEmailService } from '../services/internalApi';
-import IDeck from '../interfaces/IDeck'
-import ListDecks from '../components/listDecks'
+import IDeck from '../interfaces/IDeck';
+import ListDecks from '../components/listDecks';
+import Container from '../components/Container';
 import { useRouter } from 'next/router';
 
 function MyDecks() {
@@ -24,10 +25,20 @@ const authorized = useContext(AuthContext);
         };
     },[currentUser, email, router]);
 
+    const handleNewDeck = () => {
+        router.push("/create")
+    }
+
     return(
-        <div>
+        <Container>
+            <div className="pageTitle">My Decks</div>
+            <button
+            type="button"
+            className="buttonNewDeck"
+            onClick={handleNewDeck}> Create New Deck
+            </button>
             <ListDecks decks={myDecks} setDecks={setMyDecks} type={"myDecks"}/>
-        </div>
+        </Container>
     )
 
 }

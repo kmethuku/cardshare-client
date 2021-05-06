@@ -22,7 +22,6 @@ function ListDecks ({ decks, setDecks, type }:Props) {
             return <div className="noDeckAnnouncement">No Decks Available</div>
         } else {
             return decks.map((deck) => {
-                console.log(deck)
                  return <div className="bookDisplay" key={deck._id}>
                      <div className="deleteButton" onClick={() => deleteHandler(deck)}>𝗫</div>
                      <Deck deck={deck} decks={decks} setDecks={setDecks} key={deck.title} type={type}/>
@@ -43,15 +42,17 @@ function ListDecks ({ decks, setDecks, type }:Props) {
             deleteDeckByIdService(sendEmail, id);
             let newDecks = decks.filter((sDeck) => sDeck._id !== deck._id);
             setDecks(newDecks);
+        } else if (response && type==="byBook") {
+            return;
         }
     }
 
     return(
-        <Container>
+
             <div className="deckListing">
                 {showDecks()}
             </div>
-        </Container>
+
     )
 }
 

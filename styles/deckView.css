@@ -1,13 +1,56 @@
+.buttonNewDeck {
+    border-radius: 10px;
+    background-color: var(--accent);
+    color: white;
+    padding: 10px 10px;
+    border: 0;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.buttonNewDeck:hover {
+    cursor: pointer;
+}
+
+.voteButton:hover {
+    cursor:pointer;
+}
+
+.saveButton {
+    border-radius: 10px;
+    background-color: var(--accent);
+    color: white;
+    padding: 10px 10px;
+    border: 0;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.saveButton:hover {
+    cursor:pointer;
+}
+
 .deckViewInfo {
-    width: fit-content;
+    width: 100%;
     background-color: var(--medium);
     border-radius: 10px;
     padding: 20px;
     display: flex;
 }
 
+.deckViewBookCover {
+    width: 150px;
+    height:auto;
+    border: solid 0.2em white;
+}
+
 .deckViewInfoRight {
     margin-left:20px;
+    height: fit-content;
 }
 
 .deckViewInfoRightTitle {
@@ -15,7 +58,6 @@
     font-size: 1.5em;
     font-weight:500;
     margin-bottom: 10px;
-    text-align: center;
 }
 
 .deckViewInfoRightDescription {
@@ -30,4 +72,62 @@
     font-weight: 300;
     color: rgb(75, 75, 75);
     margin-bottom: 20px;
+}
+
+.deckViewInfoRightVotes {
+    color: white;
+    font-size: 0.8em;
+    font-weight:300;
+    margin-bottom: 20px;
+}
+
+.deckViewInfoRightVotes span {
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.deckViewFlashcards {
+    width: 200px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: 3px solid var(--light);
+    margin: 5px;
+    text-overflow: ellipsis;
+    background-color: rgba(255, 255, 255, 0.65);;
+}
+
+.deckViewFlashcardsTitle {
+    font-size: 0.6em;
+    font-weight: 500;
+    color: rgb(75, 75, 75);
+    overflow:hidden;
+    min-height: 1em;
+    text-overflow: ellipsis;
+}
+
+.deckViewFlashcardsContent {
+    font-size: 0.75em;
+    font-weight: 300;
+    color: rgb(75, 75, 75);
+    overflow: hidden;
+    min-height: 1em;
+    text-overflow: ellipsis;
+    margin: 5px;
+}
+
+.deckViewFlashcardBottom {
+ background-color: var(--accent);
+border-radius: 10px;
+}
+
+.deckViewFlashcardHeader {
+    font-size: 1.5em;
+    font-weight: 500;
+    color: white;
+    padding: 10px 0 0 20px;
 }

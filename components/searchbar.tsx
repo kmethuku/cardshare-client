@@ -75,7 +75,7 @@ function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
             >
               { book.volumeInfo.imageLinks ? (
                 <>
-                <h2>{book.volumeInfo.title}</h2>
+                <h2 className="searchTitle">{book.volumeInfo.title}</h2>
                 <img
                   src={book.volumeInfo.imageLinks.thumbnail}
                   className="resultbookimg"
@@ -84,7 +84,7 @@ function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
                   />
                 </>
               ) :
-                <div>{book.volumeInfo.title}</div>
+                <div className="searchTitle">{book.volumeInfo.title}</div>
               }
             </div>
           )

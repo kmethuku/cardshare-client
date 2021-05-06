@@ -24,7 +24,7 @@ function Create() {
         res && setDeckList(res);
       })
     }
-  }, [deleteCount, clickedItem]);
+  }, [clickedItem]);
 
   function handleDeleteClick(e: React.FormEvent): void {
     const target = e.target as HTMLElement
@@ -34,11 +34,7 @@ function Create() {
   }
 
     return (
-      currentUser ? (
         <NewDeck setClickedItem={setClickedItem} />
-      ) : (
-        <h1>Access Unauthorized</h1>
-      )
     );
 
 }

@@ -1,6 +1,7 @@
 .searchdiv {
   width: 100%;
   position: relative;
+
 }
 
 .searchdiv .searchbar {
@@ -14,9 +15,17 @@
   width: inherit;
   max-height: 400px;
   overflow: scroll;
+  font-size: 1em;;
+  overflow-x: hidden;
 }
 
 .resultbook img {
   margin: auto;
   display: block;
+}
+
+.searchTitle {
+  font-size: 0.8em;
+  font-weight: 500;
+  color: rgb(75, 75, 75);
 }

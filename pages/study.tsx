@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { deleteSavedDeckByIdService, getSavedDecksByEmailService } from '../services/internalApi';
 import IDeck from '../interfaces/IDeck'
 import ListDecks from '../components/listDecks'
+import Container from '../components/Container';
 import { useRouter } from 'next/router';
 
 function Study() {
@@ -21,12 +22,13 @@ const authorized = useContext(AuthContext);
                 data && setSavedDecks(data[0].savedDecks)
             });
         };
-    },[currentUser, email, router]);
+    },[router, currentUser, email]);
 
     return(
-        <div>
+        <Container>
+            <div className="pageTitle">My Saved Decks</div>
             <ListDecks decks={savedDecks} setDecks={setSavedDecks} type={"savedDecks"}/>
-        </div>
+        </Container>
     )
 
 }

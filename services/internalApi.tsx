@@ -1,9 +1,13 @@
 const URL = 'http://localhost:3001'
 import IDeck from '../interfaces/IDeck';
 
+export const getUserService = (email:string) : Promise<any> => {
+  return fetch(`${URL}/users/${email}`)
+  .then(data=>data.json())
+}
+
 export const newDeckService = (email: string|undefined, body: any): Promise<any> => {
   body = JSON.stringify(body)
-  console.log(body)
   return fetch(`${URL}/myDecks/${email}`, {
     method: 'POST',
     headers: {
@@ -41,9 +45,6 @@ export const deleteSavedDeckByIdService = (email:string, id:string) : Promise<an
 export const getSavedDeckByIdService = (email:string, id:any) : Promise<any> => {
   return fetch(`${URL}/savedDeck/${email}-${id}`)
   .then(res=>res.json())
-  .then(data => {
-    return data
-  })
 }
 
 export const getMyDeckByIdService = (email:string, id:any) : Promise<any> => {
@@ -56,6 +57,7 @@ export const getMyDeckByIdService = (email:string, id:any) : Promise<any> => {
 }
 
 export const getDeckByIdService = (id: string): Promise<IDeck | null> => {
+  console.log(id)
   return fetch(`${URL}/discover/${id}`)
     .then(res => res.json())
     .then(data => {
@@ -77,8 +79,7 @@ export const getDeckByIdService = (id: string): Promise<IDeck | null> => {
     })
 }
 
-export const discoverBookService = (selectedBook: any): Promise<IDeck[]> => {
-  const OLID = selectedBook.OLID
+export const discoverBookService = (OLID: string): Promise<IDeck[]> => {
   return fetch(`${URL}/discover/OLID/${OLID}`)
     .then(res => res.json())
     .then(data => {
@@ -123,40 +124,12 @@ export const voteService = (id: string, direction: string): Promise<any> => {
 }
 
 export const getDecksByGenreService = (genre: string): Promise<any> => {
-  if (genre === 'discover') {
+  if (genre === 'Popular') {
     return fetch(`${URL}/discover`)
       .then(res => res.json())
-      .then(data => {
-        let allDecks: any[] = [];
-        let duplicateCheck: any[] = [];
-        data.forEach((match: any) =>
-          match.myDecks.forEach((deck: any) => {
-            if (!duplicateCheck.includes(deck.OLID)) {
-              deck.username = match.username;
-              allDecks.push(deck);
-              duplicateCheck.push(deck.OLID);
-            }
-          })
-        );
-        return allDecks;
-      })
   } else {
     return fetch(`${URL}/discover/genre/${genre}`)
       .then(res => res.json())
-      .then(data => {
-        let allDecks: any[] = [];
-        let duplicateCheck: any[] = [];
-        data.forEach((match: any) =>
-          match.myDecks.forEach((deck: any) => {
-            if (!duplicateCheck.includes(deck.OLID)) {
-              deck.username = match.username;
-              allDecks.push(deck);
-              duplicateCheck.push(deck.OLID);
-            }
-          })
-        )
-        return allDecks;
-      })
   }
 }
 

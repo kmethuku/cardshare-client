@@ -1,6 +1,7 @@
 import React, { useState, useContext, SetStateAction, Dispatch } from 'react';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
+import { getUserService } from '../services/internalApi';
 import TextField from '@material-ui/core/TextField';
 import Card from '../components/Card'
 import FormControlElement from '../interfaces/FormControlElement';
@@ -19,7 +20,7 @@ interface Props {
 function LogInForm({ setLogin }: Props) {
   const authorized = useContext(AuthContext);
   if (!authorized) return null;
-  const { logIn, setEmail } = authorized;
+  const { logIn, setEmail, setUsername } = authorized;
   const router = useRouter();
   const [user, setUser] = useState(initialState)
 
@@ -29,6 +30,8 @@ function LogInForm({ setLogin }: Props) {
       setUser({ ...user, error: '' })
       await logIn(user.email, user.password);
       setEmail(user.email);
+      const username = await getUserService(user.email)
+      setUsername(username[0].username)
       router.push('/discover');
     } catch (err) {
       setUser({ ...user, error: err.message});

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, Dispatch, SetStateAction, useContext } from 'react';
+import { useRouter } from 'next/router'
 import Searchbar from './searchbar';
 import { AuthContext } from '../contexts/AuthContext';
-import { newDeckService } from '../services/internalApi';
+import { getUserService, newDeckService } from '../services/internalApi';
 import ICard from '../interfaces/ICard'
 import IDeck, { defaultDeck } from '../interfaces/IDeck'
 import FormControlElement from '../interfaces/FormControlElement'
@@ -21,13 +22,14 @@ const NewDeck = ({ setClickedItem }: Props) => {
   const context = useContext(AuthContext)
   if (!context) return null;
 
+  const router = useRouter();
   const genreOption:Array<string> =[
     'Self-Growth', 'History'
   ]
   const defaultOption = genreOption[0];
 
   const email = context?.currentUser.email;
-  const username = context.username;
+  let username = context.username;
   const [newDeck, setNewDeck] = useState<IDeck>(defaultDeck);
 
   const handleDeckChange = (e: React.ChangeEvent<FormControlElement>): void => {
@@ -69,19 +71,26 @@ const NewDeck = ({ setClickedItem }: Props) => {
       cards: [...newDeck.cards, { question: '', answer: '' }]
     })
   }
-  console.log(newDeck)
+
   async function handleSubmit (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> {
+    if (!username) {
+      username = await getUserService(email)
+    }
+    const submitDeck = {
+      ...newDeck,
+      creator: username
+    }
     e.preventDefault();
     newDeckService(email, newDeck)
     setNewDeck(defaultDeck)
-    setClickedItem('');
+    router.push('/mydecks')
   }
 
   return (
     <Container>
       <Card option="strong">
         <h1>New Deck</h1>
-        <Searchbar setNewDeck={setNewDeck} newDeck={newDeck} />
+        <Searchbar setNewDeck={setNewDeck} newDeck={newDeck} /><br />
         <Dropdown
           className="formDropdown"
           options={genreOption}
@@ -128,6 +137,7 @@ const NewDeck = ({ setClickedItem }: Props) => {
             </Card>
           ))}
         </Carousel>
+        <div className="center">
         <button
           className="btn btn-primary"
           type="button"
@@ -135,13 +145,13 @@ const NewDeck = ({ setClickedItem }: Props) => {
         >
           Add Card
         </button>
-        <br />
+        <div>
         <button
           className="btn btn-primary"
           type="button"
           onClick={(e) => handleSubmit(e)}
         >
-          Save
+          Save Deck
         </button>
         <button
           className="btn btn-primary"
@@ -150,6 +160,9 @@ const NewDeck = ({ setClickedItem }: Props) => {
         >
           Cancel
         </button>
+
+        </div>
+        </div>
       </Card>
     </Container>
   );

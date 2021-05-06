@@ -6,6 +6,7 @@
 @import './deckList.css';
 @import './searchbar.css';
 @import'./deckView.css';
+@import './bookList.css';
 
 :root {
   --primary: #2364AA;
@@ -40,6 +41,12 @@ p, li {
   text-align: center;
 }
 
+.pageTitle {
+  font-size: 1em;
+  font-weight: 500;
+  color: rgb(75, 75, 75);
+}
+
 .card {
   margin: auto;
   padding: 20px;
@@ -63,8 +70,15 @@ p, li {
   border: 3px solid var(--secondary);
 }
 
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 /* Track */

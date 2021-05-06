@@ -5,38 +5,83 @@ import ICard from '../../../interfaces/ICard';
 import { useRouter } from 'next/router';
 import Container from '../../../components/Container';
 import Card from '../../../components/Card';
-import{ getMyDeckByIdService } from '../../../services/internalApi'
+import ListFlashcards from '../../../components/listFlashcards'
+import{ getMyDeckByIdService, getUserService, voteService, getSavedDecksByEmailService, saveDeckService } from '../../../services/internalApi'
 
 function ViewDeck () {
     const context = useContext(AuthContext);
     if (!context || !context.currentUser.email) return null;
     const { currentUser, email } = context;
+    console.log("USER", context)
     const router = useRouter();
     const {id} = router.query;
-    const [deck, setDeck] = useState<IDeck | null>(null)
+    const [deck, setDeck] = useState<IDeck | null>(null);
+    const [upvoted, setUpvoted] = useState<boolean>(false);
+    const [downvoted, setDownvoted] = useState<boolean>(false);
+    const[username, setUsername] = useState<string>("")
+
+    const setState = async (email) => {
+      let deck = await getMyDeckByIdService(email, id);
+      setDeck(deck);
+      let user = await getUserService(email);
+      console.log("USERNAME", user[0].username)
+      console.log("CREATOR", deck.creator)
+      setUsername(user[0].username);
+    }
 
     useEffect(() => {
-      console.log(currentUser, email)
         const sendEmail = currentUser.email || email;
         if(sendEmail) {
-          getMyDeckByIdService(sendEmail, id)
-          .then(data => {
-            setDeck(data);
-          })
+          setState(sendEmail);
         }
-    }, [router, currentUser])
+    }, [router, deck])
 
+  const handleSave = () => {
+    const sendEmail = currentUser.email || email;
+    getSavedDecksByEmailService(sendEmail)
+    .then((data) => {
+        const dupes = data[0].savedDecks.filter((book:any)=>{
+          return book._id===deck?._id;
+        })
+        if(dupes.length!==0) {alert("Already in your study decks.")}
+        else {
+          saveDeckService(sendEmail, deck)
+          .then (() => router.push("/study"))
+        }
+    });
+  }
+
+  const voteHandler = (direction:string) => {
+    if (direction === "up" && upvoted===false) {
+      voteService(deck?._id, direction);
+      setUpvoted(true);
+    } else if (direction==="down" && downvoted===false) {
+      voteService(deck?._id, direction);
+      setDownvoted(true)
+    }
+  }
 
   return(
     deck ? (
     <Container>
     <div className="deckViewInfo">
-        <img className="bookCover" src={deck.src}/>
+        <img className="deckViewBookCover" src={deck.src}/>
         <div className="deckViewInfoRight">
             <div className="deckViewInfoRightTitle">{deck?.title}</div>
             <div className="deckViewInfoRightDescription">{deck?.description}</div>
             <div className="deckViewInfoRightCreator">Created by:{` ${deck?.creator}`}</div>
+
+            <div className="deckViewInfoRightVotes">
+              {username===deck?.creator && <span className="voteButton" onClick={()=>voteHandler("up")}>👍</span>}
+              {`  Votes:`}<span>{` ${deck?.votes}  `}</span>
+              {username===deck?.creator && <span className="voteButton" onClick={()=>voteHandler("down")}>👎</span>}
+            </div>
+            <button type="button" className="saveButton" onClick={handleSave}>Save Deck</button>
         </div>
+    </div>
+    <div className="deckViewFlashcardBottom">
+      <div className="deckViewFlashcardHeader">Flashcards</div>
+      <ListFlashcards deck={deck} />
     </div>
   </Container>) : (<div>loading...</div>)
   )

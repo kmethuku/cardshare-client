@@ -18,6 +18,7 @@ function Deck () {
     const [textType, setTextType] = useState<string>("Question:")
     const[card, setCard] =useState<any>(deck?.cards[0]);
     const [index, setIndex] = useState<number>(0)
+    const [front, setFront] = useState(true)
 
     useEffect(() => {
       console.log(currentUser, email)
@@ -33,45 +34,53 @@ function Deck () {
     }, [router, currentUser])
 
   const handleMove = (inc:number) : void => {
+    setFront(true)
     setCard(deck?.cards[index+inc]);
     setCardText(deck?.cards[index+inc].question)
     setTextType("Question:");
     setIndex(index+inc);
   }
 
-  const toggleText = (card:any) : void => {
-    if (cardText === card.question) {
-      setCardText(card.answer);
-      setTextType("Answer:")
-    } else {
-      setCardText(card.question);
-      setTextType("Question:")
-    };
-  }
-
-  return(
-    deck ? (
+  return deck && card ? (
     <Container>
-    <div>{deck?.title}</div>
-    <div>Created by:{` ${deck?.creator}`}</div>
-    <div className="flashCardWrapper">
-        <button disabled={index===0}
+      <h3>{deck?.title}</h3>
+      <h4>Created by:{` ${deck?.creator}`}</h4>
+      <div className="flash-container">
+        <button
+          disabled={index === 0}
           className="flashCardButton"
-          onClick={()=>handleMove(-1)}
-          type="button">Previous</button>
-        <div className="flashCardBody"
-          onClick={()=>toggleText(card)}>
-          <div className="flashcardType">{textType}</div>
-          <div className="flashcardContent">{cardText}</div>
+          onClick={() => handleMove(-1)}
+          type="button"
+        >
+          Previous
+        </button>
+        <div className="flip-container flashcard">
+          <div
+            className={"card-container " + (front ? "" : "flipped")}
+            onClick={() => setFront(!front)}
+          >
+            <div className="front"><br /><br />
+              <h2>Question #{index + 1}</h2>
+              {card.question}
+            </div>
+            <div className="back"><br /><br />
+              <span>Answer: </span>{card.answer}
+            </div>
+          </div>
         </div>
         <button
-          disabled={index===deck?.cards?.length-1}
-          onClick={()=>handleMove(1)}
+          disabled={index === deck?.cards?.length - 1}
+          onClick={() => handleMove(1)}
           className="flashCardButton"
-          type="button">Next</button>
-    </div>
-  </Container>) : (<div>loading...</div>)
-  )
+          type="button"
+        >
+          Next
+        </button>
+      </div>
+    </Container>
+  ) : (
+    <div>loading...</div>
+  );
 }
 
 export default Deck;

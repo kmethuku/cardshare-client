@@ -22,7 +22,7 @@
 .btn {
   cursor: pointer;
   display: inline-block;
-  margin: 7px 0;
+  margin: 7px;
   font-weight: 400;
   color: #212529;
   text-align: center;
