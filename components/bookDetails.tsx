@@ -1,17 +1,33 @@
 import React, { useEffect } from 'react'
 import Container from './Container'
+import { useRouter } from 'next/router';
 
-const BookDetails = ({book}) => {
+type Props = {
+  book:any;
+}
 
+const BookDetails = ({book}:Props) => {
+
+  const router = useRouter();
+  
   useEffect(() => {
     const html = document.getElementById('description')
-    const shortDesc = book.description.slice(0, 750) + "..."
+    const shortDesc = book?.description?.slice(0, 750) + "..."
     if (html) html.innerHTML = shortDesc;
   },[book])
 
+  const handleNewDeck = () => {
+    router.push("/create")
+  }
+
   return (
     <Container>
-      <h1>{book.title}</h1>
+      <h3>{book.title}</h3>
+      <button
+        type="button"
+        className="buttonNewDeck"
+        onClick={handleNewDeck}> Create New Deck
+      </button>
       <div className="bookgrid">
         <div>
           <img src={book.img} />

@@ -26,7 +26,7 @@ const authorized = useContext(AuthContext);
 
     return(
         <Container>
-            <div className="pageTitle">My Saved Decks</div>
+            <h3 >My Saved Decks</h3>
             <ListDecks decks={savedDecks} setDecks={setSavedDecks} type={"savedDecks"}/>
         </Container>
     )

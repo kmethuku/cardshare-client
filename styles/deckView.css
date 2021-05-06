@@ -28,6 +28,7 @@
     border: 0;
     box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
     font-family: 'Montserrat', sans-serif;
+    margin-top: 10px;
 }
 
 .saveButton:hover {
@@ -99,6 +100,7 @@
     margin: 5px;
     text-overflow: ellipsis;
     background-color: rgba(255, 255, 255, 0.65);;
+    text-align: center;
 }
 
 .deckViewFlashcardsTitle {

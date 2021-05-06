@@ -72,7 +72,6 @@
 .flashCardBody {
     height: 50vh;
     width:60vw;
-    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
     border: solid 3px var(--light);
     border-radius: 10px;
     padding: 20px;
@@ -83,10 +82,11 @@
     justify-content: center;
 }
 
-.flashcardType {
-    font-size: 1em;
-    font-weight: 500;
+.flashcardAnswer {
+    font-size: 0.8em;
+    font-weight: 700;
     color: rgb(75, 75, 75);
+    margin-bottom: 10px;
 }
 
 .flashcardContent {
@@ -95,4 +95,8 @@
     width: 80%;
     text-overflow: ellipsis;
     color: var(--primary);
+}
+
+.deckCreator {
+    text-align: center;
 }

@@ -87,9 +87,9 @@ const NewDeck = ({ setClickedItem }: Props) => {
   }
 
   return (
-    <Container>
+    <Container >
       <Card option="strong">
-        <h1>New Deck</h1>
+        <h3>New Deck</h3>
         <Searchbar setNewDeck={setNewDeck} newDeck={newDeck} /><br />
         <Dropdown
           className="formDropdown"
@@ -139,22 +139,22 @@ const NewDeck = ({ setClickedItem }: Props) => {
         </Carousel>
         <div className="center">
         <button
-          className="btn btn-primary"
+          className="saveButton"
           type="button"
           onClick={() => handleAddClick()}
         >
           Add Card
         </button>
-        <div>
+        <div className="createDeckButton">
         <button
-          className="btn btn-primary"
+          className="saveButton"
           type="button"
           onClick={(e) => handleSubmit(e)}
         >
           Save Deck
         </button>
         <button
-          className="btn btn-primary"
+          className="saveButton"
           type="button"
           onClick={() => setClickedItem("")}
         >

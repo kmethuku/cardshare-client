@@ -6,13 +6,12 @@ import { useRouter } from 'next/router';
 import Container from '../../../components/Container';
 import Card from '../../../components/Card';
 import ListFlashcards from '../../../components/listFlashcards'
-import{ getMyDeckByIdService, getUserService, voteService, getSavedDecksByEmailService, saveDeckService } from '../../../services/internalApi'
+import{ getDeckByIdService, getUserService, voteService, getSavedDecksByEmailService, saveDeckService } from '../../../services/internalApi'
 
 function ViewDeck () {
     const context = useContext(AuthContext);
     if (!context || !context.currentUser.email) return null;
     const { currentUser, email } = context;
-    console.log("USER", context)
     const router = useRouter();
     const {id} = router.query;
     const [deck, setDeck] = useState<IDeck | null>(null);
@@ -21,16 +20,15 @@ function ViewDeck () {
     const[username, setUsername] = useState<string>("")
 
     const setState = async (email) => {
-      let deck = await getMyDeckByIdService(email, id);
+      let deck = await getDeckByIdService(id);
       setDeck(deck);
       let user = await getUserService(email);
-      console.log("USERNAME", user[0].username)
-      console.log("CREATOR", deck.creator)
       setUsername(user[0].username);
     }
 
     useEffect(() => {
         const sendEmail = currentUser.email || email;
+        console.log(sendEmail)
         if(sendEmail) {
           setState(sendEmail);
         }
@@ -72,9 +70,9 @@ function ViewDeck () {
             <div className="deckViewInfoRightCreator">Created by:{` ${deck?.creator}`}</div>
 
             <div className="deckViewInfoRightVotes">
-              {username===deck?.creator && <span className="voteButton" onClick={()=>voteHandler("up")}>👍</span>}
+              {username!==deck?.creator && <span className="voteButton" onClick={()=>voteHandler("up")}>👍</span>}
               {`  Votes:`}<span>{` ${deck?.votes}  `}</span>
-              {username===deck?.creator && <span className="voteButton" onClick={()=>voteHandler("down")}>👎</span>}
+              {username!==deck?.creator && <span className="voteButton" onClick={()=>voteHandler("down")}>👎</span>}
             </div>
             <button type="button" className="saveButton" onClick={handleSave}>Save Deck</button>
         </div>

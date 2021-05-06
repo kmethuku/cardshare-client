@@ -36,8 +36,8 @@ function Discover() {
   return (
    <Container>
       {currentUser ? (<>
+        <h3>Discover Popular Flashcard Decks</h3>
         <Searchbar setSelectedBook={setSelectedBook} />
-        <h2>Discover Popular Flashcard Decks</h2>
         <ListBooks title="Popular" />
         <ListBooks title="Self-Growth" />
         <ListBooks title="History"  />

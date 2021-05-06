@@ -24,6 +24,8 @@
 
 html, body {
   font-family: 'Montserrat', sans-serif;
+  color: rgb(75, 75, 75);
+  font-size: 16px;
 }
 
 p, li {
@@ -41,10 +43,29 @@ p, li {
   text-align: center;
 }
 
-.pageTitle {
+.welcome {
+  color: var(--accent);
+  font-size: 2em;
+  font-weight: 700;
+  text-align: center;
+}
+
+h4 {
   font-size: 1em;
-  font-weight: 500;
-  color: rgb(75, 75, 75);
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 1em;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1em;
+  font-weight: 300;
+  line-height: 1.5em;
 }
 
 .card {
@@ -67,36 +88,50 @@ p, li {
   padding: 20px;
   max-width: 90%;
   border-radius: 20px;
-  border: 3px solid var(--secondary);
+  border: 3px solid var(--medium);
+}
+
+.navButton {
+  font-size: 1rem;
+  line-height: 1rem;
+  text-align: center;
 }
 
 .center {
   display: flex;
-  flex-direction: column;
+  width: 100%;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+}
+
+.createDeckButton {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
-  border: 1px solid rgba(0,0,0,.125);
+  box-shadow: inset 0 0 1px var(--accent);
+  border: 0px;
   border-radius: .25rem;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,.125);
-  border: 1px solid rgba(0,0,0,.125);
+  background: rgb(254, 198, 1,.3);
+  /* border: 0.5px solid rgba(234, 115, 23.06, 0.2); */
   border-radius: .25rem;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #007bff;
+  background: var(--light);
 }
 

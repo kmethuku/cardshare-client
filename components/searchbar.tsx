@@ -2,8 +2,10 @@ import React, { useState, Dispatch, SetStateAction } from 'react';
 import { Form } from 'react-bootstrap';
 import { searchBookService } from '../services/externalApi'
 import IBook from '../interfaces/IBook'
+import { useRouter } from 'next/router';
 import FormControlElement from '../interfaces/FormControlElement'
 import TextField from '@material-ui/core/TextField'
+import { route } from 'next/dist/next-server/server/router';
 
 type Props = {
   setSelectedBook?: Dispatch<SetStateAction<IBook>>,
@@ -14,7 +16,8 @@ type Props = {
 function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
   const [results, setResults] = useState<any[]>([]);
   const [input, setInput] = useState('');
-  const [time, setTime] = useState(0)
+  const [time, setTime] = useState(0);
+  const router = useRouter();
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<any> => {
     setInput(e.target.value)
@@ -53,6 +56,7 @@ function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
       });
       setInput('');
     }
+    router.push(`/book/${target.id}`)
     setResults([]);
   }
 

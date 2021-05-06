@@ -20,7 +20,7 @@ const ListBook = ({title}: Props) => {
 
   return (
     <div className="bookwindow">
-      {title}
+      <div className="bookTitle">{title}</div>
       <div className="bookflex">
       {bookList &&
         bookList.map((book: any) => (

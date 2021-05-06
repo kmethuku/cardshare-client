@@ -12,15 +12,15 @@ const Home: React.FC = () => {
     <div className="grid2">
       <Container>
         <Card>
-        <h1>
+        <div className="welcome">
             Welcome to Cardshare
-          </h1>
+          </div>
           <br />
-          <h2>
+          <h4>
             How much do you remember from the books you&apos;ve read?
-          </h2>
+          </h4>
           <br />
-          <h2>The flashcard sharing app for lifelong learners</h2>
+          <h4>The flashcard sharing app for lifelong learners</h4>
           <br />
         </Card>
       </Container>

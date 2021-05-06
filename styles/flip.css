@@ -1,9 +1,11 @@
 .flash-container {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  height: fit-content;
+  justify-content: center;
   align-items: center;
   text-align: center;
+  color: rgb(75, 75, 75);
 }
 
 .flip-container {
@@ -16,9 +18,10 @@
 
 .flashcard {
   cursor: pointer;
-  min-width: 400px;
-  width: 100%;
+  min-width: 375px;
+  width: 60vw;
   min-height: 200px;
+  max-height: 600px;
 }
 .flip-container .card-container {
   position: relative;
@@ -43,9 +46,12 @@
   min-height: 200px;
   align-content: center;
   width: 100%;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border: 3px solid var(--light);
-  box-shadow: 10px 10px 5px var(--accent);
+  box-shadow: 5px 5px 5px rgba(234, 115, 23.06, 0.6);
   padding: 10px;
   position: absolute;
   border-radius: 10px;
@@ -67,7 +73,6 @@
 }
 .flip-container .card-container .back {
   transform: rotateY(-180deg);
-  padding: 20px;
   font-size: 20px;
   height: fit-content;
   /* back tile styles go here! */

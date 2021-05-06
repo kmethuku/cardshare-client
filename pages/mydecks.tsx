@@ -31,7 +31,7 @@ const authorized = useContext(AuthContext);
 
     return(
         <Container>
-            <div className="pageTitle">My Decks</div>
+            <h3>My Decks</h3>
             <button
             type="button"
             className="buttonNewDeck"

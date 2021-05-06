@@ -1,7 +1,13 @@
 .searchdiv {
   width: 100%;
   position: relative;
+  font-family: 'Montserrat', sans-serif;
+  color: rgb(75, 75, 75);
+}
 
+.searchbar label, .textfield label{
+  font-family: 'Montserrat', sans-serif;
+  color: rgba(75, 75, 75, 0.664);
 }
 
 .searchdiv .searchbar {
@@ -28,4 +34,8 @@
   font-size: 0.8em;
   font-weight: 500;
   color: rgb(75, 75, 75);
+  margin-top: 5px;
+  margin-bottom: 3px;
+  text-align: center;
+  line-height: 0.8em;
 }

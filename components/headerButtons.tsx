@@ -28,26 +28,26 @@ const HeaderButtons = () => {
   return (
     <>
     <nav className="nav">
-      <Link href="/"><a><h3>Cardshare</h3></a></Link>
+      <Link href="/"><a><h1>Cardshare</h1></a></Link>
       <ul>
-        <li>
+        <li className="navButton">
           <Link href="/discover">
             <a>Discover</a>
           </Link>
         </li>
-        <li>
+        <li className="navButton">
           <Link href="/mydecks">
             <a>My Decks</a>
           </Link>
         </li>
-        <li>
+        <li className="navButton">
           <Link href="/study">
-            <a>Study</a>
+            <a >Study</a>
           </Link>
         </li>
-        <li>
+        <li className="navButton">
           {loggedIn ? (
-            <a
+            <a 
               onClick={handleSignOut}
             >Sign Out</a>
           ) : (

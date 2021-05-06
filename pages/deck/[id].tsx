@@ -44,7 +44,7 @@ function Deck () {
   return deck && card ? (
     <Container>
       <h3>{deck?.title}</h3>
-      <h4>Created by:{` ${deck?.creator}`}</h4>
+      <p className="deckCreator">Created by:{` ${deck?.creator}`}</p>
       <div className="flash-container">
         <button
           disabled={index === 0}
@@ -59,12 +59,13 @@ function Deck () {
             className={"card-container " + (front ? "" : "flipped")}
             onClick={() => setFront(!front)}
           >
-            <div className="front"><br /><br />
-              <h2>Question #{index + 1}</h2>
-              {card.question}
+            <div className="front">
+              <h3>Question #{index + 1}</h3>
+              <p>{card.question}</p>
             </div>
-            <div className="back"><br /><br />
-              <span>Answer: </span>{card.answer}
+            <div className="back">
+              <span className="flashcardAnswer">Answer: </span>
+              <p>{card.answer}</p>
             </div>
           </div>
         </div>

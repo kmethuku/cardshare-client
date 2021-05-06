@@ -76,7 +76,7 @@ function LogInForm({ setLogin }: Props) {
           </>
           <button
             name="signup"
-            className="btn btn-primary"
+            className="saveButton"
             type="submit"
             onClick={handleLogIn}
           >

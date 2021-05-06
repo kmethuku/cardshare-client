@@ -91,7 +91,7 @@ const SignUpForm = ({setLogin}: Props) => {
         </>
         <button
           name="signup"
-          className="btn btn-primary"
+          className="saveButton"
           type="submit"
           onClick={handleSignUp}
         >
