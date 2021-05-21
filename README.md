@@ -41,7 +41,7 @@ Testing (thank you Kimberly Innes (https://github.com/kjinnes) and Louisa Wong (
 
 Owner/Creator: Kiranmayi Methuku
 
-Contributors: Kimberly Innes and Louisa Wong 
+Contributors: Kimberly Innes (https://github.com/kjinnes) and Louisa Wong (https://github.com/louisawong)
   * Linting
   * Conversion to Typescript
   * Testing
