@@ -1,22 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+@import './landingpage.css';
+@import './navbar.css';
+@import './form.css';
+@import './flip.css';
+@import './deckList.css';
+@import './searchbar.css';
+@import'./deckView.css';
+@import './bookList.css';
+
+:root {
+  --primary: #2364AA;
+  --secondary: #3DA5D9;
+  --medium: #73BFB8;
+  --light: #FEC601;
+  --accent: #EA7317;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Montserrat', sans-serif;
+  color: rgb(75, 75, 75);
+  font-size: 16px;
+}
+
+p, li {
+  font-size: 1.1rem;
+}
+
+.container {
+  padding: 15px;
+  display: block;
+  height: auto;
+  margin: auto;
+}
+
+.container h1, h2, h3, h4, h5 {
+  text-align: center;
+}
+
+.welcome {
+  color: var(--accent);
+  font-size: 2em;
+  font-weight: 700;
+  text-align: center;
+}
+
+h4 {
+  font-size: 1em;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 1em;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1em;
+  font-weight: 300;
+  line-height: 1.5em;
+}
+
+.card {
+  margin: auto;
+  padding: 20px;
+}
+
+.cardstrong {
+  margin: auto;
+  padding: 20px;
+  width: 50%;
+  min-width: 600px;
+  border-radius: 20px;
+  border: 3px solid var(--light);
+  box-shadow: 7px 10px 20px var(--accent);
+}
+
+.cardsmall {
+  margin: 30px auto;
+  padding: 20px;
+  max-width: 90%;
+  border-radius: 20px;
+  border: 3px solid var(--medium);
+}
+
+.navButton {
+  font-size: 1rem;
+  line-height: 1rem;
+  text-align: center;
+}
+
+.center {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.createDeckButton {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
-  border: 1px solid rgba(0,0,0,.125);
+  box-shadow: inset 0 0 1px var(--accent);
+  border: 0px;
   border-radius: .25rem;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,.125);
-  border: 1px solid rgba(0,0,0,.125);
+  background: rgb(254, 198, 1,.3);
+  /* border: 0.5px solid rgba(234, 115, 23.06, 0.2); */
   border-radius: .25rem;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #007bff;
+  background: var(--light);
 }
+
