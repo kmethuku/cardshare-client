@@ -6,7 +6,7 @@ This is the client repo. Server repo is here: https://github.com/kmethuku/cardsh
 
 **Cardshare** is a flashcard hub for books outside of the formal education context, made for lifelong learners.
 
-Cardshare was written in 6 days, and later converted to Typescript and tested (see **Contributors** for more information).
+Cardshare was **written in 6 days**, and later converted to Typescript and tested (see **Contributors** for more information).
 
 Users can: 
   * Create flashcard decks
@@ -22,6 +22,8 @@ Users can:
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run npm i to install the required dependencies.
+
+Start the server by running nodemon index.ts. Server repo is here: https://github.com/kmethuku/cardshare-server
 
 Then, run the development server:
 
