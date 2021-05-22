@@ -50,5 +50,5 @@ Contributors: Kimberly Innes (https://github.com/kjinnes) and Louisa Wong (https
   * Conversion to Typescript
   * Integration testing
   * Refactoring from Bootstrap to raw CSS
-  * Refactoring pages to a more modular structure
+  * Rearrange page/component structure
   * Changing books API from Open Library to Google Books
