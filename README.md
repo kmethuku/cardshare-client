@@ -46,7 +46,7 @@ Owner/Creator: Kiranmayi Methuku
 Contributors: Kimberly Innes (https://github.com/kjinnes) and Louisa Wong (https://github.com/louisawong)
   * Linting
   * Conversion to Typescript
-  * Testing
-  * Refactoring CSS
+  * Integration testing
+  * Refactoring from Bootstrap to raw CSS
+  * Refactoring pages to a more modular structure
   * Changing books API from Open Library to Google Books
-[Add more contributions after talking to KI and LW]
