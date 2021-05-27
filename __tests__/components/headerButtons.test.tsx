@@ -35,6 +35,3 @@ describe('<HeaderButtons />', () => {
   })
 
 })
-
-
-

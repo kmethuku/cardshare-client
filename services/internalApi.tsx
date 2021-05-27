@@ -56,7 +56,7 @@ export const getMyDeckByIdService = (email:string, id:any) : Promise<any> => {
   })
 }
 
-export const getDeckByIdService = (id: string): Promise<IDeck | null> => {
+export const getDeckByIdService = (id: string | string[] | undefined): Promise<IDeck | null> => {
   console.log(id)
   return fetch(`${URL}/discover/${id}`)
     .then(res => res.json())
@@ -116,7 +116,7 @@ export const saveDeckService = (email: string, selectedDeck: any): Promise<any> 
 }
 
 // TEXT VS JSON
-export const voteService = (id: string, direction: string): Promise<any> => {
+export const voteService = (id: string | undefined, direction: string): Promise<any> => {
   return fetch(`${URL}/discover/vote/${id}-${direction}`, {
     method: 'GET',
   })

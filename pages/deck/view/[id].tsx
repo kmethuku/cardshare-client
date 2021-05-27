@@ -5,7 +5,7 @@ import ICard from '../../../interfaces/ICard';
 import { useRouter } from 'next/router';
 import Container from '../../../components/Container';
 import Card from '../../../components/Card';
-import ListFlashcards from '../../../components/listFlashcards'
+import ListFlashcards from '../../../components/listFlashCards';
 import{ getDeckByIdService, getUserService, voteService, getSavedDecksByEmailService, saveDeckService } from '../../../services/internalApi'
 
 function ViewDeck () {
@@ -19,7 +19,7 @@ function ViewDeck () {
     const [downvoted, setDownvoted] = useState<boolean>(false);
     const[username, setUsername] = useState<string>("")
 
-    const setState = async (email) => {
+    const setState = async (email:string) => {
       let deck = await getDeckByIdService(id);
       setDeck(deck);
       let user = await getUserService(email);

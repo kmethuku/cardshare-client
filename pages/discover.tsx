@@ -7,7 +7,7 @@ import { discoverySearchingService, searchBookService } from '../services/extern
 import IBook from '../interfaces/IBook'
 import IDeck from '../interfaces/IDeck'
 import Container from '../components/Container'
-import ListBooks from '../components/ListBooks'
+import ListBooks from '../components/listBooks'
 
 function Discover() {
   const defaultBook = {title: '', src:'', OLID: ''}

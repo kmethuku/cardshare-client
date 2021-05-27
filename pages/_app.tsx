@@ -3,7 +3,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 import '../styles/globals.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import { AppProps } from 'next/app'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/navbar'
 
 const MyApp = (props: AppProps) => {
   const { Component, pageProps } = props;

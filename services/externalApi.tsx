@@ -1,12 +1,11 @@
 const openLib = 'http://openlibrary.org/search.json?title=';
 const googleBooksURI = 'https://www.googleapis.com/books/v1/volumes?q='
-const apiKey = (process.env.googleBooks as string)
 const bookById = 'https://www.googleapis.com/books/v1/volumes/'
 
 
 export const searchBookService = (query: string): Promise<any> => {
   console.log(process.env.googleBooks)
-  return fetch(`${googleBooksURI}${query}&${apiKey}`)
+  return fetch(`${googleBooksURI}${query}`)
   .then(res => res.json())
   .then(data => {
     return data.items;

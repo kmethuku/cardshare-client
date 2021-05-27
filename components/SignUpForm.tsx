@@ -71,6 +71,7 @@ const SignUpForm = ({setLogin}: Props) => {
           className="textfield"
           autoComplete="off"
           type="email"
+          name="email"
           label="Email"
           value={user.email}
           onChange={handleChange}
