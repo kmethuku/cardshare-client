@@ -55,8 +55,8 @@ function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
         OLID: target.id
       });
       setInput('');
+      router.push(`/book/${target.id}`)
     }
-    router.push(`/book/${target.id}`)
     setResults([]);
   }
 

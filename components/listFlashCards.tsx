@@ -6,12 +6,22 @@ import Container from './Container';
 import Deck from './Deck'
 import Card from'./Card'
 import { deleteSavedDeckByIdService, deleteDeckByIdService } from '../services/internalApi'
+import { CSVLink } from 'react-csv';
 
 type Props = {
     deck: IDeck,
 }
 
-function ListFlashcards ({ deck}:Props) {
+function ListFlashcards ({ deck }:Props) {
+const headers = [
+    { label: "Question", key: "question" },
+    { label: "Answer", key: "answer" }
+];
+const csvReport = {
+    data: deck.cards,
+    headers: headers,
+    filename: `${deck.title.split(' ').join('-')}.csv`
+};
 
     const showCards = () => {
         if (deck?.cards.length === 0) {
@@ -33,6 +43,7 @@ function ListFlashcards ({ deck}:Props) {
             <div className="deckListing">
                 {showCards()}
             </div>
+            <CSVLink {...csvReport}>Export as CSV</CSVLink>
         </Container>
     )
 }
