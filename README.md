@@ -15,21 +15,15 @@ Users can:
   * Export decks as a csv file to use with their favorite flashcard app
   * Vote on decks
 
-[Screenshots go here]
-
 ## Getting Started
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Clone this repo as well as the server repo, located here: https://github.com/kmethuku/cardshare-server
 
-First, run npm i to install the required dependencies.
+Run npm i to install the required dependencies.
 
-Start the server by running nodemon index.ts. Server repo is here: https://github.com/kmethuku/cardshare-server
+In the server repo, follow the instructions in the .env.sample file FIRST, and then start the backend server by typing npm run dev in the terminal.
 
-Then, run the development server:
-
-npm run dev
----OR---
-yarn dev
+In the client repo, follow the instructions in the .env.sample file FIRST, and then start the frontend server by typing npm run dev in the terminal.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
