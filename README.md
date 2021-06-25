@@ -6,8 +6,6 @@ This is the client repo. Server repo is here: https://github.com/kmethuku/cardsh
 
 **Cardshare** is a flashcard hub for books outside of the formal education context, made for lifelong learners.
 
-Cardshare was **written in 6 days**, and later converted to Typescript and tested (see **Contributors** for more information).
-
 Users can: 
   * Create flashcard decks
   * Search for available decks by book
@@ -40,9 +38,3 @@ Testing (thank you Kimberly Innes (https://github.com/kjinnes) and Louisa Wong (
 Owner/Creator: Kiranmayi Methuku
 
 Contributors: Kimberly Innes (https://github.com/kjinnes) and Louisa Wong (https://github.com/louisawong)
-  * Linting
-  * Conversion to Typescript
-  * Integration testing
-  * Refactoring from Bootstrap to raw CSS
-  * Rearrange page/component structure
-  * Changing books API from Open Library to Google Books
