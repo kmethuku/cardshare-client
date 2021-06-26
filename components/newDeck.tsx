@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Dispatch, SetStateAction, useContext } from 'react';
 import { useRouter } from 'next/router'
-import Searchbar from './searchbar';
+import SearchBar from './searchbar';
 import { AuthContext } from '../contexts/AuthContext';
 import { getUserService, newDeckService } from '../services/internalApi';
 import ICard from '../interfaces/ICard'
@@ -90,7 +90,7 @@ const NewDeck = ({ setClickedItem }: Props) => {
     <Container >
       <Card option="strong">
         <h3>New Deck</h3>
-        <Searchbar setNewDeck={setNewDeck} newDeck={newDeck} /><br />
+        <SearchBar setNewDeck={setNewDeck} newDeck={newDeck} /><br />
         <Dropdown
           className="formDropdown"
           options={genreOption}

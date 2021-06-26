@@ -4,6 +4,7 @@ import BookDetails from '../../components/bookDetails'
 import ListDecks from '../../components/listDecks'
 import { getBookDetailsService } from '../../services/externalApi'
 import { discoverBookService } from '../../services/internalApi'
+import HeaderButtons from '../../components/headerButtons';
 
 const BookDetailPage = () => {
   const router = useRouter();
@@ -26,11 +27,15 @@ const BookDetailPage = () => {
     getBookDetails();
 
   },[id])
-console.log(decks)
+
   return (book &&
     <div>
-      <BookDetails book={book} />
-    {decks && <ListDecks decks={decks} setDecks={setDecks} type="byBook" />}
+      <HeaderButtons/>
+      <div className="page-container">
+        <BookDetails book={book} />
+        <p className="book-details book-description-label">Available decks: </p>
+        {decks && <ListDecks decks={decks} setDecks={setDecks} type="byBook" />}
+      </div>
     </div>
   )
 }

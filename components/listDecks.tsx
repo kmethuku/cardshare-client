@@ -49,7 +49,7 @@ function ListDecks ({ decks, setDecks, type }:Props) {
 
     return(
 
-            <div className="deckListing">
+            <div className="scroll book-details page-container">
                 {showDecks()}
             </div>
 

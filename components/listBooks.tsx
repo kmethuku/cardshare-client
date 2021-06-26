@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { getDecksByGenreService } from '../services/internalApi';
 import Link from 'next/link'
-import IBook from '../interfaces/IBook'
-import IDeck from '../interfaces/IDeck'
-import Container from '../components/Container'
-import BookDetails from '../components/bookDetails'
-import Card from './Card'
 
 const ListBook = ({title}: Props) => {
   const [bookList, setBookList] = useState<any>(null)
@@ -19,13 +14,13 @@ const ListBook = ({title}: Props) => {
   }, [])
 
   return (
-    <div className="bookwindow">
-      <div className="bookTitle">{title}</div>
-      <div className="bookflex">
+    <div>
+      <h2>{title}</h2>
+      <div className="scroll">
       {bookList &&
         bookList.map((book: any) => (
           <Link key={`${title}${book._id}`} href={`/book/${book.OLID}`}>
-            <div className="booksmall">
+            <div className="small-book">
               <img
                 src={book.src} />
             </div>

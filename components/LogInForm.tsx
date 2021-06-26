@@ -2,10 +2,7 @@ import React, { useState, useContext, SetStateAction, Dispatch } from 'react';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
 import { getUserService } from '../services/internalApi';
-import TextField from '@material-ui/core/TextField';
-import Card from '../components/Card'
 import FormControlElement from '../interfaces/FormControlElement';
-import  Link from 'next/link'
 
 const initialState = {
   email: '',
@@ -45,48 +42,36 @@ function LogInForm({ setLogin }: Props) {
   }
 
   return (
-    <div className="back">
-    <Card>
-        <h2>Log In</h2>
-          <form className="form-control" data-testid="form">
+    <div className="form-container">
+          <form>
           {user.error && <p>{user.error}</p>}
-          <>
-            <TextField
-              className="textfield"
-              autoComplete="off"
+          <label htmlFor="email">Email:</label>
+            <input
               type="email"
-              label="Email"
               name="email"
               value={user.email}
               onChange={handleChange}
               required
             />
-          </>
-          <>
-            <TextField
-              className="textfield"
-              autoComplete="off"
+            <label htmlFor="password">Password:</label>
+            <input
               type="password"
               name="password"
-              label="Password"
               value={user.password}
               onChange={handleChange}
               required
             />
-          </>
           <button
-            name="signup"
-            className="saveButton"
             type="submit"
             onClick={handleLogIn}
+            disabled={!user.email || !user.password}
           >
             Log In
           </button>
         </form>
-          <a onClick={() => setLogin(false)}>
-            Don&apos;t have an account? Sign Up
-          </a>
-    </Card>
+        <a onClick={() => setLogin(false)}>
+          Don't have an account? Sign Up.
+        </a>
     </div>
   );
 }

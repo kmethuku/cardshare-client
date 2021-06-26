@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import { AuthContext } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
@@ -7,57 +7,46 @@ const HeaderButtons = () => {
   const context = useContext(AuthContext);
   if (!context) return null;
   const { signOut, currentUser } = context;
-  let loggedIn: boolean
-  if (currentUser.email !== "waiting...") {
+  let loggedIn: boolean;
+  if (currentUser.email !== 'waiting...') {
     loggedIn = true;
   } else loggedIn = false;
 
-  const [error, setError] = useState<string>('');
   const router = useRouter();
 
   const handleSignOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> => {
     try {
-      setError('');
-      await signOut();
+      signOut();
       router.push('/');
     } catch (err) {
-      setError("Signout Failed.");
+      alert('Signout Failed.');
     }
   }
 
   return (
-    <>
-    <nav className="nav">
-      <Link href="/"><a><h1>Cardshare</h1></a></Link>
-      <ul>
-        <li className="navButton">
+      <ul className="navigation-bar">
+        <li>
+          <img src="/cardshare-logo-books-transparent.png" width="auto" height="50"></img>
+        </li>
+        <li className="navigation-button">
           <Link href="/discover">
-            <a>Discover</a>
+            Discover
           </Link>
         </li>
-        <li className="navButton">
+        <li className="navigation-button">
           <Link href="/mydecks">
-            <a>My Decks</a>
+            Create
           </Link>
         </li>
-        <li className="navButton">
+        <li className="navigation-button">
           <Link href="/study">
-            <a >Study</a>
+            Study
           </Link>
         </li>
-        <li className="navButton">
-          {loggedIn ? (
-            <a 
-              onClick={handleSignOut}
-            >Sign Out</a>
-          ) : (
-            <Link href='/'><a>Log In</a></Link>
-          )}
+        <li className="navigation-button" onClick={handleSignOut}>
+          <a><img src="/signout.png" width="auto" height="25"></img></a>
         </li>
       </ul>
-    </nav>
-    <p>{error && error}</p>
-    </>
   );
 }
 

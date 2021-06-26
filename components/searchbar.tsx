@@ -1,11 +1,8 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
-import { Form } from 'react-bootstrap';
-import { searchBookService } from '../services/externalApi'
-import IBook from '../interfaces/IBook'
+import { searchBookService } from '../services/externalApi';
+import IBook from '../interfaces/IBook';
 import { useRouter } from 'next/router';
-import FormControlElement from '../interfaces/FormControlElement'
-import TextField from '@material-ui/core/TextField'
-import { route } from 'next/dist/next-server/server/router';
+import TextField from '@material-ui/core/TextField';
 
 type Props = {
   setSelectedBook?: Dispatch<SetStateAction<IBook>>,
@@ -13,7 +10,7 @@ type Props = {
   newDeck?: any,
 }
 
-function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
+function SearchBar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
   const [results, setResults] = useState<any[]>([]);
   const [input, setInput] = useState('');
   const [time, setTime] = useState(0);
@@ -32,9 +29,9 @@ function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
         let query = input.split(' ').join('+');
         let result = await searchBookService(query);
         setResults(result);
+      }
     }
-    }
-    setTime(newTime)
+    setTime(newTime);
   }
 
   function handleClick(e: React.MouseEvent<HTMLImageElement>) {
@@ -61,14 +58,16 @@ function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
   }
 
   return (
-    <div className="searchdiv">
-      <TextField
-        className="searchbar"
-        onKeyUp={delay}
-        value={input}
-        label="What book are you looking for?"
-        onChange={handleChange}
-      />
+    <div className="">
+      <div className="search-bar">
+        <input
+          onKeyUp={delay}
+          value={input}
+          onChange={handleChange}
+          style={{backgroundColor:"rgb(255,255,255)", border:"solid 3px var(--secondary)"}}
+        ></input>
+        <img src="/search-icon.png" width="30" height="auto"></img>
+      </div>
       {results.length > 0 && <div className="resultsdiv">
         {results.map((book: any) => {
           return (
@@ -101,4 +100,4 @@ function Searchbar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
   )
 }
 
-export default Searchbar;
+export default SearchBar;

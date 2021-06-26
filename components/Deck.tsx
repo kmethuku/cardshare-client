@@ -28,9 +28,9 @@ function Deck ({ deck, decks, setDecks, type }:Props) {
     }
 
     return (
-        <div  onClick={clickHandler}>
-            <img className="bookCover" src={deck.src}/>
-            <div className="bookTitle">{deck.title}</div>
+        <div onClick={clickHandler}>
+            <img src={deck.src}/>
+            <div>{deck.creator}</div>
         </div>
     )
 }
