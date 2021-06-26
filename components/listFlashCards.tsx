@@ -1,11 +1,6 @@
-import React, { useState, Dispatch, SetStateAction, useContext } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import IDeck from '../interfaces/IDeck';
-import { AuthContext, useAuth } from '../contexts/AuthContext';
 import Container from './Container';
-import Deck from './Deck'
-import Card from'./Card'
-import { deleteSavedDeckByIdService, deleteDeckByIdService } from '../services/internalApi'
 import { CSVLink } from 'react-csv';
 
 type Props = {
@@ -13,38 +8,38 @@ type Props = {
 }
 
 function ListFlashcards ({ deck }:Props) {
-const headers = [
-    { label: "Question", key: "question" },
-    { label: "Answer", key: "answer" }
-];
-const csvReport = {
-    data: deck.cards,
-    headers: headers,
-    filename: `${deck.title.split(' ').join('-')}.csv`
-};
+    const headers = [
+        { label: "Question", key: "question" },
+        { label: "Answer", key: "answer" }
+    ];
+    const csvReport = {
+        data: deck.cards,
+        headers: headers,
+        filename: `${deck.title.split(' ').join('-')}.csv`
+    };
 
     const showCards = () => {
         if (deck?.cards.length === 0) {
             return <div className="noDeckAnnouncement">No Flashcards Available</div>
         } else {
             return deck.cards.map((card) => {
-                 return <div className="deckViewFlashcards" key={card._id}>
-                    <div className="deckViewFlashcardsTitle">Question:</div>
-                    <div className="deckViewFlashcardsContent">{card.question}</div>
-                    <div className="deckViewFlashcardsTitle">Answer:</div>
-                    <div className="deckViewFlashcardsContent">{card.answer}</div>
+                 return <div key={card._id}>
+                    <p className="label">Question:</p>
+                    <div>{card.question}</div>
+                    <p className="label">Answer:</p>
+                    <div>{card.answer}</div>
                 </div>
             })
         }
     }
 
     return(
-        <Container>
-            <div className="deckListing">
+        <div>
+            <div className="scroll">
                 {showCards()}
             </div>
             <CSVLink {...csvReport}>Export as CSV</CSVLink>
-        </Container>
+        </div>
     )
 }
 

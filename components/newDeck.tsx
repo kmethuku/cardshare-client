@@ -13,28 +13,26 @@ import Dropdown from 'react-dropdown'
 import { TextField } from '@material-ui/core'
 import 'react-dropdown/style.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import HeaderButtons from './headerButtons';
 
 type Props = {
   setClickedItem: Dispatch<SetStateAction<string>>,
 }
 
 const NewDeck = ({ setClickedItem }: Props) => {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (!context) return null;
-
   const router = useRouter();
   const genreOption:Array<string> =[
     'Self-Growth', 'History'
   ]
-  const defaultOption = genreOption[0];
-
   const email = context?.currentUser.email;
   let username = context.username;
   const [newDeck, setNewDeck] = useState<IDeck>(defaultDeck);
 
   const handleDeckChange = (e: React.ChangeEvent<FormControlElement>): void => {
     const { name, value } = e.target;
-    setNewDeck({ ...newDeck, [name]: value, })
+    setNewDeck({ ...newDeck, [name]: value, });
   }
 
   const handleGenreChange = (option: any) => {
@@ -82,15 +80,16 @@ const NewDeck = ({ setClickedItem }: Props) => {
     }
     e.preventDefault();
     newDeckService(email, newDeck)
-    setNewDeck(defaultDeck)
-    router.push('/mydecks')
+    setNewDeck(defaultDeck);
+    router.push('/create');
   }
 
   return (
-    <Container >
-      <Card option="strong">
-        <h3>New Deck</h3>
-        <SearchBar setNewDeck={setNewDeck} newDeck={newDeck} /><br />
+    <div>
+      <HeaderButtons/>
+      <div className="page-container">
+        <h2 className="header">New Deck</h2>
+        <SearchBar setNewDeck={setNewDeck} newDeck={newDeck}/>
         <Dropdown
           className="formDropdown"
           options={genreOption}
@@ -98,14 +97,13 @@ const NewDeck = ({ setClickedItem }: Props) => {
           placeholder="Select a Genre"
           onChange={(option) => handleGenreChange(option)}
         />
-        <TextField
-          className="textfield"
+        <label className="label">Description:</label>
+        <input
           type="text"
-          label="Description"
           name="description"
           value={newDeck.description}
           onChange={handleDeckChange}
-        />
+        ></input>
         <Carousel selectedItem={newDeck.cards.length - 1} showThumbs={false}>
           {newDeck.cards.map((card: ICard, index: number) => (
             <Card option="small" key={index}>
@@ -163,8 +161,8 @@ const NewDeck = ({ setClickedItem }: Props) => {
 
         </div>
         </div>
-      </Card>
-    </Container>
+      </div>
+    </div>
   );
 }
 

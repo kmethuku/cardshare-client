@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-
-import ViewDeck from '../components/viewDeck';
-import NewDeck from '../components/newDeck';
-import { AuthContext } from '../contexts/AuthContext';
-import { getDeckByEmailService, deleteDeckByIdService } from '../services/internalApi'
-import IDeck from '../interfaces/IDeck'
+import NewDeck from '../../components/newDeck';
+import { AuthContext } from '../../contexts/AuthContext';
+import { getDeckByEmailService, deleteDeckByIdService } from '../../services/internalApi';
+import IDeck from '../../interfaces/IDeck';
 
 function Create() {
   const [deleteCount, setDeleteCount] = useState<number>(0);

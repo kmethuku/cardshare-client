@@ -21,19 +21,19 @@ const SignUpForm = ({setLogin}: Props) => {
   const auth = useContext(AuthContext);
   if (!auth) return null;
 
-  const { signUp, setCurrentUser, setEmail, setUsername } = auth;
+  const { signUp, setEmail, setUsername } = auth;
 
   const handleSignUp = async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
     e.preventDefault();
     try {
-      setUser({ ...user, error: '' })
-      await signUp(user.email, user.password)
-      await signUpService({ username: user.username, email: user.email })
-      setUsername(user.username)
-      setEmail(user.email)
+      setUser({ ...user, error: '' });
+      signUp(user.email, user.password);
+      await signUpService({ username: user.username, email: user.email });
+      setUsername(user.username);
+      setEmail(user.email);
       router.push('/discover');
     } catch (error) {
-      setUser({ ...user, error: error.message })
+      setUser({ ...user, error: error.message });
     }
   }
 
@@ -43,31 +43,34 @@ const SignUpForm = ({setLogin}: Props) => {
     setUser({
       ...user,
       [name]: value,
-    })
+    });
   }
 
   return (
     <div className="form-container">
-      <form>
+      <form className="form-container__form">
         {user.error && <p>{user.error}</p>}
-        <label htmlFor="username">Username:</label>
+        <label className="form-container__label" htmlFor="username">Username:</label>
         <input
+          className="form-container__input--blue"
           type="text"
           name="username"
           value={user.username}
           onChange={handleChange}
           required
         />
-        <label htmlFor="email">Email:</label>
+        <label className="form-container__label" htmlFor="email">Email:</label>
         <input
+          className="form-container__input--blue"
           type="email"
           name="email"
           value={user.email}
           onChange={handleChange}
           required
         />
-        <label htmlFor="password">Password:</label>
+        <label className="form-container__label" htmlFor="password">Password:</label>
         <input
+          className="form-container__input--blue"
           type="password"
           name="password"
           value={user.password}
@@ -89,4 +92,4 @@ const SignUpForm = ({setLogin}: Props) => {
   );
 }
 
-export default SignUpForm
+export default SignUpForm;

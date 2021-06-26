@@ -25,13 +25,13 @@ function LogInForm({ setLogin }: Props) {
     e.preventDefault();
     try {
       setUser({ ...user, error: '' })
-      await logIn(user.email, user.password);
+      logIn(user.email, user.password);
       setEmail(user.email);
-      const username = await getUserService(user.email)
-      setUsername(username[0].username)
+      const username = await getUserService(user.email);
+      setUsername(username[0].username);
       router.push('/discover');
     } catch (err) {
-      setUser({ ...user, error: err.message});
+      setUser({ ...user, error: err.message });
     }
   }
 
@@ -43,35 +43,37 @@ function LogInForm({ setLogin }: Props) {
 
   return (
     <div className="form-container">
-          <form>
-          {user.error && <p>{user.error}</p>}
-          <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={user.email}
-              onChange={handleChange}
-              required
-            />
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              name="password"
-              value={user.password}
-              onChange={handleChange}
-              required
-            />
-          <button
-            type="submit"
-            onClick={handleLogIn}
-            disabled={!user.email || !user.password}
-          >
-            Log In
-          </button>
-        </form>
-        <a onClick={() => setLogin(false)}>
-          Don't have an account? Sign Up.
-        </a>
+        <form className="form-container__form">
+        {user.error && <p>{user.error}</p>}
+        <label className="form-container__label" htmlFor="email">Email:</label>
+          <input
+            className="form-container__input--blue"
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            required
+          />
+          <label className="form-container__label" htmlFor="password">Password:</label>
+          <input
+            className="form-container__input--blue"
+            type="password"
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+            required
+          />
+        <button
+          type="submit"
+          onClick={handleLogIn}
+          disabled={!user.email || !user.password}
+        >
+          Log In
+        </button>
+      </form>
+      <a onClick={() => setLogin(false)}>
+        Don't have an account? Sign Up.
+      </a>
     </div>
   );
 }

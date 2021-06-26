@@ -2,7 +2,6 @@ import React, { useState, Dispatch, SetStateAction } from 'react';
 import { searchBookService } from '../services/externalApi';
 import IBook from '../interfaces/IBook';
 import { useRouter } from 'next/router';
-import TextField from '@material-ui/core/TextField';
 
 type Props = {
   setSelectedBook?: Dispatch<SetStateAction<IBook>>,
@@ -17,8 +16,8 @@ function SearchBar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
   const router = useRouter();
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<any> => {
-    setInput(e.target.value)
-    if (!e.target.value) setResults([])
+    setInput(e.target.value);
+    if (!e.target.value) setResults([]);
   }
 
   const delay = async () => {
@@ -52,50 +51,45 @@ function SearchBar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
         OLID: target.id
       });
       setInput('');
-      router.push(`/book/${target.id}`)
+      router.push(`/book/${target.id}`);
     }
     setResults([]);
   }
 
   return (
-    <div className="">
-      <div className="search-bar">
+    <div>
+      <div className="search-area">
         <input
+          className="search-area__input"
           onKeyUp={delay}
           value={input}
           onChange={handleChange}
-          style={{backgroundColor:"rgb(255,255,255)", border:"solid 3px var(--secondary)"}}
         ></input>
-        <img src="/search-icon.png" width="30" height="auto"></img>
+        <img src="/search-icon.png" width="20" height="auto"></img>
       </div>
-      {results.length > 0 && <div className="resultsdiv">
+      {results.length > 0 && <div className="scroll">
         {results.map((book: any) => {
           return (
             <div
-              className="resultbook"
               key={book.id}
               onClick={handleClick}
             >
               { book.volumeInfo.imageLinks ? (
-                <>
-                <h2 className="searchTitle">{book.volumeInfo.title}</h2>
-                <img
-                  src={book.volumeInfo.imageLinks.thumbnail}
-                  className="resultbookimg"
-                  title={book.volumeInfo.title}
-                  id={book.id}
-                  />
-                </>
+                <div className="small-book">
+                  <p className="label">{book.volumeInfo.title && book.volumeInfo.title.length > 30 ? book.volumeInfo.title.substring(0, 30).concat('...') : book.volumeInfo.title}</p>
+                  <img
+                    src={book.volumeInfo.imageLinks.thumbnail}
+                    title={book.volumeInfo.title}
+                    id={book.id}
+                    />
+                </div>
               ) :
-                <div className="searchTitle">{book.volumeInfo.title}</div>
+                <p className="label">{book.volumeInfo.title && book.volumeInfo.title.length > 30 ? book.volumeInfo.title.substring(0, 30) : book.volumeInfo.title}</p>
               }
             </div>
           )
         })}
-      </div>
-
-          }
-
+      </div>}
     </div>
   )
 }

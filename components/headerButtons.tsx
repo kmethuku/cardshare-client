@@ -25,25 +25,25 @@ const HeaderButtons = () => {
 
   return (
       <ul className="navigation-bar">
-        <li>
+        <li className="navigation-bar__list-item">
           <img src="/cardshare-logo-books-transparent.png" width="auto" height="50"></img>
         </li>
-        <li className="navigation-button">
+        <li className="navigation-bar__list-item">
           <Link href="/discover">
             Discover
           </Link>
         </li>
-        <li className="navigation-button">
-          <Link href="/mydecks">
+        <li className="navigation-bar__list-item">
+          <Link href="/create">
             Create
           </Link>
         </li>
-        <li className="navigation-button">
+        <li className="navigation-bar__list-item">
           <Link href="/study">
             Study
           </Link>
         </li>
-        <li className="navigation-button" onClick={handleSignOut}>
+        <li className="navigation-bar__list-item" onClick={handleSignOut}>
           <a><img src="/signout.png" width="auto" height="25"></img></a>
         </li>
       </ul>
