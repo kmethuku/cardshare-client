@@ -30,6 +30,19 @@ body {
   text-align: center;
 }
 
+/* new form */
+.form-container__form--gray {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: rgba(235,235,235, 0.5);
+  margin: 10px 10px;
+  padding: 10px 10px;
+  border-radius: 10px;
+}
+
 /* new label */
 .form-container__label {
   font-size: 1.2rem;
@@ -39,6 +52,19 @@ body {
 .form-container__input--blue {
   border: none;
   background-color: var(--primary-transparent);
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  margin: 10px 5px;
+  min-width: 300px;
+  min-height: 30px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+/* new input */
+.form-container__input--yellow-outline {
+  border: 2px solid var(--secondary);
+  background-color: transparent;
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   margin: 10px 5px;
@@ -94,14 +120,17 @@ button:disabled {
 .scroll {
   display: flex;
   flex-direction: row;
-  align-items: top;
+  align-items: center;
   overflow-x: visible;
   overflow-y: hidden;
   margin: 10px 10px;
   text-align: center;
   background-color: rgba(235,235,235, 0.5);
-  padding: 10px 10px;
   border-radius: 10px;
+  max-height: 300px;
+  min-height: 0px;
+  max-width: 90vw;
+  margin: 10px auto;
 }
 
 .form-container {
@@ -189,7 +218,7 @@ button:disabled {
 }
 
 .small-book {
-  margin: 5px 10px;
+  margin: 10px 10px;
 }
 
 .book-details {
@@ -208,7 +237,7 @@ button:disabled {
 .label {
   text-decoration: underline var(--secondary) 2px;
   font-weight: 700;
-  margin: 4px;
+  margin: 4px 10px;
 }
 
 .landing-page-container {
@@ -220,7 +249,6 @@ button:disabled {
 
 .page-container {
   padding-top: 10vh;
-  margin-bottom: 10vh;
   height: 90vh;
   margin: 10px 20px;
 }
@@ -254,6 +282,15 @@ button:disabled {
   perspective: 1000px;
 }
 
+.flashcard-details__card-outer--spaced {
+  background-color: transparent;
+  width: 300px;
+  height: 200px;
+  border: none;
+  perspective: 1000px;
+  margin: 10px 10px;
+}
+
 .flashcard-details__card-inner {
   position: relative;
   width: 100%;
@@ -264,6 +301,10 @@ button:disabled {
 }
 
 .flashcard-details__card-outer:hover .flashcard-details__card-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-details__card-outer--spaced:hover .flashcard-details__card-inner {
   transform: rotateY(180deg);
 }
 
@@ -328,4 +369,11 @@ button:disabled {
 /* not BEM */
 .round-button:disabled {
   background-color: gray;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }

@@ -30,24 +30,16 @@ function ListDecks ({ decks, setDecks, type }:Props) {
       }
   }
 
-    const showDecks = () => {
-      if (decks.length === 0) {
-        return <div className="label">No Decks Available</div>
-      } else {
-        return decks.map((deck) => {
+    return (
+      <div className="scroll">
+          {decks.map((deck) => {
           return (
             <div key={deck._id}>
-                {type !== 'byBook' && <button type="button" className="round-button" onClick={() => deleteHandler(deck)}>𝗫</button>}
+                {type !== 'byBook' && <button type="button" className="round-button" onClick={() => deleteHandler(deck)}>x</button>}
                 <Deck deck={deck} key={deck.title} type={type}/>
             </div>
           )
-        })
-      }
-    }
-
-    return (
-      <div className="scroll">
-          {showDecks()}
+        })}
       </div>
     )
 }

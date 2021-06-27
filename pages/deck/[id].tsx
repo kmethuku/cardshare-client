@@ -79,7 +79,7 @@ function ViewDeck () {
         </div>
         {isSaved ? <button type="button" disabled>Saved</button> :
           <button type="button" onClick={handleSave}>Save Deck</button>}
-        <p className="label">Flashcards:</p>
+        <p className="label">Flashcards ({deck.cards.length}):</p>
         <ListFlashcards deck={deck} />
       </div>
   </div>) : (<div>loading...</div>)

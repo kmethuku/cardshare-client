@@ -14,18 +14,17 @@ function MyDecks() {
     const [myDecks, setMyDecks] = useState<IDeck[]>([]);
 
     useEffect(() => {
-        const sendEmail = email||currentUser.email
+        const sendEmail = email || currentUser.email;
         if (sendEmail) {
             getDeckByEmailService(sendEmail)
             .then((data) => {
-                console.log(data)
-                data && setMyDecks(data)
+                data && setMyDecks(data);
             });
         };
-    }, [currentUser, email, router]);
+    }, []);
 
     const handleNewDeck = () => {
-        router.push("/create/new");
+        router.push('/create/new');
     }
 
     return(

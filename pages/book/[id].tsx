@@ -35,7 +35,8 @@ const BookDetailPage = () => {
         <BookDetails book={book}/>
         <div>
           <p className="label">Available decks: </p>
-          {decks && <ListDecks decks={decks} setDecks={setDecks} type="byBook" />}
+          {decks && decks.length ? <ListDecks decks={decks} setDecks={setDecks} type="byBook"/>
+          : <p>None yet! Check back later or create one yourself.</p>}
         </div>
       </div>
     </div>

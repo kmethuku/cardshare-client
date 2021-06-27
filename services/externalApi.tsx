@@ -1,10 +1,8 @@
-const openLib = 'http://openlibrary.org/search.json?title=';
-const googleBooksURI = 'https://www.googleapis.com/books/v1/volumes?q='
-const bookById = 'https://www.googleapis.com/books/v1/volumes/'
+const googleBooksURI = 'https://www.googleapis.com/books/v1/volumes?q=';
+const bookById = 'https://www.googleapis.com/books/v1/volumes/';
 
 
 export const searchBookService = (query: string): Promise<any> => {
-  console.log(process.env.googleBooks)
   return fetch(`${googleBooksURI}${query}`)
   .then(res => res.json())
   .then(data => {
@@ -14,7 +12,7 @@ export const searchBookService = (query: string): Promise<any> => {
 
 export const discoverySearchingService = async (query: string, id: string):Promise<any> => {
   let result = await searchBookService(query);
-  let book = result.find((match:any) => match.id===id);
+  let book = result.find((match:any) => match.id === id);
   return {
     title:book.volumeInfo.title,
     src: book.volumeInfo.imageLinks.thumbnail,
@@ -35,5 +33,5 @@ export const getBookDetailsService = async (id: string): Promise<any> => {
         img: data.volumeInfo.imageLinks.thumbnail,
         link: data.volumeInfo.previewLink,
       })
-    )
+    );
 }

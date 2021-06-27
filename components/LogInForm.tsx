@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
 import { getUserService } from '../services/internalApi';
 import FormControlElement from '../interfaces/FormControlElement';
+import Link from 'next/link';
 
 const initialState = {
   email: '',
@@ -14,11 +15,17 @@ interface Props {
   setLogin: Dispatch<SetStateAction<boolean>>
 }
 
-function LogInForm({ setLogin }: Props) {
+const LogInForm: React.FC<Props> = ({ setLogin }) => {
   const authorized = useContext(AuthContext);
-  if (!authorized) return null;
-  const { logIn, setEmail, setUsername } = authorized;
   const router = useRouter();
+  if (!authorized)
+    return (
+      <h2 className="header">You are not authorized to access this page. Please
+        <Link href="/">log in</Link>
+        to gain access.
+      </h2>
+    )
+  const { logIn, setEmail, setUsername } = authorized;
   const [user, setUser] = useState(initialState)
 
   const handleLogIn = async (e: React.MouseEvent<HTMLElement>):Promise<void>  => {

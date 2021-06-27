@@ -57,7 +57,6 @@ function Flashcards () {
           <div className="flashcard-details__card-outer">
             <div
               className="flashcard-details__card-inner"
-              onClick={() => setFront(!front)}
             >
               <div className="flashcard-details__card-front">
                 <h2 className="header">{card.question}</h2>
