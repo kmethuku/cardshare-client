@@ -22,16 +22,20 @@ const NewDeck: React.FC = () => {
   const { email, currentUser } = auth;
   const [newDeck, setNewDeck] = useState<IDeck>({
     ...defaultDeck,
-    title: title as string,
-    src: src as string,
-    OLID: OLID as string,
     cards: [{ question: '', answer: '' }]
   });
   const [cardComplete, setCardComplete] = useState<boolean>(false);
+  const [renderCount, setRenderCount] = useState(0);
 
   useEffect(() => {
-    setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
-  }, []);
+    setNewDeck({
+      ...newDeck,
+      title: title as string,
+      src: src as string,
+      OLID: OLID as string
+    });
+    setRenderCount(renderCount + 1);
+  }, [title, src, OLID]);
 
   const handleDeckChange = (e: React.ChangeEvent<FormControlElement>): void => {
     const { name, value } = e.target;
@@ -100,7 +104,7 @@ const NewDeck: React.FC = () => {
         <h2 className="header">New Deck</h2>
         <form className="form-container__form">
           <label className="form-container__label" htmlFor="title">Title:</label>
-          <SearchBar setNewDeck={setNewDeck} newDeck={newDeck}/>
+          <SearchBar key={renderCount} setNewDeck={setNewDeck} newDeck={newDeck}/>
           <label className="form-container__label" htmlFor="genre">Genre:</label>
           <input className="form-container__input--yellow-outline" name="genre" list="genres" value={newDeck.genre} onChange={handleDeckChange}/>
           <datalist id="genres">

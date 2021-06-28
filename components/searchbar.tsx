@@ -3,6 +3,7 @@ import { searchBookService } from '../services/externalApi';
 import IBook from '../interfaces/IBook';
 import { NextRouter, useRouter } from 'next/router';
 import IDeck from '../interfaces/IDeck';
+import { useEffect } from 'react';
 
 type Props = {
   setSelectedBook?: Dispatch<SetStateAction<IBook>>,
@@ -15,6 +16,10 @@ const SearchBar: React.FC<Props> = ({ setSelectedBook, setNewDeck, newDeck }) =>
   const [input, setInput] = useState<string>('');
   const [time, setTime] = useState<number>(0);
   const router: NextRouter = useRouter();
+
+  useEffect(() => {
+    if (newDeck?.title) setInput(newDeck.title);
+  }, [])
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<any> => {
     setInput(e.target.value);
@@ -40,8 +45,7 @@ const SearchBar: React.FC<Props> = ({ setSelectedBook, setNewDeck, newDeck }) =>
 
   function handleClick(e: React.MouseEvent<HTMLImageElement>) {
     const target = e.target as HTMLImageElement;
-    if (newDeck?.title) setInput(newDeck.title);
-    else if (setNewDeck) {
+    if (setNewDeck) {
       setNewDeck({
         ...newDeck,
         title: target.title,
@@ -64,7 +68,6 @@ const SearchBar: React.FC<Props> = ({ setSelectedBook, setNewDeck, newDeck }) =>
 
   return (
     <div>
-      <p>here in searchbar {newDeck?.title}</p>
       <div className="search-area">
         <input
           className="search-area__input"
