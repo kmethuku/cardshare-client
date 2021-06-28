@@ -27,11 +27,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Tech Stack
 
-Front End: React with NextJS, Google Books API
+Front End: React with NextJS, Google Books API, Firebase
 
 Bank End: Express, MongoDB with Mongoose
 
-Testing (thank you Kimberly Innes (https://github.com/kjinnes) and Louisa Wong (https://github.com/louisawong)!): React Testing Library, Jest, Supertest
+Testing (thank you Kimberly Innes (https://github.com/kjinnes) and Louisa Wong (https://github.com/louisawong)!): Jest, Supertest
 
 ## Contributors
 
