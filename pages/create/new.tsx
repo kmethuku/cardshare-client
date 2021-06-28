@@ -88,7 +88,10 @@ const NewDeck: React.FC = () => {
   return (
     <div>
       <HeaderButtons/>
-      {console.log('testing', title, src, OLID)}
+      <p>{title}</p>
+      <p>{src}</p>
+      <p>{OLID}</p>
+
       <div className="page-container center-text">
       {currentUser.uid ?
       <div>
