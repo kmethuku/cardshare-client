@@ -33,6 +33,7 @@ const SignUpForm: React.FC<Props> = ({ setLogin }) => {
       setEmail(user.email);
       router.push('/discover');
     } catch (err) {
+      console.log('err in signup', err)
       setUser({ ...user, error: err.message });
     }
   }

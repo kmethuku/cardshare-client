@@ -32,6 +32,7 @@ const LogInForm: React.FC<Props> = ({ setLogin }) => {
       setUsername(username[0].username);
       router.push('/discover');
     } catch (err) {
+      console.log('err in login', err)
       setUser({ ...user, error: err.message });
     }
   }
