@@ -6,12 +6,9 @@ import ListDecks from '../../components/listDecks';
 import { NextRouter, useRouter } from 'next/router';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
-import { IAuthContext } from '../../interfaces/IAuth';
 
 const MyDecks: React.FC = () => {
-    const auth: IAuthContext | null = useContext(AuthContext);
-    if (!auth) return null;
-    const { currentUser, email } = auth;
+    const { currentUser, email } = useContext(AuthContext);
     const router: NextRouter = useRouter();
     const [myDecks, setMyDecks] = useState<IDeck[]>([]);
 

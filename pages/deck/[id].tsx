@@ -7,12 +7,9 @@ import{ getDeckByIdService, getUserService, voteService, getSavedDecksByEmailSer
 import HeaderButtons from '../../components/headerButtons';
 import IBook from '../../interfaces/IBook';
 import Link from 'next/link';
-import { IAuthContext } from '../../interfaces/IAuth';
 
 function ViewDeck () {
-  const auth: IAuthContext | null = useContext(AuthContext);
-  if (!auth) return null;
-  const { currentUser, email } = auth;
+  const { currentUser, email } = useContext(AuthContext);
   const router: NextRouter = useRouter();
   const { id } = router.query;
   const [deck, setDeck] = useState<IDeck | null>(null);

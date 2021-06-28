@@ -5,12 +5,9 @@ import IDeck from '../../interfaces/IDeck';
 import ListDecks from '../../components/listDecks'
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
-import { IAuthContext } from '../../interfaces/IAuth';
 
 const Study: React.FC = () => {
-    const auth: IAuthContext | null = useContext(AuthContext);
-    if (!auth) return null;
-    const { currentUser, email } = auth;
+    const { currentUser, email } = useContext(AuthContext);
     const [savedDecks, setSavedDecks] = useState<IDeck[]>([]);
 
     useEffect(() => {

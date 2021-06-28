@@ -9,12 +9,9 @@ import { AuthContext } from '../../contexts/AuthContext';
 import IBook from '../../interfaces/IBook';
 import IDeck from '../../interfaces/IDeck';
 import Link from 'next/link';
-import { IAuthContext } from '../../interfaces/IAuth';
 
 const BookById: React.FC = () => {
-  const auth: IAuthContext | null = useContext(AuthContext);
-  if (!auth) return null;
-  const { currentUser } = auth;
+  const { currentUser } = useContext(AuthContext);
   const router: NextRouter = useRouter();
   const { id } = router.query;
   const defaultBook: IBook = { title: '', src: '', OLID: '' };

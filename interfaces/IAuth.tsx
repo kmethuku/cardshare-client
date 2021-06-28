@@ -16,3 +16,18 @@ export interface ICurrent {
   uid: string | undefined,
   email: string | undefined | null,
 }
+
+export const defaultAuthContext = {
+  currentUser: {
+    uid: '',
+    email: ''
+  },
+  setCurrentUser: () => {},
+  setUsername: () => {},
+  setEmail: () => {},
+  email: '',
+  username: '',
+  signUp: () => {},
+  signOut: () => {},
+  logIn: () => {}
+}

@@ -8,18 +8,15 @@ import IDeck, { defaultDeck } from '../../interfaces/IDeck';
 import FormControlElement from '../../interfaces/FormControlElement';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
-import { IAuthContext } from '../../interfaces/IAuth';
 
 const NewDeck: React.FC = () => {
-  const auth: IAuthContext | null = useContext(AuthContext);
-  if (!auth) return null;
   const router: NextRouter = useRouter();
   const { title, src, OLID } = router.query;
   const genreOption: Array<string> =[
     'Self-Growth', 'History'
   ]
-  let username: string = auth.username;
-  const { email, currentUser } = auth;
+  let username: string = useContext(AuthContext).username;
+  const { email, currentUser } = useContext(AuthContext);
   const [newDeck, setNewDeck] = useState<IDeck>({
     ...defaultDeck,
     cards: [{ question: '', answer: '' }]

@@ -6,12 +6,9 @@ import { NextRouter, useRouter } from 'next/router';
 import{ getSavedDeckByIdService } from '../../services/internalApi';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
-import { IAuthContext } from '../../interfaces/IAuth';
 
 const Flashcards: React.FC = () => {
-  const auth: IAuthContext | null = useContext(AuthContext);
-  if (!auth) return null;
-  const { currentUser, email } = auth;
+  const { currentUser, email } = useContext(AuthContext);
   const router: NextRouter = useRouter();
   const { id } = router.query;
   const [deck, setDeck] = useState<IDeck | null>(null);

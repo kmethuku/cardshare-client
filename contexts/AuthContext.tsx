@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth } from '../firebase';
-import { IAuthContext, ICurrent } from '../interfaces/IAuth';
+import { defaultAuthContext, IAuthContext, ICurrent } from '../interfaces/IAuth';
 
-export const AuthContext = React.createContext<IAuthContext | null>(null);
+export const AuthContext = React.createContext<IAuthContext>(defaultAuthContext);
 
 type Props = {
   children: JSX.Element,
@@ -14,7 +14,7 @@ export function AuthProvider({ children }: Props) {
     uid: '',
     email: '',
   });
-  const [username, setUsername] = useState<string>(''); // is this being used?
+  const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
   async function signUp(email: string, password: string) {
