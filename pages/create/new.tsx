@@ -130,9 +130,9 @@ const NewDeck: React.FC = () => {
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={!newDeck.title || !newDeck.genre || !newDeck.description || newDeck.cards && !newDeck.cards[0].question || !newDeck.cards[0].answer}
+            disabled={!newDeck.title || !newDeck.genre || !newDeck.description || newDeck.cards[0] && !newDeck.cards[0].question || !newDeck.cards[0].answer}
           >
-            Save Deck
+            Create Deck
           </button>
           <button
             type="button"
