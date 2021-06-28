@@ -19,6 +19,7 @@ export const getBookDetailsService = async (id: string): Promise<any> => {
         averageRating: data.volumeInfo.averageRating,
         img: data.volumeInfo.imageLinks.thumbnail,
         link: data.volumeInfo.previewLink,
+        OLID: id
       })
     );
 }

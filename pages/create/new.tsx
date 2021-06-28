@@ -14,6 +14,7 @@ const NewDeck: React.FC = () => {
   const auth: IAuthContext | null = useContext(AuthContext);
   if (!auth) return null;
   const router: NextRouter = useRouter();
+  const { title, src, OLID } = router.query;
   const genreOption: Array<string> =[
     'Self-Growth', 'History'
   ]
@@ -87,6 +88,7 @@ const NewDeck: React.FC = () => {
   return (
     <div>
       <HeaderButtons/>
+      {console.log('testing', title, src, OLID)}
       <div className="page-container center-text">
       {currentUser.uid ?
       <div>

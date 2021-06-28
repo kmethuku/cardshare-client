@@ -16,6 +16,14 @@ const BookDetails: React.FC<Props> = ({ book }) => {
 
   const handleNewDeck = () => {
     router.push('/create/new');
+    router.push({
+      pathname: '/create/new',
+      query: {
+        title: book.title,
+        src: book.img,
+        OLID: book.OLID
+       },
+    })
   }
 
   return (
