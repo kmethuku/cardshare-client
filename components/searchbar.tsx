@@ -64,7 +64,7 @@ const SearchBar: React.FC<Props> = ({ setSelectedBook, setNewDeck, newDeck }) =>
 
   return (
     <div>
-      {newDeck?.title}
+      <p>here in searchbar {newDeck?.title}</p>
       <div className="search-area">
         <input
           className="search-area__input"

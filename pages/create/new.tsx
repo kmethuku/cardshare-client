@@ -20,18 +20,17 @@ const NewDeck: React.FC = () => {
   ]
   let username: string = auth.username;
   const { email, currentUser } = auth;
-  const [newDeck, setNewDeck] = useState<IDeck>({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
+  const [newDeck, setNewDeck] = useState<IDeck>({
+    ...defaultDeck,
+    title: title as string,
+    src: src as string,
+    OLID: OLID as string,
+    cards: [{ question: '', answer: '' }]
+  });
   const [cardComplete, setCardComplete] = useState<boolean>(false);
 
   useEffect(() => {
-    if (title)
-      setNewDeck({
-        ...newDeck,
-        title: title as string,
-        src: src as string,
-        OLID: OLID as string
-      });
-    else setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
+    setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
   }, []);
 
   const handleDeckChange = (e: React.ChangeEvent<FormControlElement>): void => {
