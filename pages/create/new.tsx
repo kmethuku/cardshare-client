@@ -24,7 +24,14 @@ const NewDeck: React.FC = () => {
   const [cardComplete, setCardComplete] = useState<boolean>(false);
 
   useEffect(() => {
-    setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
+    if (title)
+      setNewDeck({
+        ...newDeck,
+        title: title as string,
+        src: src as string,
+        OLID: OLID as string
+      });
+    else setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
   }, []);
 
   const handleDeckChange = (e: React.ChangeEvent<FormControlElement>): void => {
@@ -88,8 +95,6 @@ const NewDeck: React.FC = () => {
   return (
     <div>
       <HeaderButtons/>
-      {alert(OLID)}
-
       <div className="page-container center-text">
       {currentUser.uid ?
       <div>
