@@ -26,7 +26,7 @@ const BookById: React.FC = () => {
       const queryId: string = id.toString();
       getBookDetailsService(queryId)
         .then((bookResult) => setBook(bookResult))
-        .catch((err) => alert('Sorry, an error occurred.'));
+        .catch((err) => alert('Sorry, an error occurred while trying to fetch details about this book.'));
       discoverBookService(queryId)
         .then((deckResult) => setDecks(deckResult))
         .catch((err) => alert('Sorry, an error occurred.'));

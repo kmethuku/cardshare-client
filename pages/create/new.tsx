@@ -66,6 +66,7 @@ const NewDeck: React.FC = () => {
   }
 
   async function handleSubmit (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> {
+    e.preventDefault();
     if (!username) {
       try {
         username = await getUserService(email || currentUser.email);
@@ -73,9 +74,9 @@ const NewDeck: React.FC = () => {
         alert('Sorry, an error occurred.');
       }
     }
-    e.preventDefault();
+    let cleanedCards = newDeck.cards.filter((card) => card.question);
     try {
-      await newDeckService(email || currentUser.email, newDeck);
+      await newDeckService(email || currentUser.email, { ...newDeck, cards: cleanedCards });
     } catch (err) {
       alert('Sorry, an error occurred.');
     }
