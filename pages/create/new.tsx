@@ -33,7 +33,14 @@ const NewDeck: React.FC = () => {
 
   const handleCardChange = (e: React.ChangeEvent<FormControlElement>, index: number): void => {
     const { name, value } = e.target;
-    value.length ? setCardComplete(true) : setCardComplete(false);
+
+    if (name === 'question')
+      (value.length && newDeck.cards[index].answer) ?
+        setCardComplete(true) : setCardComplete(false);
+    else if (name === 'answer')
+      (value.length && newDeck.cards[index].question) ?
+        setCardComplete(true) : setCardComplete(false);
+
     let cardArray = [...newDeck.cards] as any[];
     cardArray[index][name] = value;
     setNewDeck({
