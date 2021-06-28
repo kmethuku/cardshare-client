@@ -1,5 +1,4 @@
-import ICard, { defaultCard } from './ICard'
-
+import ICard, { defaultCard } from './ICard';
 
 export default interface IDeck {
   _id?: string,
@@ -22,4 +21,4 @@ export const defaultDeck = {
   cards: [defaultCard],
   creator: '',
   votes: 0,
-}
+};

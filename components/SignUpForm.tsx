@@ -15,12 +15,11 @@ interface Props {
   setLogin: Dispatch<SetStateAction<boolean>>
 }
 
-const SignUpForm = ({setLogin}: Props) => {
-  const [user, setUser] = useState(initialState)
-  const router = useRouter();
+const SignUpForm: React.FC<Props> = ({ setLogin }) => {
   const auth = useContext(AuthContext);
   if (!auth) return null;
-
+  const [user, setUser] = useState(initialState);
+  const router = useRouter();
   const { signUp, setEmail, setUsername } = auth;
 
   const handleSignUp = async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
@@ -32,14 +31,14 @@ const SignUpForm = ({setLogin}: Props) => {
       setUsername(user.username);
       setEmail(user.email);
       router.push('/discover');
-    } catch (error) {
-      setUser({ ...user, error: error.message });
+    } catch (err) {
+      setUser({ ...user, error: err.message });
     }
   }
 
   const handleChange = (e: React.FormEvent<FormControlElement>) => {
     const target = e.target as FormControlElement;
-    const {name, value} = target;
+    const { name, value } = target;
     setUser({
       ...user,
       [name]: value,

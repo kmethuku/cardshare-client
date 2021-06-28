@@ -6,10 +6,10 @@ type Props = {
     deck: IDeck,
 }
 
-function ListFlashcards ({ deck }:Props) {
+const ListFlashcards: React.FC<Props> = ({ deck }) => {
     const headers = [
-        { label: "Question", key: "question" },
-        { label: "Answer", key: "answer" }
+        { label: 'Question', key: 'question' },
+        { label: 'Answer', key: 'answer' }
     ];
     const csvReport = {
         data: deck.cards,
@@ -17,8 +17,10 @@ function ListFlashcards ({ deck }:Props) {
         filename: `${deck.title.split(' ').join('-')}.csv`
     };
 
-    const showCards = () => {
-        return deck.cards.map((card) => {
+    return (
+        <div>
+            <div className="card-container">
+                {deck.cards.map((card) => {
                  return (
                     <div key={card._id} className="flashcard-details__card-outer--spaced">
                         <div
@@ -33,13 +35,7 @@ function ListFlashcards ({ deck }:Props) {
                         </div>
                     </div>
                  )
-            })
-    }
-
-    return (
-        <div>
-            <div className="card-container">
-                {showCards()}
+            })}
             </div>
             <CSVLink {...csvReport}>Export as CSV</CSVLink>
         </div>

@@ -2,14 +2,15 @@ import React, { useState, Dispatch, SetStateAction } from 'react';
 import { searchBookService } from '../services/externalApi';
 import IBook from '../interfaces/IBook';
 import { useRouter } from 'next/router';
+import IDeck from '../interfaces/IDeck';
 
 type Props = {
   setSelectedBook?: Dispatch<SetStateAction<IBook>>,
   setNewDeck?: Dispatch<SetStateAction<any>>,
-  newDeck?: any,
+  newDeck?: IDeck,
 }
 
-function SearchBar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element {
+const SearchBar: React.FC<Props> = ({ setSelectedBook, setNewDeck, newDeck }) => {
   const [results, setResults] = useState<any[]>([]);
   const [input, setInput] = useState('');
   const [time, setTime] = useState(0);
@@ -64,8 +65,8 @@ function SearchBar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
           onKeyUp={delay}
           value={input}
           onChange={handleChange}
-        ></input>
-        <img src="/search-icon.png" width="20" height="auto"></img>
+        />
+        <img src="/search-icon.png" width="20" height="auto"/>
       </div>
       {results.length > 0 && <div className="scroll">
         {results.map((book: any) => {
@@ -74,7 +75,7 @@ function SearchBar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
               key={book.id}
               onClick={handleClick}
             >
-              { book.volumeInfo.imageLinks ? (
+              {book.volumeInfo.imageLinks ? (
                 <div className="small-book">
                   <p className="label">{book.volumeInfo.title && book.volumeInfo.title.length > 30 ? book.volumeInfo.title.substring(0, 30).concat('...') : book.volumeInfo.title}</p>
                   <img
@@ -84,7 +85,7 @@ function SearchBar({ setSelectedBook, setNewDeck, newDeck }: Props): JSX.Element
                     />
                 </div>
               ) :
-                <p className="label">{book.volumeInfo.title && book.volumeInfo.title.length > 30 ? book.volumeInfo.title.substring(0, 30) : book.volumeInfo.title}</p>
+                <p className="label">{book.volumeInfo.title && book.volumeInfo.title.length > 30 ? book.volumeInfo.title.substring(0, 30).concat('...') : book.volumeInfo.title}</p>
               }
             </div>
           )

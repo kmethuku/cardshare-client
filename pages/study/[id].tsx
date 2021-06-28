@@ -1,22 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import IDeck from '../../interfaces/IDeck';
+import ICard from '../../interfaces/ICard';
 import { useRouter } from 'next/router';
 import{ getSavedDeckByIdService } from '../../services/internalApi';
 import HeaderButtons from '../../components/headerButtons';
+import Link from 'next/link';
 
-function Flashcards () {
-  const context = useContext(AuthContext);
-  if (!context || !context.currentUser.email) return null;
-  const { currentUser, email } = context;
+const Flashcards: React.FC = () => {
+  const auth = useContext(AuthContext);
+  if (!auth) return null;
+  const { currentUser, email } = auth;
   const router = useRouter();
   const { id } = router.query;
   const [deck, setDeck] = useState<IDeck | null>(null);
-  const [cardText, setCardText] = useState<any>(deck?.cards[0]?.question);
-  const [textType, setTextType] = useState<string>('Question:');
-  const[card, setCard] = useState<any>(deck?.cards[0]);
+  const [card, setCard] = useState<ICard | undefined>(deck?.cards[0]);
   const [index, setIndex] = useState<number>(0);
-  const [front, setFront] = useState(true);
 
   useEffect(() => {
     const sendEmail = currentUser.email || email;
@@ -24,23 +23,20 @@ function Flashcards () {
       getSavedDeckByIdService(sendEmail, id)
       .then(data => {
         setDeck(data);
-        setCardText(data.cards[0].question);
         setCard(data.cards[0]);
       })
     }
   }, [])
 
-  const handleMove = (increment:number) : void => {
-    setFront(true);
-    setTextType('Question:');
+  const handleMove = (increment: number): void => {
     setCard(deck?.cards[index + increment]);
-    setCardText(deck?.cards[index + increment].question);
     setIndex(index + increment);
   }
 
-  return deck && card ? (
+  return deck && (
     <div>
       <HeaderButtons/>
+      {currentUser.uid ?
       <div className="page-container flashcard-details">
         <h2 className="header">{deck.title}</h2>
         <p className="label">Created by:</p>
@@ -59,10 +55,10 @@ function Flashcards () {
               className="flashcard-details__card-inner"
             >
               <div className="flashcard-details__card-front">
-                <h2 className="header">{card.question}</h2>
+                <h2 className="header">{card?.question}</h2>
               </div>
               <div className="flashcard-details__card-back">
-                <h2 className="header">{card.answer}</h2>
+                <h2 className="header">{card?.answer}</h2>
               </div>
             </div>
           </div>
@@ -72,13 +68,14 @@ function Flashcards () {
             onClick={() => handleMove(1)}
             type="button"
           >
-            <img src="/next.png" width="15" height="auto"></img>
+            <img src="/next.png" width="15" height="auto"/>
           </button>
         </div>
-      </div>
+      </div> :
+      <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+      </h2>
+    }
     </div>
-  ) : (
-    <div>loading...</div>
   );
 }
 

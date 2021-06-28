@@ -1,46 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import BookDetails from '../../components/bookDetails';
 import ListDecks from '../../components/listDecks';
 import { getBookDetailsService } from '../../services/externalApi';
 import { discoverBookService } from '../../services/internalApi';
 import HeaderButtons from '../../components/headerButtons';
+import { AuthContext } from '../../contexts/AuthContext';
+import IBook from '../../interfaces/IBook';
+import IDeck from '../../interfaces/IDeck';
+import Link from 'next/link';
 
-const BookDetailPage = () => {
+const BookById: React.FC = () => {
+  const auth = useContext(AuthContext);
+  if (!auth) return null;
+  const { currentUser } = auth;
   const router = useRouter();
   const { id } = router.query;
-  const [book, setBook] = useState<any>(null);
-  const [decks, setDecks] = useState<any>(null);
+  const defaultBook = { title: '', src: '', OLID: '' };
+  const [book, setBook] = useState<IBook>(defaultBook);
+  const [decks, setDecks] = useState<IDeck[]>([]);
 
   useEffect(() => {
-    const getBookDetails = async () => {
-      if (id) {
-        const queryId = id.toString();
-        let bookResult = await getBookDetailsService(queryId);
-        setBook(bookResult);
-
-        const deckResult = await discoverBookService(queryId);
-        setDecks(deckResult);
-        console.log(deckResult);
-      }
+    if (id) {
+      const queryId = id.toString();
+      getBookDetailsService(queryId)
+        .then((bookResult) => setBook(bookResult));
+      discoverBookService(queryId)
+        .then((deckResult) => setDecks(deckResult));
     }
-    getBookDetails();
+  }, [id])
 
-  },[id])
-
-  return (book &&
+  return (
     <div>
       <HeaderButtons/>
+      {currentUser.uid ?
       <div className="page-container book-details">
         <BookDetails book={book}/>
         <div>
-          <p className="label">Available decks: </p>
+          <p className="label">Available decks:</p>
           {decks && decks.length ? <ListDecks decks={decks} setDecks={setDecks} type="byBook"/>
           : <p>None yet! Check back later or create one yourself.</p>}
         </div>
-      </div>
+      </div> :
+      <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+      </h2>}
     </div>
   )
 }
 
-export default BookDetailPage;
+export default BookById;

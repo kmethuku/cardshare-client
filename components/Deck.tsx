@@ -1,16 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
-import { AuthContext } from '../contexts/AuthContext';
-import IDeck from '../interfaces/IDeck'
+import IDeck from '../interfaces/IDeck';
 
 type Props = {
     deck: IDeck,
     type: String,
 }
 
-function Deck ({ deck, type }:Props) {
-    const authorized = useContext(AuthContext);
-    if (!authorized) return null;
+const Deck: React.FC<Props> =  ({ deck, type }) => {
     const router = useRouter();
 
     const clickHandler = () => {
@@ -23,7 +20,10 @@ function Deck ({ deck, type }:Props) {
 
     return (
         <div className="small-book" onClick={clickHandler}>
-            <img src={deck.src}/>
+            {deck.src ? <img
+                src={deck.src}/> :
+                <p className="label">{deck.title.length > 30 ? deck.title.substring(0, 30).concat('...') : deck.title}</p>
+            }
             {type === "byBook" && <div>{deck.creator}</div>}
         </div>
     )

@@ -4,24 +4,28 @@ import { AuthContext } from '../contexts/AuthContext';
 import IBook from '../interfaces/IBook';
 import ListBooks from '../components/listBooks';
 import HeaderButtons from '../components/headerButtons';
+import Link from 'next/link';
 
-function Discover() {
-  const defaultBook = {title: '', src:'', OLID: ''};
+const Discover: React.FC = () => {
+  const auth = useContext(AuthContext);
+  if (!auth) return null;
+  const defaultBook = { title: '', src: '', OLID: '' };
   const [selectedBook, setSelectedBook] = useState<IBook>(defaultBook);
-  const authorized = useContext(AuthContext);
-  if (!authorized) return null;
-  const { currentUser } = authorized;
+  const { currentUser } = auth;
 
   return (
    <div>
       <HeaderButtons/>
       <div className="page-container">
-      {currentUser ? (<>
-        <SearchBar setSelectedBook={setSelectedBook}/>
-        <ListBooks title="Popular"/>
-        <ListBooks title="Self-Growth"/>
-        <ListBooks title="History"/>
-      </>) : (<div>Access unauthorized.</div>)}
+        {currentUser.uid ?
+        <div>
+          <SearchBar setSelectedBook={setSelectedBook}/>
+          <ListBooks title="Popular"/>
+          <ListBooks title="Self-Growth"/>
+          <ListBooks title="History"/>
+        </div> :
+        <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+        </h2>}
       </div>
   </div>)
 }

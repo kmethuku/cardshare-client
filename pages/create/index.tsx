@@ -5,22 +5,18 @@ import IDeck from '../../interfaces/IDeck';
 import ListDecks from '../../components/listDecks';
 import { useRouter } from 'next/router';
 import HeaderButtons from '../../components/headerButtons';
+import Link from 'next/link';
 
-function MyDecks() {
-    const authorized = useContext(AuthContext);
-    if (!authorized) return null;
-    const { currentUser, email } = authorized;
+const MyDecks: React.FC = () => {
+    const auth = useContext(AuthContext);
+    if (!auth) return null;
+    const { currentUser, email } = auth;
     const router = useRouter();
     const [myDecks, setMyDecks] = useState<IDeck[]>([]);
 
     useEffect(() => {
-        const sendEmail = email || currentUser.email;
-        if (sendEmail) {
-            getDeckByEmailService(sendEmail)
-            .then((data) => {
-                data && setMyDecks(data);
-            });
-        };
+        getDeckByEmailService(email || currentUser.email)
+            .then((data) => setMyDecks(data));
     }, []);
 
     const handleNewDeck = () => {
@@ -30,6 +26,7 @@ function MyDecks() {
     return(
         <div>
             <HeaderButtons/>
+            {currentUser.uid ?
             <div className="page-container">
                 <h2 className="header">My Decks</h2>
                 <button
@@ -37,8 +34,14 @@ function MyDecks() {
                     onClick={handleNewDeck}>
                     Create New Deck
                 </button>
-                <ListDecks decks={myDecks} setDecks={setMyDecks} type="myDecks"/>
-            </div>
+                {myDecks.length ?
+                    <ListDecks decks={myDecks} setDecks={setMyDecks} type="myDecks"/>
+                    : <p className="label centered-container">None yet. Create one!</p>
+                }
+            </div> :
+            <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+            </h2>
+            }
         </div>
     )
 

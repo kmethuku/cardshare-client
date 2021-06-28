@@ -1,14 +1,14 @@
 import React from 'react';
 import { AuthProvider } from '../contexts/AuthContext';
 import '../styles/globals.css';
-import { AppProps } from 'next/app'
+import { AppProps } from 'next/app';
 
-const MyApp = (props: AppProps) => {
+const MyApp: React.FC<AppProps> = (props) => {
   const { Component, pageProps } = props;
   return (
     <AuthProvider>
       <>
-        <Component {...pageProps} />
+        <Component {...pageProps}/>
       </>
     </AuthProvider>
   )

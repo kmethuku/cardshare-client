@@ -5,11 +5,13 @@ import { useRouter } from 'next/router';
 import ListFlashcards from '../../components/listFlashCards';
 import{ getDeckByIdService, getUserService, voteService, getSavedDecksByEmailService, saveDeckService } from '../../services/internalApi';
 import HeaderButtons from '../../components/headerButtons';
+import IBook from '../../interfaces/IBook';
+import Link from 'next/link';
 
 function ViewDeck () {
-  const context = useContext(AuthContext);
-  if (!context || !context.currentUser.email) return null;
-  const { currentUser, email } = context;
+  const auth = useContext(AuthContext);
+  if (!auth) return null;
+  const { currentUser, email } = auth;
   const router = useRouter();
   const { id } = router.query;
   const [deck, setDeck] = useState<IDeck | null>(null);
@@ -18,23 +20,14 @@ function ViewDeck () {
   const [username, setUsername] = useState<string>('');
   const [isSaved, setIsSaved] = useState<boolean>(false);
 
-  const setState = async (email:string) => {
-    let deck = await getDeckByIdService(id);
-    setDeck(deck);
-    let user = await getUserService(email);
-    setUsername(user[0].username);
-  }
-
   useEffect(() => {
-    const sendEmail = currentUser.email || email;
-    if (sendEmail) {
-      setState(sendEmail);
-    }
+    getDeckByIdService(id).then((deck) => setDeck(deck));
+    getUserService(currentUser.email || email).then((user) => setUsername(user[0].username));
   }, [upvoted, downvoted])
 
   useEffect(() => {
     getSavedDecksByEmailService(currentUser.email || email)
-    .then((data) => data[0].savedDecks.find((book:any) => {
+    .then((data) => data[0].savedDecks.find((book: IBook) => {
       if (book._id === deck?._id) {
         setIsSaved(true);
         return true;
@@ -47,7 +40,7 @@ function ViewDeck () {
     .then(() => router.push('/study'));
   }
 
-  const voteHandler = (direction:string) => {
+  const voteHandler = (direction: string) => {
     if (direction === 'up' && upvoted === false) {
       voteService(deck?._id, direction);
       setUpvoted(true);
@@ -60,29 +53,35 @@ function ViewDeck () {
   }
 
   return(
-    deck ? (
+    deck && (
     <div>
       <HeaderButtons/>
+      {currentUser.uid ?
       <div className="page-container deck-details">
         <h2 className="header">{deck.title}</h2>
-        <img src={deck.src}/>
+        <div className="small-book">
+          {deck.src && <img
+            src={deck.src}/>}
+        </div>
         <div>
           <p className="label">Description:</p>
           <div>{deck.description}</div>
           <p className="label">Created by:</p>
           <div>{deck.creator}</div>
             <div className="voting">
-              {username !== deck.creator ? <button disabled={upvoted} className="round-button" type="submit" onClick={()=>voteHandler("up")}><img src="/upvote.png" width="15" height="auto"></img></button> : <p className="label">Votes:</p>}
+              {username !== deck.creator ? <button disabled={upvoted} className="round-button" type="button" onClick={()=>voteHandler('up')}><img src="/upvote.png" width="15" height="auto"/></button> : <p className="label">Votes:</p>}
               <div>{deck.votes}</div>
-              {username !== deck.creator && <button disabled={downvoted} className="round-button" type="submit" onClick={()=>voteHandler("down")}><img src="/downvote.png" width="15" height="auto"></img></button>}
+              {username !== deck.creator && <button disabled={downvoted} className="round-button" type="button" onClick={()=>voteHandler('down')}><img src="/downvote.png" width="15" height="auto"/></button>}
             </div>
         </div>
         {isSaved ? <button type="button" disabled>Saved</button> :
           <button type="button" onClick={handleSave}>Save Deck</button>}
         <p className="label">Flashcards ({deck.cards.length}):</p>
-        <ListFlashcards deck={deck} />
-      </div>
-  </div>) : (<div>loading...</div>)
+        <ListFlashcards deck={deck}/>
+      </div> :
+      <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+      </h2>}
+  </div>)
   )
 }
 

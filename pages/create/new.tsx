@@ -7,25 +7,26 @@ import ICard from '../../interfaces/ICard';
 import IDeck, { defaultDeck } from '../../interfaces/IDeck';
 import FormControlElement from '../../interfaces/FormControlElement';
 import HeaderButtons from '../../components/headerButtons';
+import Link from 'next/link';
 
-const NewDeck = () => {
-  const context = useContext(AuthContext);
-  if (!context) return null;
+const NewDeck: React.FC = () => {
+  const auth = useContext(AuthContext);
+  if (!auth) return null;
   const router = useRouter();
-  const genreOption:Array<string> =[
+  const genreOption: Array<string> =[
     'Self-Growth', 'History'
   ]
-  const email = context?.currentUser.email;
-  let username = context.username;
-  const [newDeck, setNewDeck] = useState<IDeck>(defaultDeck);
+  let username = auth.username;
+  const { email, currentUser } = auth;
+  const [newDeck, setNewDeck] = useState<IDeck>({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
 
   useEffect(() => {
-    setNewDeck({...defaultDeck, cards: [{question: '', answer: ''}]});
+    setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
   }, []);
 
   const handleDeckChange = (e: React.ChangeEvent<FormControlElement>): void => {
     const { name, value } = e.target;
-    setNewDeck({ ...newDeck, [name]: value, });
+    setNewDeck({ ...newDeck, [name]: value });
   }
 
   const handleCardChange = (e: React.ChangeEvent<FormControlElement>, index: number): void => {
@@ -56,17 +57,18 @@ const NewDeck = () => {
 
   async function handleSubmit (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> {
     if (!username) {
-      username = await getUserService(email);
+      username = await getUserService(email || currentUser.email);
     }
     e.preventDefault();
     newDeckService(email, newDeck);
-    setNewDeck(defaultDeck);
+    setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
     router.push('/create');
   }
 
   return (
     <div>
       <HeaderButtons/>
+      {currentUser.uid ?
       <div className="page-container deck-details">
         <h2 className="header">New Deck</h2>
         <form className="form-container__form">
@@ -85,7 +87,7 @@ const NewDeck = () => {
             name="description"
             value={newDeck.description}
             onChange={handleDeckChange}
-          ></input>
+          />
           <div className="card-container">
             {newDeck.cards.map((card: ICard, index: number) => (
                 <div key={index} className="form-container__form--gray">
@@ -97,14 +99,14 @@ const NewDeck = () => {
                     name="question"
                     value={card.question}
                     onChange={(e) => handleCardChange(e, index)}
-                  ></input>
+                  />
                   <label className="form-container__label" htmlFor="answer">Answer:</label>
                   <input className="form-container__input--blue"
                     type="text"
                     name="answer"
                     value={card.answer}
                     onChange={(e) => handleCardChange(e, index)}
-                  ></input>
+                  />
                 </div>
             ))}
           </div>
@@ -129,7 +131,10 @@ const NewDeck = () => {
             Cancel
           </button>
         </form>
-      </div>
+      </div> :
+      <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+      </h2>
+    }
     </div>
   );
 }

@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
 import { getUserService } from '../services/internalApi';
 import FormControlElement from '../interfaces/FormControlElement';
-import Link from 'next/link';
 
 const initialState = {
   email: '',
@@ -16,22 +15,16 @@ interface Props {
 }
 
 const LogInForm: React.FC<Props> = ({ setLogin }) => {
-  const authorized = useContext(AuthContext);
-  const router = useRouter();
-  if (!authorized)
-    return (
-      <h2 className="header">You are not authorized to access this page. Please
-        <Link href="/">log in</Link>
-        to gain access.
-      </h2>
-    )
-  const { logIn, setEmail, setUsername } = authorized;
+  const auth = useContext(AuthContext);
+  if (!auth) return null;
+  const { logIn, setEmail, setUsername } = auth;
   const [user, setUser] = useState(initialState)
+  const router = useRouter();
 
-  const handleLogIn = async (e: React.MouseEvent<HTMLElement>):Promise<void>  => {
+  const handleLogIn = async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
     e.preventDefault();
     try {
-      setUser({ ...user, error: '' })
+      setUser({ ...user, error: '' });
       logIn(user.email, user.password);
       setEmail(user.email);
       const username = await getUserService(user.email);
@@ -42,15 +35,15 @@ const LogInForm: React.FC<Props> = ({ setLogin }) => {
     }
   }
 
-  function handleChange(e: React.ChangeEvent<FormControlElement>) : void {
+  function handleChange(e: React.ChangeEvent<FormControlElement>): void {
     const target = e.target as FormControlElement;
     const { name, value } = target;
-    setUser({ ...user, [name]: value})
+    setUser({ ...user, [name]: value });
   }
 
   return (
     <div className="form-container">
-        <form className="form-container__form">
+      <form className="form-container__form">
         {user.error && <p>{user.error}</p>}
         <label className="form-container__label" htmlFor="email">Email:</label>
           <input

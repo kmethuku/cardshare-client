@@ -4,14 +4,9 @@ import { AuthContext } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 
 const HeaderButtons = () => {
-  const context = useContext(AuthContext);
-  if (!context) return null;
-  const { signOut, currentUser } = context;
-  let loggedIn: boolean;
-  if (currentUser.email !== 'waiting...') {
-    loggedIn = true;
-  } else loggedIn = false;
-
+  const auth = useContext(AuthContext);
+  if (!auth) return null;
+  const { signOut } = auth;
   const router = useRouter();
 
   const handleSignOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> => {
@@ -26,7 +21,7 @@ const HeaderButtons = () => {
   return (
       <ul className="navigation-bar">
         <li className="navigation-bar__list-item">
-          <img src="/cardshare-logo-books-transparent.png" width="auto" height="50"></img>
+          <img src="/cardshare-logo-books-transparent.png" width="auto" height="50"/>
         </li>
         <li className="navigation-bar__list-item">
           <Link href="/discover">
@@ -44,7 +39,7 @@ const HeaderButtons = () => {
           </Link>
         </li>
         <li className="navigation-bar__list-item" onClick={handleSignOut}>
-          <a><img src="/signout.png" width="auto" height="25"></img></a>
+          <a><img src="/signout.png" width="auto" height="25"/></a>
         </li>
       </ul>
   );
