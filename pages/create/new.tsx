@@ -20,6 +20,7 @@ const NewDeck: React.FC = () => {
   let username: string = auth.username;
   const { email, currentUser } = auth;
   const [newDeck, setNewDeck] = useState<IDeck>({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
+  const [cardComplete, setCardComplete] = useState<boolean>(false);
 
   useEffect(() => {
     setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
@@ -32,6 +33,7 @@ const NewDeck: React.FC = () => {
 
   const handleCardChange = (e: React.ChangeEvent<FormControlElement>, index: number): void => {
     const { name, value } = e.target;
+    value.length ? setCardComplete(true) : setCardComplete(false);
     let cardArray = [...newDeck.cards] as any[];
     cardArray[index][name] = value;
     setNewDeck({
@@ -130,7 +132,7 @@ const NewDeck: React.FC = () => {
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={!newDeck.title || !newDeck.genre || !newDeck.description || !newDeck.cards[0] || newDeck.cards[0] && (!newDeck.cards[0].question || !newDeck.cards[0].answer)}
+            disabled={!newDeck.title || !newDeck.genre || !newDeck.description || !newDeck.cards[0] || !cardComplete}
           >
             Create Deck
           </button>
