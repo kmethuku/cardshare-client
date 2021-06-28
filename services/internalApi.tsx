@@ -87,7 +87,7 @@ export const signUpService = (body: any): Promise<any> => {
     },
     body: JSON.stringify(body)
   })
-  .then((res) => res.text())
+  .then((res) => res.text());
 }
 
 export const saveDeckService = (email: string, selectedDeck: any): Promise<any> => {
