@@ -1,8 +1,9 @@
 import React, { useState, useContext, SetStateAction, Dispatch } from 'react';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
 import { getUserService } from '../services/internalApi';
 import FormControlElement from '../interfaces/FormControlElement';
+import { IAuthContext } from '../interfaces/IAuth';
 
 const initialState = {
   email: '',
@@ -15,23 +16,23 @@ interface Props {
 }
 
 const LogInForm: React.FC<Props> = ({ setLogin }) => {
-  const auth = useContext(AuthContext);
+  const auth: IAuthContext | null = useContext(AuthContext);
   if (!auth) return null;
   const { logIn, setEmail, setUsername } = auth;
   const [user, setUser] = useState(initialState)
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
   const handleLogIn = async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
     e.preventDefault();
     try {
       setUser({ ...user, error: '' });
-      logIn(user.email, user.password);
+      await logIn(user.email, user.password);
       setEmail(user.email);
       const username = await getUserService(user.email);
       setUsername(username[0].username);
       router.push('/discover');
     } catch (err) {
-      setUser({ ...user, error: err.message });
+      setUser({ ...user, error: 'Invalid username or password.' });
     }
   }
 
@@ -71,7 +72,7 @@ const LogInForm: React.FC<Props> = ({ setLogin }) => {
           Log In
         </button>
       </form>
-      <a onClick={() => setLogin(false)}>
+      <a className="clickable" onClick={() => setLogin(false)}>
         Don't have an account? Sign Up.
       </a>
     </div>

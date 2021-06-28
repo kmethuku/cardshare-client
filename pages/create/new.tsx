@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import SearchBar from '../../components/searchbar';
 import { AuthContext } from '../../contexts/AuthContext';
 import { getUserService, newDeckService } from '../../services/internalApi';
@@ -8,15 +8,16 @@ import IDeck, { defaultDeck } from '../../interfaces/IDeck';
 import FormControlElement from '../../interfaces/FormControlElement';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
+import { IAuthContext } from '../../interfaces/IAuth';
 
 const NewDeck: React.FC = () => {
-  const auth = useContext(AuthContext);
+  const auth: IAuthContext | null = useContext(AuthContext);
   if (!auth) return null;
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const genreOption: Array<string> =[
     'Self-Growth', 'History'
   ]
-  let username = auth.username;
+  let username: string = auth.username;
   const { email, currentUser } = auth;
   const [newDeck, setNewDeck] = useState<IDeck>({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
 
@@ -40,7 +41,7 @@ const NewDeck: React.FC = () => {
   }
 
   function handleRemoveClick(e: React.MouseEvent<HTMLElement, MouseEvent>, index: number): void {
-    let cardArray = [...newDeck.cards];
+    let cardArray: ICard[] = [...newDeck.cards];
     cardArray.splice(index, 1);
     setNewDeck({
       ...newDeck,
@@ -57,10 +58,18 @@ const NewDeck: React.FC = () => {
 
   async function handleSubmit (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> {
     if (!username) {
-      username = await getUserService(email || currentUser.email);
+      try {
+        username = await getUserService(email || currentUser.email);
+      } catch (err) {
+        alert('Sorry, an error occurred.');
+      }
     }
     e.preventDefault();
-    newDeckService(email, newDeck);
+    try {
+      await newDeckService(email || currentUser.email, newDeck);
+    } catch (err) {
+      alert('Sorry, an error occurred.');
+    }
     setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
     router.push('/create');
   }
@@ -69,7 +78,7 @@ const NewDeck: React.FC = () => {
     <div>
       <HeaderButtons/>
       {currentUser.uid ?
-      <div className="page-container deck-details">
+      <div className="page-container center-text">
         <h2 className="header">New Deck</h2>
         <form className="form-container__form">
           <label className="form-container__label" htmlFor="title">Title:</label>
@@ -88,7 +97,7 @@ const NewDeck: React.FC = () => {
             value={newDeck.description}
             onChange={handleDeckChange}
           />
-          <div className="card-container">
+          <div className="flex-wrap">
             {newDeck.cards.map((card: ICard, index: number) => (
                 <div key={index} className="form-container__form--gray">
                   <p className="label">Flashcard {index + 1}:</p>
@@ -132,7 +141,7 @@ const NewDeck: React.FC = () => {
           </button>
         </form>
       </div> :
-      <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+      <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
       </h2>
     }
     </div>

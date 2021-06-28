@@ -3,20 +3,22 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getDeckByEmailService } from '../../services/internalApi';
 import IDeck from '../../interfaces/IDeck';
 import ListDecks from '../../components/listDecks';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
+import { IAuthContext } from '../../interfaces/IAuth';
 
 const MyDecks: React.FC = () => {
-    const auth = useContext(AuthContext);
+    const auth: IAuthContext | null = useContext(AuthContext);
     if (!auth) return null;
     const { currentUser, email } = auth;
-    const router = useRouter();
+    const router: NextRouter = useRouter();
     const [myDecks, setMyDecks] = useState<IDeck[]>([]);
 
     useEffect(() => {
         getDeckByEmailService(email || currentUser.email)
-            .then((data) => setMyDecks(data));
+            .then((data) => setMyDecks(data))
+            .catch((err) => alert('Sorry, an error occurred.'));
     }, []);
 
     const handleNewDeck = () => {
@@ -36,10 +38,10 @@ const MyDecks: React.FC = () => {
                 </button>
                 {myDecks.length ?
                     <ListDecks decks={myDecks} setDecks={setMyDecks} type="myDecks"/>
-                    : <p className="label centered-container">None yet. Create one!</p>
+                    : <p className="label center-text">None yet. Create one!</p>
                 }
             </div> :
-            <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+            <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
             </h2>
             }
         </div>

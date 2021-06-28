@@ -1,7 +1,7 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { searchBookService } from '../services/externalApi';
 import IBook from '../interfaces/IBook';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import IDeck from '../interfaces/IDeck';
 
 type Props = {
@@ -11,10 +11,10 @@ type Props = {
 }
 
 const SearchBar: React.FC<Props> = ({ setSelectedBook, setNewDeck, newDeck }) => {
-  const [results, setResults] = useState<any[]>([]);
-  const [input, setInput] = useState('');
-  const [time, setTime] = useState(0);
-  const router = useRouter();
+  const [results, setResults] = useState([]);
+  const [input, setInput] = useState<string>('');
+  const [time, setTime] = useState<number>(0);
+  const router: NextRouter = useRouter();
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<any> => {
     setInput(e.target.value);
@@ -22,13 +22,17 @@ const SearchBar: React.FC<Props> = ({ setSelectedBook, setNewDeck, newDeck }) =>
   }
 
   const delay = async () => {
-    let newTime = new Date().getTime();
+    let newTime: number = new Date().getTime();
     if (newTime - time > 200) {
       if (input === '') setResults([]);
       else {
-        let query = input.split(' ').join('+');
-        let result = await searchBookService(query);
-        setResults(result);
+        let query: string = input.split(' ').join('+');
+        try {
+          let result = await searchBookService(query);
+          setResults(result);
+        } catch (err) {
+          alert('Sorry, an error occurred.');
+        }
       }
     }
     setTime(newTime);

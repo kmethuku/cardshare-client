@@ -1,8 +1,9 @@
 import React, { useState, useContext, Dispatch, SetStateAction } from 'react';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
 import  { signUpService } from '../services/internalApi';
 import FormControlElement from '../interfaces/FormControlElement';
+import { IAuthContext } from '../interfaces/IAuth';
 
 const initialState = {
   username: '',
@@ -16,23 +17,23 @@ interface Props {
 }
 
 const SignUpForm: React.FC<Props> = ({ setLogin }) => {
-  const auth = useContext(AuthContext);
+  const auth: IAuthContext | null = useContext(AuthContext);
   if (!auth) return null;
   const [user, setUser] = useState(initialState);
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { signUp, setEmail, setUsername } = auth;
 
   const handleSignUp = async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
     e.preventDefault();
     try {
       setUser({ ...user, error: '' });
-      signUp(user.email, user.password);
+      await signUp(user.email, user.password);
       await signUpService({ username: user.username, email: user.email });
       setUsername(user.username);
       setEmail(user.email);
       router.push('/discover');
     } catch (err) {
-      setUser({ ...user, error: err.message });
+      setUser({ ...user, error: 'Invalid username or password.' });
     }
   }
 
@@ -84,7 +85,7 @@ const SignUpForm: React.FC<Props> = ({ setLogin }) => {
           Sign Up
         </button>
       </form>
-      <a onClick={() => setLogin(true)}>
+      <a className="clickable" onClick={() => setLogin(true)}>
         Already have an account? Log In.
       </a>
     </div>

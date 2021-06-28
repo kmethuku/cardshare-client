@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 
 type Props = {
-  book:any;
+  book: any;
 }
 
 const BookDetails: React.FC<Props> = ({ book }) => {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
   useEffect(() => {
-    const html = document.getElementById('description');
-    const shortDesc = book?.description?.slice(0, 1000) + '...'
+    const html: HTMLElement | null = document.getElementById('description');
+    const shortDesc: string = book?.description?.slice(0, 1000) + '...'
     if (html) html.innerHTML = shortDesc;
   }, [book])
 

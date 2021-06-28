@@ -19,7 +19,7 @@ const ListFlashcards: React.FC<Props> = ({ deck }) => {
 
     return (
         <div>
-            <div className="card-container">
+            <div className="flex-wrap">
                 {deck.cards.map((card) => {
                  return (
                     <div key={card._id} className="flashcard-details__card-outer--spaced">
@@ -27,10 +27,10 @@ const ListFlashcards: React.FC<Props> = ({ deck }) => {
                             className="flashcard-details__card-inner"
                         >
                             <div className="flashcard-details__card-front">
-                                <p className="label">{card.question}</p>
+                                <p className="bold-text">{card.question}</p>
                             </div>
                             <div className="flashcard-details__card-back">
-                                <p className="label">{card.answer}</p>
+                                <p className="bold-text">{card.answer}</p>
                             </div>
                         </div>
                     </div>

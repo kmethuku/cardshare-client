@@ -5,9 +5,10 @@ import IBook from '../interfaces/IBook';
 import ListBooks from '../components/listBooks';
 import HeaderButtons from '../components/headerButtons';
 import Link from 'next/link';
+import { IAuthContext } from '../interfaces/IAuth';
 
 const Discover: React.FC = () => {
-  const auth = useContext(AuthContext);
+  const auth: IAuthContext | null = useContext(AuthContext);
   if (!auth) return null;
   const defaultBook = { title: '', src: '', OLID: '' };
   const [selectedBook, setSelectedBook] = useState<IBook>(defaultBook);
@@ -24,7 +25,7 @@ const Discover: React.FC = () => {
           <ListBooks title="Self-Growth"/>
           <ListBooks title="History"/>
         </div> :
-        <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+        <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
         </h2>}
       </div>
   </div>)

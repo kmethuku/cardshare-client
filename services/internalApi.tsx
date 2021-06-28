@@ -3,7 +3,7 @@ import IDeck from '../interfaces/IDeck';
 
 export const getUserService = (email: string | null | undefined) : Promise<any> => {
   return fetch(`${URL}/users/${email}`)
-    .then((data) => data.json());
+    .then((res) => res.json());
 }
 
 export const newDeckService = (email: string | null | undefined, body: any): Promise<any> => {
@@ -16,7 +16,7 @@ export const newDeckService = (email: string | null | undefined, body: any): Pro
     },
     body,
     })
-    .then(data => data.json());
+    .then(res => res.json());
 }
 
 export const getDeckByEmailService = (email: string | null | undefined): Promise<IDeck[]> => {
@@ -28,19 +28,19 @@ export const getDeckByEmailService = (email: string | null | undefined): Promise
     });
 }
 
-export const deleteDeckByIdService = (email: string | null | undefined, id:string) : Promise<any> => {
+export const deleteDeckByIdService = (email: string | null | undefined, id: string) : Promise<any> => {
   return fetch(`${URL}/myDecks/${email}-${id}`, {
     method:'DELETE',
   });
 }
 
-export const deleteSavedDeckByIdService = (email: string | null | undefined, id:string) : Promise<any> => {
+export const deleteSavedDeckByIdService = (email: string | null | undefined, id: string) : Promise<any> => {
   return fetch(`${URL}/savedDecks/${email}-${id}`, {
     method:'DELETE',
   });
 }
 
-export const getSavedDeckByIdService = (email: string | null | undefined, id:any) : Promise<any> => {
+export const getSavedDeckByIdService = (email: string | null | undefined, id: string) : Promise<any> => {
   return fetch(`${URL}/savedDeck/${email}-${id}`)
     .then((res) => res.json())
 }

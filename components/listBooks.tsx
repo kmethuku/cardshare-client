@@ -12,7 +12,8 @@ const ListBooks: React.FC<Props> = ({ title }) => {
 
   useEffect(() => {
     getDecksByGenreService(title)
-      .then((decks) => setBookList(decks));
+      .then((decks) => setBookList(decks))
+      .catch((err) => alert('Sorry, an error occurred.'));
   }, [])
 
   return (
@@ -25,7 +26,7 @@ const ListBooks: React.FC<Props> = ({ title }) => {
             <div className="small-book">
               {book.src ? <img
                 src={book.src}/> :
-                <p className="label">{book.title.length > 30 ? book.title.substring(0, 30).concat('...') : book.title}</p>
+                <p className="bold-text">{book.title.length > 30 ? book.title.substring(0, 30).concat('...') : book.title}</p>
               }
             </div>
           </Link>

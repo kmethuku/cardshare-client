@@ -1,17 +1,18 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
 import { AuthContext } from '../contexts/AuthContext';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
+import { IAuthContext } from '../interfaces/IAuth';
 
 const HeaderButtons = () => {
-  const auth = useContext(AuthContext);
+  const auth: IAuthContext | null = useContext(AuthContext);
   if (!auth) return null;
   const { signOut } = auth;
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
   const handleSignOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> => {
     try {
-      signOut();
+      await signOut();
       router.push('/');
     } catch (err) {
       alert('Signout Failed.');

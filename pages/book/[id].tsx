@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import BookDetails from '../../components/bookDetails';
 import ListDecks from '../../components/listDecks';
 import { getBookDetailsService } from '../../services/externalApi';
@@ -9,24 +9,27 @@ import { AuthContext } from '../../contexts/AuthContext';
 import IBook from '../../interfaces/IBook';
 import IDeck from '../../interfaces/IDeck';
 import Link from 'next/link';
+import { IAuthContext } from '../../interfaces/IAuth';
 
 const BookById: React.FC = () => {
-  const auth = useContext(AuthContext);
+  const auth: IAuthContext | null = useContext(AuthContext);
   if (!auth) return null;
   const { currentUser } = auth;
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { id } = router.query;
-  const defaultBook = { title: '', src: '', OLID: '' };
+  const defaultBook: IBook = { title: '', src: '', OLID: '' };
   const [book, setBook] = useState<IBook>(defaultBook);
   const [decks, setDecks] = useState<IDeck[]>([]);
 
   useEffect(() => {
     if (id) {
-      const queryId = id.toString();
+      const queryId: string = id.toString();
       getBookDetailsService(queryId)
-        .then((bookResult) => setBook(bookResult));
+        .then((bookResult) => setBook(bookResult))
+        .catch((err) => alert('Sorry, an error occurred.'));
       discoverBookService(queryId)
-        .then((deckResult) => setDecks(deckResult));
+        .then((deckResult) => setDecks(deckResult))
+        .catch((err) => alert('Sorry, an error occurred.'));
     }
   }, [id])
 
@@ -34,7 +37,7 @@ const BookById: React.FC = () => {
     <div>
       <HeaderButtons/>
       {currentUser.uid ?
-      <div className="page-container book-details">
+      <div className="page-container center-text">
         <BookDetails book={book}/>
         <div>
           <p className="label">Available decks:</p>
@@ -42,7 +45,7 @@ const BookById: React.FC = () => {
           : <p>None yet! Check back later or create one yourself.</p>}
         </div>
       </div> :
-      <h2 className="header centered-container">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+      <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
       </h2>}
     </div>
   )
