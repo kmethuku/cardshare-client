@@ -19,7 +19,7 @@ const LogInForm: React.FC<Props> = ({ setLogin }) => {
   const auth: IAuthContext | null = useContext(AuthContext);
   if (!auth) return null;
   const { logIn, setEmail, setUsername } = auth;
-  const [user, setUser] = useState(initialState)
+  const [user, setUser] = useState(initialState);
   const router: NextRouter = useRouter();
 
   const handleLogIn = async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
@@ -32,7 +32,7 @@ const LogInForm: React.FC<Props> = ({ setLogin }) => {
       setUsername(username[0].username);
       router.push('/discover');
     } catch (err) {
-      setUser({ ...user, error: 'Invalid username or password.' });
+      setUser({ ...user, error: err.message });
     }
   }
 

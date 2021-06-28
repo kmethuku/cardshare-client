@@ -33,7 +33,7 @@ const SignUpForm: React.FC<Props> = ({ setLogin }) => {
       setEmail(user.email);
       router.push('/discover');
     } catch (err) {
-      setUser({ ...user, error: 'Invalid username or password.' });
+      setUser({ ...user, error: err.message });
     }
   }
 
