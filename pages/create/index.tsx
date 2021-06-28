@@ -28,22 +28,24 @@ const MyDecks: React.FC = () => {
     return(
         <div>
             <HeaderButtons/>
-            {currentUser.uid ?
             <div className="page-container">
-                <h2 className="header">My Decks</h2>
-                <button
-                    type="button"
-                    onClick={handleNewDeck}>
-                    Create New Deck
-                </button>
-                {myDecks.length ?
-                    <ListDecks decks={myDecks} setDecks={setMyDecks} type="myDecks"/>
-                    : <p className="label center-text">None yet. Create one!</p>
-                }
-            </div> :
-            <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
-            </h2>
+            {currentUser.uid ?
+                <div>
+                    <h2 className="header">My Decks</h2>
+                    <button
+                        type="button"
+                        onClick={handleNewDeck}>
+                        Create New Deck
+                    </button>
+                    {myDecks.length ?
+                        <ListDecks decks={myDecks} setDecks={setMyDecks} type="myDecks"/>
+                        : <p className="label center-text">None yet. Create one!</p>
+                    }
+                </div> :
+                <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+                </h2>
             }
+            </div>
         </div>
     )
 

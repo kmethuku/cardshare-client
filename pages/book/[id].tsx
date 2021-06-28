@@ -36,17 +36,19 @@ const BookById: React.FC = () => {
   return (
     <div>
       <HeaderButtons/>
-      {currentUser.uid ?
       <div className="page-container center-text">
+      {currentUser.uid ?
+      <div>
         <BookDetails book={book}/>
         <div>
           <p className="label">Available decks:</p>
           {decks && decks.length ? <ListDecks decks={decks} setDecks={setDecks} type="byBook"/>
           : <p>None yet! Check back later or create one yourself.</p>}
         </div>
-      </div> :
-      <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
-      </h2>}
+        </div> :
+        <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+        </h2>}
+      </div>
     </div>
   )
 }

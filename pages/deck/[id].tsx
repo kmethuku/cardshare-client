@@ -65,8 +65,9 @@ function ViewDeck () {
     deck && (
     <div>
       <HeaderButtons/>
-      {currentUser.uid ?
       <div className="page-container center-text">
+      {currentUser.uid ?
+      <div>
         <h2 className="header">{deck.title}</h2>
         <div className="small-book">
           {deck.src && <img
@@ -90,6 +91,7 @@ function ViewDeck () {
       </div> :
       <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
       </h2>}
+    </div>
   </div>)
   )
 }

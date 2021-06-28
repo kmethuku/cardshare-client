@@ -38,8 +38,9 @@ const Flashcards: React.FC = () => {
   return deck && (
     <div>
       <HeaderButtons/>
-      {currentUser.uid ?
       <div className="page-container center-text">
+      {currentUser.uid ?
+      <div>
         <h2 className="header">{deck.title}</h2>
         <p className="label">Created by:</p>
         <div>{deck.creator}</div>
@@ -77,6 +78,7 @@ const Flashcards: React.FC = () => {
       <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
       </h2>
     }
+      </div>
     </div>
   );
 }

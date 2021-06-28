@@ -77,8 +77,9 @@ const NewDeck: React.FC = () => {
   return (
     <div>
       <HeaderButtons/>
-      {currentUser.uid ?
       <div className="page-container center-text">
+      {currentUser.uid ?
+      <div>
         <h2 className="header">New Deck</h2>
         <form className="form-container__form">
           <label className="form-container__label" htmlFor="title">Title:</label>
@@ -143,7 +144,8 @@ const NewDeck: React.FC = () => {
       </div> :
       <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
       </h2>
-    }
+      }
+      </div>
     </div>
   );
 }

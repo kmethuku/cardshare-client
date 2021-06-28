@@ -25,8 +25,9 @@ const Study: React.FC = () => {
     return(
         <div>
             <HeaderButtons/>
-            {currentUser.uid ?
             <div className="page-container">
+            {currentUser.uid ?
+            <div>
                 <h2 className="header">My Saved Decks</h2>
                 {savedDecks.length ?
                     <ListDecks decks={savedDecks} setDecks={setSavedDecks} type="savedDecks"/>
@@ -36,6 +37,7 @@ const Study: React.FC = () => {
             <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
             </h2>
             }
+            </div>
         </div>
     )
 }
