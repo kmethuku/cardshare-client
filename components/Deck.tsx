@@ -1,38 +1,35 @@
-import React, { useState, Dispatch, SetStateAction, useContext } from 'react';
-import { useRouter } from 'next/router';
-import { AuthContext, useAuth } from '../contexts/AuthContext';
-import IDeck from '../interfaces/IDeck'
-import Container from './Container';
+import React from 'react';
+import { NextRouter, useRouter } from 'next/router';
+import IDeck from '../interfaces/IDeck';
 
 type Props = {
     deck: IDeck,
-    decks: IDeck[],
-    setDecks: Dispatch<SetStateAction<IDeck[]>>,
-    type:String,
+    type: String,
 }
 
-function Deck ({ deck, decks, setDecks, type }:Props) {
-    const authorized = useContext(AuthContext);
-    if (!authorized) return null;
-    const { currentUser, email } = authorized;
-    const router = useRouter();
-
-
+const Deck: React.FC<Props> =  ({ deck, type }) => {
+    const router: NextRouter = useRouter();
 
     const clickHandler = () => {
-    if (type === "savedDecks") {
-        router.push(`/deck/${deck._id}`);
-    } else {
-        router.push(`/deck/view/${deck._id}`)
-    }
+        if (type === 'savedDecks') {
+            router.push(`/study/${deck._id}`);
+        } else {
+            router.push(`/deck/${deck._id}`)
+        }
     }
 
     return (
-        <div  onClick={clickHandler}>
-            <img className="bookCover" src={deck.src}/>
-            <div className="bookTitle">{deck.title}</div>
+        <div className="small-book" onClick={clickHandler}>
+            {deck.src ? <img
+                src={deck.src}/> :
+                <p className="bold-text">{deck.title.length > 30 ? deck.title.substring(0, 30).concat('...') : deck.title}</p>
+            }
+            {type === "byBook" && <div>
+                <p className="label">Creator:</p>
+                <div>{deck.creator}</div>
+              </div>}
         </div>
     )
 }
 
-export default Deck
+export default Deck;

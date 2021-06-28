@@ -4,4 +4,4 @@ export default interface ICard {
   answer: string,
 }
 
-export const defaultCard: ICard = { question: '', answer: '' }
+export const defaultCard: ICard = { question: '', answer: '' };

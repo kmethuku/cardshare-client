@@ -1,48 +1,62 @@
 import React, { useEffect } from 'react'
-import Container from './Container'
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 
 type Props = {
-  book:any;
+  book: any;
 }
 
-const BookDetails = ({book}:Props) => {
+const BookDetails: React.FC<Props> = ({ book }) => {
+  const router: NextRouter = useRouter();
 
-  const router = useRouter();
-  
   useEffect(() => {
-    const html = document.getElementById('description')
-    const shortDesc = book?.description?.slice(0, 750) + "..."
+    const html: HTMLElement | null = document.getElementById('description');
+    const shortDesc: string = book?.description?.slice(0, 1000) + '...'
     if (html) html.innerHTML = shortDesc;
-  },[book])
+  }, [book])
 
   const handleNewDeck = () => {
-    router.push("/create")
+    router.push('/create/new');
   }
 
   return (
-    <Container>
-      <h3>{book.title}</h3>
-      <button
-        type="button"
-        className="buttonNewDeck"
-        onClick={handleNewDeck}> Create New Deck
-      </button>
-      <div className="bookgrid">
+    <div>
+      <div>
+        <h2 className="header">{book.title}</h2>
+        <button
+          type="button"
+          onClick={handleNewDeck}> Create New Deck
+        </button>
         <div>
-          <img src={book.img} />
-        </div>
-        <div>
-          {book.author && <p><span>Author: </span>{book.author}</p>}
-          {book.publishedDate && <p><span>Date published: </span>{book.publishedDate}</p>}
-          {book.pageCount && <p><span>Page count: </span>{book.pageCount}</p>}
-          {book.averageRating && <p><span>Average rating: </span>{book.averageRating} / 5</p>}
-          {book.link && <p><a href={book.link}>External Link</a></p>}
-          {book.description && <p><span>Description: </span><span id="description"></span></p>}
+          <div className="small-book">
+            {book.img && <img
+              src={book.img}/>}
+          </div>
+          <div>
+            {book.author && <div>
+              <p className="label">Author:</p>
+              <p>{book.author}</p>
+              </div>}
+            {book.publishedDate && <div>
+              <p className="label">Date published:</p>
+              <p>{book.publishedDate}</p>
+              </div>}
+            {book.pageCount && <div>
+              <p className="label">Page count:</p>
+              <p>{book.pageCount}</p>
+              </div>}
+            {book.averageRating && <div>
+              <p className="label">Average rating:</p>
+              <p>{book.averageRating} / 5</p>
+              </div>}
+            {book.description && <div>
+              <p className="label">Description:</p>
+              <p id="description"></p>
+              </div>}
+          </div>
         </div>
       </div>
-    </Container>
+    </div>
   )
 }
 
-export default BookDetails
+export default BookDetails;

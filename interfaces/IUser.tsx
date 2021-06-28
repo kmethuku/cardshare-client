@@ -1,4 +1,4 @@
-import IDeck from './IDeck'
+import IDeck from './IDeck';
 
 export default interface IUser {
   username: string,

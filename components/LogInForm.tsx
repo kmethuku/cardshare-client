@@ -1,11 +1,9 @@
 import React, { useState, useContext, SetStateAction, Dispatch } from 'react';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
 import { getUserService } from '../services/internalApi';
-import TextField from '@material-ui/core/TextField';
-import Card from '../components/Card'
 import FormControlElement from '../interfaces/FormControlElement';
-import  Link from 'next/link'
+import { IAuthContext } from '../interfaces/IAuth';
 
 const initialState = {
   email: '',
@@ -17,76 +15,66 @@ interface Props {
   setLogin: Dispatch<SetStateAction<boolean>>
 }
 
-function LogInForm({ setLogin }: Props) {
-  const authorized = useContext(AuthContext);
-  if (!authorized) return null;
-  const { logIn, setEmail, setUsername } = authorized;
-  const router = useRouter();
+const LogInForm: React.FC<Props> = ({ setLogin }) => {
+  const auth: IAuthContext | null = useContext(AuthContext);
+  if (!auth) return null;
+  const { logIn, setEmail, setUsername } = auth;
   const [user, setUser] = useState(initialState)
+  const router: NextRouter = useRouter();
 
-  const handleLogIn = async (e: React.MouseEvent<HTMLElement>):Promise<void>  => {
+  const handleLogIn = async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
     e.preventDefault();
     try {
-      setUser({ ...user, error: '' })
+      setUser({ ...user, error: '' });
       await logIn(user.email, user.password);
       setEmail(user.email);
-      const username = await getUserService(user.email)
-      setUsername(username[0].username)
+      const username = await getUserService(user.email);
+      setUsername(username[0].username);
       router.push('/discover');
     } catch (err) {
-      setUser({ ...user, error: err.message});
+      setUser({ ...user, error: 'Invalid username or password.' });
     }
   }
 
-  function handleChange(e: React.ChangeEvent<FormControlElement>) : void {
+  function handleChange(e: React.ChangeEvent<FormControlElement>): void {
     const target = e.target as FormControlElement;
     const { name, value } = target;
-    setUser({ ...user, [name]: value})
+    setUser({ ...user, [name]: value });
   }
 
   return (
-    <div className="back">
-    <Card>
-        <h2>Log In</h2>
-          <form className="form-control" data-testid="form">
-          {user.error && <p>{user.error}</p>}
-          <>
-            <TextField
-              className="textfield"
-              autoComplete="off"
-              type="email"
-              label="Email"
-              name="email"
-              value={user.email}
-              onChange={handleChange}
-              required
-            />
-          </>
-          <>
-            <TextField
-              className="textfield"
-              autoComplete="off"
-              type="password"
-              name="password"
-              label="Password"
-              value={user.password}
-              onChange={handleChange}
-              required
-            />
-          </>
-          <button
-            name="signup"
-            className="saveButton"
-            type="submit"
-            onClick={handleLogIn}
-          >
-            Log In
-          </button>
-        </form>
-          <a onClick={() => setLogin(false)}>
-            Don&apos;t have an account? Sign Up
-          </a>
-    </Card>
+    <div className="form-container">
+      <form className="form-container__form">
+        {user.error && <p>{user.error}</p>}
+        <label className="form-container__label" htmlFor="email">Email:</label>
+          <input
+            className="form-container__input--blue"
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            required
+          />
+          <label className="form-container__label" htmlFor="password">Password:</label>
+          <input
+            className="form-container__input--blue"
+            type="password"
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+            required
+          />
+        <button
+          type="submit"
+          onClick={handleLogIn}
+          disabled={!user.email || !user.password}
+        >
+          Log In
+        </button>
+      </form>
+      <a className="clickable" onClick={() => setLogin(false)}>
+        Don't have an account? Sign Up.
+      </a>
     </div>
   );
 }

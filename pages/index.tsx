@@ -1,38 +1,14 @@
 import React, { useState } from 'react';
-import Container from '../components/Container'
-import Card from '../components/Card'
-import SignUpForm from '../components/SignUpForm'
-import LogInForm from '../components/LogInForm'
+import SignUpForm from '../components/signUpForm';
+import LogInForm from '../components/logInForm';
 
 const Home: React.FC = () => {
-  const [login, setLogin] = useState<boolean>(false)
-  console.log(login)
+  const [login, setLogin] = useState<boolean>(false);
+
   return (
-    <div className="grid2">
-      <Container>
-        <Card>
-        <div className="welcome">
-            Welcome to Cardshare
-          </div>
-          <br />
-          <h4>
-            How much do you remember from the books you&apos;ve read?
-          </h4>
-          <br />
-          <h4>The flashcard sharing app for lifelong learners</h4>
-          <br />
-        </Card>
-      </Container>
-      {/* <Container> */}
-        <div className="flip-container">
-          <div className={"card-container" + (login ? " flipped" : "")}>
-          <SignUpForm setLogin={setLogin}/>
-          <LogInForm setLogin={setLogin} />
-          </div>
-        </div>
-
-
-      {/* </Container> */}
+    <div className="flex-column">
+      <img src="/cardshare-logo-transparent.png" width="250" height="auto"></img>
+      {login ? <LogInForm setLogin={setLogin}/> : <SignUpForm setLogin={setLogin}/>}
     </div>
   );
 }

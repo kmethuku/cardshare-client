@@ -1,33 +1,33 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getDecksByGenreService } from '../services/internalApi';
-import Link from 'next/link'
-import IBook from '../interfaces/IBook'
-import IDeck from '../interfaces/IDeck'
-import Container from '../components/Container'
-import BookDetails from '../components/bookDetails'
-import Card from './Card'
+import Link from 'next/link';
+import IDeck from '../interfaces/IDeck';
 
-const ListBook = ({title}: Props) => {
-  const [bookList, setBookList] = useState<any>(null)
+interface Props {
+  title: string
+}
+
+const ListBooks: React.FC<Props> = ({ title }) => {
+  const [bookList, setBookList] = useState<IDeck[]>([]);
 
   useEffect(() => {
-    const getDecksByGenre = async (): Promise<any> => {
-      const tempList = await getDecksByGenreService(title)
-      setBookList(tempList)
-    }
-    getDecksByGenre();
+    getDecksByGenreService(title)
+      .then((decks) => setBookList(decks))
+      .catch((err) => alert('Sorry, an error occurred.'));
   }, [])
 
   return (
-    <div className="bookwindow">
-      <div className="bookTitle">{title}</div>
-      <div className="bookflex">
+    <div>
+      <h2 className="header">{title}</h2>
+      <div className="scroll">
       {bookList &&
-        bookList.map((book: any) => (
+        bookList.map((book: IDeck) => (
           <Link key={`${title}${book._id}`} href={`/book/${book.OLID}`}>
-            <div className="booksmall">
-              <img
-                src={book.src} />
+            <div className="small-book">
+              {book.src ? <img
+                src={book.src}/> :
+                <p className="bold-text">{book.title.length > 30 ? book.title.substring(0, 30).concat('...') : book.title}</p>
+              }
             </div>
           </Link>
         ))}
@@ -36,8 +36,4 @@ const ListBook = ({title}: Props) => {
   )
 }
 
-interface Props {
-  title: string
-}
-
-export default ListBook
+export default ListBooks;

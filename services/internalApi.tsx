@@ -1,13 +1,13 @@
-const URL = 'http://localhost:3001'
+const URL = 'http://localhost:3001';
 import IDeck from '../interfaces/IDeck';
 
-export const getUserService = (email:string) : Promise<any> => {
+export const getUserService = (email: string | null | undefined) : Promise<any> => {
   return fetch(`${URL}/users/${email}`)
-  .then(data=>data.json())
+    .then((res) => res.json());
 }
 
-export const newDeckService = (email: string|undefined, body: any): Promise<any> => {
-  body = JSON.stringify(body)
+export const newDeckService = (email: string | null | undefined, body: any): Promise<any> => {
+  body = JSON.stringify(body);
   return fetch(`${URL}/myDecks/${email}`, {
     method: 'POST',
     headers: {
@@ -15,53 +15,40 @@ export const newDeckService = (email: string|undefined, body: any): Promise<any>
       'Origin': 'http://localhost:3000',
     },
     body,
-  })
-    .then(data => {
-      return data.json();
+    })
+    .then(res => res.json());
+}
+
+export const getDeckByEmailService = (email: string | null | undefined): Promise<IDeck[]> => {
+  return fetch(`${URL}/myDecks/${email}`)
+    .then((res) => res.json())
+    .then((data) => {
+      let deckList = data[0] ? data[0].myDecks : null;
+      return deckList;
     });
 }
 
-export const getDeckByEmailService = (email:string): Promise<IDeck[]> => {
-  return fetch(`${URL}/myDecks/${email}`)
-    .then(res => res.json())
-    .then(data => {
-      let deckList = data[0] ? data[0].myDecks : null;
-      return deckList;
-    })
-}
-
-export const deleteDeckByIdService = (email:string, id:string) : Promise<any> => {
-  return fetch(`${URL}/myDecks/${email}-${id}`,{
+export const deleteDeckByIdService = (email: string | null | undefined, id: string) : Promise<any> => {
+  return fetch(`${URL}/myDecks/${email}-${id}`, {
     method:'DELETE',
-  })
+  });
 }
 
-export const deleteSavedDeckByIdService = (email:string, id:string) : Promise<any> => {
-  return fetch(`${URL}/savedDecks/${email}-${id}`,{
+export const deleteSavedDeckByIdService = (email: string | null | undefined, id: string) : Promise<any> => {
+  return fetch(`${URL}/savedDecks/${email}-${id}`, {
     method:'DELETE',
-  })
+  });
 }
 
-export const getSavedDeckByIdService = (email:string, id:any) : Promise<any> => {
+export const getSavedDeckByIdService = (email: string | null | undefined, id: string) : Promise<any> => {
   return fetch(`${URL}/savedDeck/${email}-${id}`)
-  .then(res=>res.json())
-}
-
-export const getMyDeckByIdService = (email:string, id:any) : Promise<any> => {
-  return fetch(`${URL}/myDeck/${email}-${id}`)
-  .then(res=>res.json())
-  .then(data => {
-    console.log(data)
-    return data
-  })
+    .then((res) => res.json())
 }
 
 export const getDeckByIdService = (id: string | string[] | undefined): Promise<IDeck | null> => {
-  console.log(id)
   return fetch(`${URL}/discover/${id}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
+    .then((res) => res.json())
+    .then((data) => {
       if (data[0]){
         const result = {
           _id: data[0].myDecks[0]._id,
@@ -81,8 +68,8 @@ export const getDeckByIdService = (id: string | string[] | undefined): Promise<I
 
 export const discoverBookService = (OLID: string): Promise<IDeck[]> => {
   return fetch(`${URL}/discover/OLID/${OLID}`)
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       let allDecks: IDeck[] = [];
       data.forEach((match: any) => match.myDecks.forEach((deck: IDeck) => {
         deck.creator = match.username;
@@ -91,19 +78,18 @@ export const discoverBookService = (OLID: string): Promise<IDeck[]> => {
       return allDecks;
     })
 }
-// TEXT vs JSON
-export const signUpService = async (body: any): Promise<any> => {
-  return await fetch(`${URL}/users`, {
+
+export const signUpService = (body: any): Promise<any> => {
+  return fetch(`${URL}/users`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   })
-  .then(res => res.text())
+  .then((res) => res.text())
 }
 
-// TEXT VS JSON
 export const saveDeckService = (email: string, selectedDeck: any): Promise<any> => {
   return fetch(`${URL}/savedDecks/${email}`, {
     method: 'POST',
@@ -111,30 +97,28 @@ export const saveDeckService = (email: string, selectedDeck: any): Promise<any> 
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(selectedDeck)
-  })
-    .then(res => res.text())
+    })
+    .then((res) => res.text());
 }
 
-// TEXT VS JSON
 export const voteService = (id: string | undefined, direction: string): Promise<any> => {
   return fetch(`${URL}/discover/vote/${id}-${direction}`, {
     method: 'GET',
   })
-  .then(res => res.text())
+  .then((res) => res.text());
 }
 
 export const getDecksByGenreService = (genre: string): Promise<any> => {
   if (genre === 'Popular') {
     return fetch(`${URL}/discover`)
-      .then(res => res.json())
+      .then((res) => res.json());
   } else {
     return fetch(`${URL}/discover/genre/${genre}`)
-      .then(res => res.json())
+      .then((res) => res.json());
   }
 }
 
 export const getSavedDecksByEmailService = (email: string): Promise<any> => {
-  console.log(email)
   return fetch(`${URL}/savedDecks/${email}`)
-    .then(res => res.json())
+    .then((res) => res.json());
 }

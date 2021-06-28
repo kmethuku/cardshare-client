@@ -1,87 +1,97 @@
-import React, { useState, Dispatch, SetStateAction, useContext, useEffect } from 'react';
-import { AuthContext, useAuth } from '../../contexts/AuthContext';
+import React, { useState, useContext, useEffect } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 import IDeck from '../../interfaces/IDeck'
-import ICard from '../../interfaces/ICard';
-import { useRouter } from 'next/router';
-import Container from '../../components/Container';
-import Card from '../../components/Card';
-import{ getSavedDeckByIdService } from '../../services/internalApi'
+import { NextRouter, useRouter } from 'next/router';
+import ListFlashcards from '../../components/listFlashCards';
+import{ getDeckByIdService, getUserService, voteService, getSavedDecksByEmailService, saveDeckService } from '../../services/internalApi';
+import HeaderButtons from '../../components/headerButtons';
+import IBook from '../../interfaces/IBook';
+import Link from 'next/link';
+import { IAuthContext } from '../../interfaces/IAuth';
 
-function Deck () {
-    const context = useContext(AuthContext);
-    if (!context || !context.currentUser.email) return null;
-    const { currentUser, email } = context;
-    const router = useRouter();
-    const {id} = router.query;
-    const [deck, setDeck] = useState<IDeck | null>(null)
-    const [cardText, setCardText] = useState<any>(deck?.cards[0]?.question);
-    const [textType, setTextType] = useState<string>("Question:")
-    const[card, setCard] =useState<any>(deck?.cards[0]);
-    const [index, setIndex] = useState<number>(0)
-    const [front, setFront] = useState(true)
+function ViewDeck () {
+  const auth: IAuthContext | null = useContext(AuthContext);
+  if (!auth) return null;
+  const { currentUser, email } = auth;
+  const router: NextRouter = useRouter();
+  const { id } = router.query;
+  const [deck, setDeck] = useState<IDeck | null>(null);
+  const [upvoted, setUpvoted] = useState<boolean>(false);
+  const [downvoted, setDownvoted] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>('');
+  const [isSaved, setIsSaved] = useState<boolean>(false);
 
-    useEffect(() => {
-      console.log(currentUser, email)
-        const sendEmail = currentUser.email || email;
-        if(sendEmail) {
-          getSavedDeckByIdService(sendEmail, id)
-          .then(data => {
-            setDeck(data);
-            setCardText(data.cards[0].question)
-            setCard(data.cards[0]);
-          })
-        }
-    }, [router, currentUser])
+  useEffect(() => {
+    getDeckByIdService(id)
+      .then((deck) => setDeck(deck))
+      .catch((err) => alert('Sorry, an error occurred.'));
+    getUserService(currentUser.email || email)
+      .then((user) => setUsername(user[0].username))
+      .catch((err) => alert('Sorry, an error occurred.'));
+  }, [upvoted, downvoted])
 
-  const handleMove = (inc:number) : void => {
-    setFront(true)
-    setCard(deck?.cards[index+inc]);
-    setCardText(deck?.cards[index+inc].question)
-    setTextType("Question:");
-    setIndex(index+inc);
+  useEffect(() => {
+    getSavedDecksByEmailService(currentUser.email || email)
+      .then((data) => data[0].savedDecks.find((book: IBook) => {
+        if (book._id === deck?._id) {
+          setIsSaved(true);
+          return true;
+        } else return false;
+      }))
+      .catch((err) => alert('Sorry, an error occurred.'));
+  }, [deck])
+
+  const handleSave = () => {
+    saveDeckService(currentUser.email || email, deck)
+    .then(() => router.push('/study'))
+    .catch((err) => alert('Sorry, an error occurred.'));
   }
 
-  return deck && card ? (
-    <Container>
-      <h3>{deck?.title}</h3>
-      <p className="deckCreator">Created by:{` ${deck?.creator}`}</p>
-      <div className="flash-container">
-        <button
-          disabled={index === 0}
-          className="flashCardButton"
-          onClick={() => handleMove(-1)}
-          type="button"
-        >
-          Previous
-        </button>
-        <div className="flip-container flashcard">
-          <div
-            className={"card-container " + (front ? "" : "flipped")}
-            onClick={() => setFront(!front)}
-          >
-            <div className="front">
-              <h3>Question #{index + 1}</h3>
-              <p>{card.question}</p>
-            </div>
-            <div className="back">
-              <span className="flashcardAnswer">Answer: </span>
-              <p>{card.answer}</p>
-            </div>
-          </div>
+  const voteHandler = (direction: string) => {
+    if (direction === 'up' && upvoted === false) {
+      voteService(deck?._id, direction)
+        .catch((err) => alert('Sorry, an error occurred.'));
+      setUpvoted(true);
+      setDownvoted(false);
+    } else if (direction === 'down' && downvoted === false) {
+      voteService(deck?._id, direction)
+        .catch((err) => alert('Sorry, an error occurred.'));
+      setDownvoted(true);
+      setUpvoted(false);
+    }
+  }
+
+  return(
+    deck && (
+    <div>
+      <HeaderButtons/>
+      {currentUser.uid ?
+      <div className="page-container center-text">
+        <h2 className="header">{deck.title}</h2>
+        <div className="small-book">
+          {deck.src && <img
+            src={deck.src}/>}
         </div>
-        <button
-          disabled={index === deck?.cards?.length - 1}
-          onClick={() => handleMove(1)}
-          className="flashCardButton"
-          type="button"
-        >
-          Next
-        </button>
-      </div>
-    </Container>
-  ) : (
-    <div>loading...</div>
-  );
+        <div>
+          <p className="label">Description:</p>
+          <div>{deck.description}</div>
+          <p className="label">Created by:</p>
+          <div>{deck.creator}</div>
+            <div className="flex-row">
+              {username !== deck.creator ? <button disabled={upvoted} className="round-button" type="button" onClick={()=>voteHandler('up')}><img src="/upvote.png" width="15" height="auto"/></button> : <p className="label">Votes:</p>}
+              <div>{deck.votes}</div>
+              {username !== deck.creator && <button disabled={downvoted} className="round-button" type="button" onClick={()=>voteHandler('down')}><img src="/downvote.png" width="15" height="auto"/></button>}
+            </div>
+        </div>
+        {isSaved ? <button type="button" disabled>Saved</button> :
+          <button type="button" onClick={handleSave}>Save Deck</button>}
+        <p className="label">Flashcards ({deck.cards.length}):</p>
+        <ListFlashcards deck={deck}/>
+      </div> :
+      <h2 className="header center-text">You are not authorized to access this page. Please <Link href="/">log in</Link>.
+      </h2>}
+  </div>)
+  )
 }
 
-export default Deck;
+export default ViewDeck;

@@ -1,63 +1,48 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import { AuthContext } from '../contexts/AuthContext';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
+import { IAuthContext } from '../interfaces/IAuth';
 
 const HeaderButtons = () => {
-  const context = useContext(AuthContext);
-  if (!context) return null;
-  const { signOut, currentUser } = context;
-  let loggedIn: boolean
-  if (currentUser.email !== "waiting...") {
-    loggedIn = true;
-  } else loggedIn = false;
-
-  const [error, setError] = useState<string>('');
-  const router = useRouter();
+  const auth: IAuthContext | null = useContext(AuthContext);
+  if (!auth) return null;
+  const { signOut } = auth;
+  const router: NextRouter = useRouter();
 
   const handleSignOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> => {
     try {
-      setError('');
       await signOut();
       router.push('/');
     } catch (err) {
-      setError("Signout Failed.");
+      alert('Signout Failed.');
     }
   }
 
   return (
-    <>
-    <nav className="nav">
-      <Link href="/"><a><h1>Cardshare</h1></a></Link>
-      <ul>
-        <li className="navButton">
+      <ul className="navigation-bar">
+        <li className="navigation-bar__list-item">
+          <img src="/cardshare-logo-books-transparent.png" width="auto" height="50"/>
+        </li>
+        <li className="navigation-bar__list-item">
           <Link href="/discover">
-            <a>Discover</a>
+            Discover
           </Link>
         </li>
-        <li className="navButton">
-          <Link href="/mydecks">
-            <a>My Decks</a>
+        <li className="navigation-bar__list-item">
+          <Link href="/create">
+            Create
           </Link>
         </li>
-        <li className="navButton">
+        <li className="navigation-bar__list-item">
           <Link href="/study">
-            <a >Study</a>
+            Study
           </Link>
         </li>
-        <li className="navButton">
-          {loggedIn ? (
-            <a 
-              onClick={handleSignOut}
-            >Sign Out</a>
-          ) : (
-            <Link href='/'><a>Log In</a></Link>
-          )}
+        <li className="navigation-bar__list-item" onClick={handleSignOut}>
+          <a><img src="/signout.png" width="auto" height="25"/></a>
         </li>
       </ul>
-    </nav>
-    <p>{error && error}</p>
-    </>
   );
 }
 

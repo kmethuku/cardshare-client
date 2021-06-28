@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 if (!firebase.apps.length) {
-  app = firebase.initializeApp(firebaseConfig)
+  app = firebase.initializeApp(firebaseConfig);
 
 } else {
   app = firebase.app();
