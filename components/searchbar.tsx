@@ -40,7 +40,7 @@ const SearchBar: React.FC<Props> = ({ setSelectedBook, setNewDeck, newDeck }) =>
 
   function handleClick(e: React.MouseEvent<HTMLImageElement>) {
     const target = e.target as HTMLImageElement;
-    if (newDeck?.title) setInput(newDeck.title);
+    if (newDeck?.title) {alert(newDeck.title); setInput(newDeck.title);}
     else if (setNewDeck) {
       setNewDeck({
         ...newDeck,
