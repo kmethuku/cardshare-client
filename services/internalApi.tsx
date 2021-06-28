@@ -1,4 +1,4 @@
-const URL = 'https://cardshare-backend.herokuapp.com/';
+const URL = 'https://cardshare-backend.herokuapp.com';
 import IDeck from '../interfaces/IDeck';
 
 export const getUserService = (email: string | null | undefined) : Promise<any> => {
