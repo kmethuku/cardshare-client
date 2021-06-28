@@ -14,7 +14,7 @@ const Deck: React.FC<Props> =  ({ deck, type }) => {
         if (type === 'savedDecks') {
             router.push(`/study/${deck._id}`);
         } else {
-            router.push(`/deck/${deck._id}`)
+            router.push(`/deck/${deck._id}`);
         }
     }
 
