@@ -1,3 +1,5 @@
+**Cardshare is available at cardshare.vercel.app 📚 🤓**
+
 This is the client repo. Server repo is here: https://github.com/kmethuku/cardshare-server
 
 ## Cardshare
