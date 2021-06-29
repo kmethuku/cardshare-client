@@ -8,7 +8,7 @@ import IDeck, { defaultDeck } from '../../interfaces/IDeck';
 import FormControlElement from '../../interfaces/FormControlElement';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
-import Loader from './loader';
+import Loader from '../../components/loader';
 
 const NewDeck: React.FC = () => {
   const router: NextRouter = useRouter();
@@ -97,6 +97,7 @@ const NewDeck: React.FC = () => {
     router.push('/create');
   }
 
+  if (loading) return <Loader/>;
   return (
     <div>
       <HeaderButtons/>
