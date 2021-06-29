@@ -1,5 +1,4 @@
-// const URL = 'https://cardshare-backend.herokuapp.com';
-const URL = 'http://localhost:3001';
+const URL = 'https://cardshare-backend.herokuapp.com';
 
 import IDeck from '../interfaces/IDeck';
 
