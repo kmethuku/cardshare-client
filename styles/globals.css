@@ -49,7 +49,6 @@ button:disabled {
   background-color: gray;
 }
 
-/* not BEM */
 .round-button {
   border: none;
   background-color: var(--secondary);
@@ -68,12 +67,10 @@ button:disabled {
   justify-content: center;
 }
 
-/* not BEM */
 .round-button:hover {
   background-color: var(--secondary-transparent);
 }
 
-/* not BEM */
 .round-button:disabled {
   background-color: gray;
 }
@@ -166,6 +163,7 @@ button:disabled {
   margin: 10px 20px;
 }
 
+/* not BEM */
 .clickable {
   cursor: pointer;
 }
