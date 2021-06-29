@@ -31,7 +31,7 @@ Front End: React with NextJS, Google Books API, Firebase
 
 Bank End: Express, MongoDB with Mongoose
 
-Testing (thank you Kimberly Innes (https://github.com/kjinnes) and Louisa Wong (https://github.com/louisawong)!): Jest, Supertest
+Testing: Jest, Supertest
 
 ## Contributors
 
