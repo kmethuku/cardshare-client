@@ -2,6 +2,7 @@
 @import './navigation.css';
 @import './search.css';
 @import './flashcard.css';
+@import './loader.css';
 
 :root {
   --primary: rgba(0, 194, 203);
@@ -167,4 +168,11 @@ button:disabled {
 
 .clickable {
   cursor: pointer;
+}
+
+.landing-page-container {
+  position: absolute;
+  top:  45%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }

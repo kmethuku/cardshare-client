@@ -9,6 +9,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import IBook from '../../interfaces/IBook';
 import IDeck from '../../interfaces/IDeck';
 import Link from 'next/link';
+import Loader from '../../components/loader';
 
 const BookById: React.FC = () => {
   const { currentUser } = useContext(AuthContext);
@@ -17,19 +18,30 @@ const BookById: React.FC = () => {
   const defaultBook: IBook = { title: '', src: '', OLID: '' };
   const [book, setBook] = useState<IBook>(defaultBook);
   const [decks, setDecks] = useState<IDeck[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (id) {
+      setLoading(true);
       const queryId: string = id.toString();
       getBookDetailsService(queryId)
         .then((bookResult) => setBook(bookResult))
-        .catch((err) => alert('Sorry, an error occurred while trying to fetch details about this book.'));
+        .then(() => setLoading(false))
+        .catch((err) => {
+          setLoading(false);
+          alert('Sorry, an error occurred while trying to fetch details about this book.');
+        });
       discoverBookService(queryId)
         .then((deckResult) => setDecks(deckResult))
-        .catch((err) => alert('Sorry, an error occurred.'));
+        .then(() => setLoading(false))
+        .catch((err) => {
+          setLoading(false);
+          alert('Sorry, an error occurred.');
+        });
     }
   }, [id])
 
+  if (loading) return <Loader/>;
   return (
     <div>
       <HeaderButtons/>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getDecksByGenreService } from '../services/internalApi';
 import Link from 'next/link';
 import IDeck from '../interfaces/IDeck';
+import Loader from './loader';
 
 interface Props {
   title: string
@@ -9,13 +10,20 @@ interface Props {
 
 const ListBooks: React.FC<Props> = ({ title }) => {
   const [bookList, setBookList] = useState<IDeck[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setLoading(true);
     getDecksByGenreService(title)
       .then((decks) => setBookList(decks))
-      .catch((err) => alert('Sorry, an error occurred.'));
+      .then(() => setLoading(false))
+      .catch((err) => {
+        setLoading(false);
+        alert('Sorry, an error occurred.');
+      });
   }, [])
 
+  if (loading) return <Loader/>;
   return (
     <div>
       <h2 className="header">{title}</h2>

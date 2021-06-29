@@ -4,6 +4,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { getUserService } from '../services/internalApi';
 import FormControlElement from '../interfaces/FormControlElement';
 import { IAuthContext } from '../interfaces/IAuth';
+import Loader from './loader';
 
 const initialState = {
   email: '',
@@ -21,17 +22,21 @@ const LogInForm: React.FC<Props> = ({ setLogin }) => {
   const { logIn, setEmail, setUsername } = auth;
   const [user, setUser] = useState(initialState);
   const router: NextRouter = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogIn = async (e: React.MouseEvent<HTMLElement>): Promise<void> => {
     e.preventDefault();
     try {
+      setLoading(true);
       setUser({ ...user, error: '' });
       await logIn(user.email, user.password);
       setEmail(user.email);
       const username = await getUserService(user.email);
       setUsername(username[0].username);
+      setLoading(false);
       router.push('/discover');
     } catch (err) {
+      setLoading(false);
       setUser({ ...user, error: 'Invalid username or password.' });
     }
   }
@@ -42,6 +47,7 @@ const LogInForm: React.FC<Props> = ({ setLogin }) => {
     setUser({ ...user, [name]: value });
   }
 
+  if (loading) return <Loader/>;
   return (
     <div className="form-container">
       <form className="form-container__form">

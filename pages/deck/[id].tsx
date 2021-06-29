@@ -7,6 +7,7 @@ import{ getDeckByIdService, getUserService, voteService, getSavedDecksByEmailSer
 import HeaderButtons from '../../components/headerButtons';
 import IBook from '../../interfaces/IBook';
 import Link from 'next/link';
+import Loader from '../../components/loader';
 
 function ViewDeck () {
   const { currentUser, email } = useContext(AuthContext);
@@ -17,17 +18,10 @@ function ViewDeck () {
   const [downvoted, setDownvoted] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    getDeckByIdService(id)
-      .then((deck) => setDeck(deck))
-      .catch((err) => alert('Sorry, an error occurred.'));
-    getUserService(currentUser.email || email)
-      .then((user) => setUsername(user[0].username))
-      .catch((err) => alert('Sorry, an error occurred.'));
-  }, [upvoted, downvoted])
-
-  useEffect(() => {
+    setLoading(true);
     getSavedDecksByEmailService(currentUser.email || email)
       .then((data) => data[0].savedDecks.find((book: IBook) => {
         if (book._id === deck?._id) {
@@ -35,13 +29,31 @@ function ViewDeck () {
           return true;
         } else return false;
       }))
+      .then(() => setLoading(false))
+      .catch((err) => {
+        setLoading(false);
+        alert('Sorry, an error occurred.');
+      });
+    getUserService(currentUser.email || email)
+    .then((user) => setUsername(user[0].username))
+    .catch((err) => alert('Sorry, an error occurred.'));
+  }, [])
+
+  useEffect(() => {
+    getDeckByIdService(id)
+      .then((deck) => setDeck(deck))
       .catch((err) => alert('Sorry, an error occurred.'));
-  }, [deck])
+  }, [upvoted, downvoted])
 
   const handleSave = () => {
+    setLoading(true);
     saveDeckService(currentUser.email || email, deck)
+    .then(() => setLoading(false))
     .then(() => router.push('/study'))
-    .catch((err) => alert('Sorry, an error occurred.'));
+    .catch((err) => {
+      setLoading(false);
+      alert('Sorry, an error occurred.');
+    });
   }
 
   const voteHandler = (direction: string) => {
@@ -58,7 +70,8 @@ function ViewDeck () {
     }
   }
 
-  return(
+  if (loading) return <Loader/>;
+  return (
     deck && (
     <div>
       <HeaderButtons/>

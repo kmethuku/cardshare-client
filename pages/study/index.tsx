@@ -5,21 +5,29 @@ import IDeck from '../../interfaces/IDeck';
 import ListDecks from '../../components/listDecks'
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
+import Loader from '../../components/loader';
 
 const Study: React.FC = () => {
     const { currentUser, email } = useContext(AuthContext);
     const [savedDecks, setSavedDecks] = useState<IDeck[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
+        setLoading(true);
         const sendEmail: string | null | undefined = email || currentUser.email;
         if (sendEmail) {
             getSavedDecksByEmailService(sendEmail)
                 .then((data) => setSavedDecks(data[0].savedDecks))
-                .catch((err) => alert('Sorry, an error occurred.'));
+                .then(() => setLoading(false))
+                .catch((err) => {
+                    setLoading(false);
+                    alert('Sorry, an error occurred.');
+                });
         };
     }, []);
 
-    return(
+    if (loading) return <Loader/>;
+    return (
         <div>
             <HeaderButtons/>
             <div className="page-container">

@@ -6,23 +6,31 @@ import ListDecks from '../../components/listDecks';
 import { NextRouter, useRouter } from 'next/router';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
+import Loader from '../../components/loader';
 
 const MyDecks: React.FC = () => {
     const { currentUser, email } = useContext(AuthContext);
     const router: NextRouter = useRouter();
     const [myDecks, setMyDecks] = useState<IDeck[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
+        setLoading(true);
         getDeckByEmailService(email || currentUser.email)
             .then((data) => setMyDecks(data))
-            .catch((err) => alert('Sorry, an error occurred.'));
+            .then(() => setLoading(false))
+            .catch((err) => {
+                setLoading(false);
+                alert('Sorry, an error occurred.');
+            });
     }, []);
 
     const handleNewDeck = () => {
         router.push('/create/new');
     }
 
-    return(
+    if (loading) return <Loader/>;
+    return (
         <div>
             <HeaderButtons/>
             <div className="page-container">

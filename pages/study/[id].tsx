@@ -6,6 +6,7 @@ import { NextRouter, useRouter } from 'next/router';
 import{ getSavedDeckByIdService } from '../../services/internalApi';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
+import Loader from '../../components/loader';
 
 const Flashcards: React.FC = () => {
   const { currentUser, email } = useContext(AuthContext);
@@ -14,16 +15,22 @@ const Flashcards: React.FC = () => {
   const [deck, setDeck] = useState<IDeck | null>(null);
   const [card, setCard] = useState<ICard | undefined>(deck?.cards[0]);
   const [index, setIndex] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const sendEmail: string = currentUser.email || email;
     if (sendEmail) {
+      setLoading(true);
       getSavedDeckByIdService(sendEmail, id)
         .then(data => {
           setDeck(data);
           setCard(data.cards[0]);
         })
-        .catch((err) => alert('Sorry, an error occurred.'))
+        .then(() => setLoading(false))
+        .catch((err) => {
+          setLoading(false);
+          alert('Sorry, an error occurred.');
+        })
     }
   }, [])
 
@@ -32,6 +39,7 @@ const Flashcards: React.FC = () => {
     setIndex(index + increment);
   }
 
+  if (loading) return <Loader/>;
   return deck && (
     <div>
       <HeaderButtons/>

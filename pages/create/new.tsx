@@ -8,6 +8,7 @@ import IDeck, { defaultDeck } from '../../interfaces/IDeck';
 import FormControlElement from '../../interfaces/FormControlElement';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
+import Loader from './loader';
 
 const NewDeck: React.FC = () => {
   const router: NextRouter = useRouter();
@@ -23,6 +24,7 @@ const NewDeck: React.FC = () => {
   });
   const [cardComplete, setCardComplete] = useState<boolean>(false);
   const [renderCount, setRenderCount] = useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setNewDeck({
@@ -75,6 +77,7 @@ const NewDeck: React.FC = () => {
 
   async function handleSubmit (e: React.MouseEvent<HTMLElement, MouseEvent>): Promise<any> {
     e.preventDefault();
+    setLoading(true);
     if (!username) {
       try {
         username = await getUserService(email || currentUser.email);
@@ -85,7 +88,9 @@ const NewDeck: React.FC = () => {
     let cleanedCards = newDeck.cards.filter((card) => card.question);
     try {
       await newDeckService(email || currentUser.email, { ...newDeck, cards: cleanedCards });
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       alert('Sorry, an error occurred.');
     }
     setNewDeck({ ...defaultDeck, cards: [{ question: '', answer: '' }] });
