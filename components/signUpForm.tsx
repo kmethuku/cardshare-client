@@ -38,7 +38,8 @@ const SignUpForm: React.FC<Props> = ({ setLogin }) => {
       router.push('/discover');
     } catch (err) {
       setLoading(false);
-      setUser({ ...user, error: 'An error occurred. Please try again.' });
+      if (err.code.includes('auth/')) setUser({ ...user, error: err.message });
+      else setUser({ ...user, error: 'An error occurred. Please try again.' });
     }
   }
 

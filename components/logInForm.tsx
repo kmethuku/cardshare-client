@@ -37,7 +37,8 @@ const LogInForm: React.FC<Props> = ({ setLogin }) => {
       router.push('/discover');
     } catch (err) {
       setLoading(false);
-      setUser({ ...user, error: 'Invalid username or password.' });
+      if (err.code.includes('auth/')) setUser({ ...user, error: err.message });
+      else setUser({ ...user, error: 'An error occurred. Please try again.' });
     }
   }
 
