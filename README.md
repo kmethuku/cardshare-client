@@ -35,7 +35,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 Front End: React with NextJS, Google Books API, Firebase
 
-Bank End: Express, MongoDB with Mongoose
+Back End: Express, MongoDB with Mongoose
 
 Testing: Jest, Supertest
 
