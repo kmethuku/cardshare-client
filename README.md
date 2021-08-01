@@ -1,7 +1,5 @@
 **Cardshare is available at [cardshare.vercel.app](https://cardshare.vercel.app) 📚 ✍ 🤓**
 
-[Watch the demo video here.](https://youtu.be/ZjXqT6X9KGs)
-
 ![image](https://user-images.githubusercontent.com/74379281/123908714-c281b180-d92c-11eb-9f8d-ab1a31f2e3a0.png)
 
 This is the client repo. Server repo is here: https://github.com/kmethuku/cardshare-server
