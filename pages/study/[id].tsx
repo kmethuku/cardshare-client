@@ -3,7 +3,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import IDeck from '../../interfaces/IDeck';
 import ICard from '../../interfaces/ICard';
 import { NextRouter, useRouter } from 'next/router';
-import{ getSavedDeckByIdService } from '../../services/internalApi';
+import { getSavedDeckByIdService } from '../../services/internalApi';
 import HeaderButtons from '../../components/headerButtons';
 import Link from 'next/link';
 import Loader from '../../components/loader';
