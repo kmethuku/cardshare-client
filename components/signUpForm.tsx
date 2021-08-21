@@ -1,7 +1,7 @@
 import React, { useState, useContext, Dispatch, SetStateAction } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 import { AuthContext } from '../contexts/AuthContext';
-import  { signUpService } from '../services/internalApi';
+import { signUpService } from '../services/internalApi';
 import FormControlElement from '../interfaces/FormControlElement';
 import { IAuthContext } from '../interfaces/IAuth';
 import Loader from './loader';
