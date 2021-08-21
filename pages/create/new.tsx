@@ -13,9 +13,7 @@ import Loader from '../../components/loader';
 const NewDeck: React.FC = () => {
   const router: NextRouter = useRouter();
   const { title, src, OLID } = router.query;
-  const genreOption: Array<string> =[
-    'Self-Growth', 'History'
-  ]
+  const genreOption: Array<string> = ['Self-Growth', 'History'];
   let username: string = useContext(AuthContext).username;
   const { email, currentUser } = useContext(AuthContext);
   const [newDeck, setNewDeck] = useState<IDeck>({
