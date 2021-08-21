@@ -35,8 +35,8 @@ function ViewDeck () {
         alert('Sorry, an error occurred.');
       });
     getUserService(currentUser.email || email)
-    .then((user) => setUsername(user[0].username))
-    .catch((err) => alert('Sorry, an error occurred.'));
+      .then((user) => setUsername(user[0].username))
+      .catch((err) => alert('Sorry, an error occurred.'));
   }, [])
 
   useEffect(() => {
@@ -48,12 +48,12 @@ function ViewDeck () {
   const handleSave = () => {
     setLoading(true);
     saveDeckService(currentUser.email || email, deck)
-    .then(() => setLoading(false))
-    .then(() => router.push('/study'))
-    .catch((err) => {
-      setLoading(false);
-      alert('Sorry, an error occurred.');
-    });
+      .then(() => setLoading(false))
+      .then(() => router.push('/study'))
+      .catch((err) => {
+        setLoading(false);
+        alert('Sorry, an error occurred.');
+      });
   }
 
   const voteHandler = (direction: string) => {
