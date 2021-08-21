@@ -3,7 +3,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import IDeck from '../../interfaces/IDeck'
 import { NextRouter, useRouter } from 'next/router';
 import ListFlashcards from '../../components/listFlashCards';
-import{ getDeckByIdService, getUserService, voteService, getSavedDecksByEmailService, saveDeckService } from '../../services/internalApi';
+import { getDeckByIdService, getUserService, voteService, getSavedDecksByEmailService, saveDeckService } from '../../services/internalApi';
 import HeaderButtons from '../../components/headerButtons';
 import IBook from '../../interfaces/IBook';
 import Link from 'next/link';
